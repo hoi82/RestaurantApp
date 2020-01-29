@@ -1,0 +1,33 @@
+@import "./Global";
+
+@font-face {
+    font-family: "Nanumgothic";
+    src: url("../font/NanumGothic.ttf");
+}
+
+body {    
+        font-family: 'Nanumgothic', Arial, Helvetica, sans-serif;    
+}
+
+input {
+    outline: none;
+    box-sizing: border-box;
+}
+
+.bgimg {
+    object-fit: cover;
+}
+
+.box {
+    overflow: hidden;
+    background-color: $bg-color;    
+}
+
+.bgimg, .box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}  
