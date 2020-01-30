@@ -3,6 +3,19 @@
 @font-face {
     font-family: "Nanumgothic";
     src: url("../font/NanumGothic.ttf");
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Nanumgothic";
+    src: url("../font/NanumGothicBold.ttf");
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Nanumgothic";
+    src: url("../font/NanumGothicExtraBold.ttf");
+    font-weight: 800;
 }
 
 body {    
@@ -10,8 +23,24 @@ body {
 }
 
 input {
-    outline: none;
     box-sizing: border-box;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+button > * {
+    pointer-events: none;
+}
+
+input, button {
+    outline: none;
+}
+
+span {
+    user-select: none;
 }
 
 .bgimg {

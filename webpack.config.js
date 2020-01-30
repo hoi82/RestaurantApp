@@ -64,7 +64,19 @@ module.exports = function(mode, args) {
                 {
                     test: /\.jsx?$/,
                     exclude: "/node_modules",
-                    use: ["babel-loader"]
+                    use: [
+                        {
+                            //proposal class properties 플러그인이 없으면 classproperties is not enabled 에러 발생
+                            //플러그인만 옵션에 넣으면 에러가 계속되어 babelrc 파일을 지우고 프리셋을 전부 이쪽으로 옮겨와야됨                            
+                            loader : "babel-loader",
+                            options: {
+                                presets: ["@babel/preset-env", "@babel/preset-react"],
+                                plugins: [
+                                    "@babel/plugin-proposal-class-properties"
+                                ]
+                            }
+                        }
+                    ]
                 },
                 {
                     test: /\.html$/,
@@ -91,7 +103,7 @@ module.exports = function(mode, args) {
                         }, "sass-loader"]
                 },
                 {
-                    test: /\.(png|jpg)/,
+                    test: /\.(png|jpg|svg)/,
                     use: [
                         {
                             loader: "file-loader",
