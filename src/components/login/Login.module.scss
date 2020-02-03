@@ -21,12 +21,13 @@ div {
         position: absolute;
         left: 0;
         top: 0;        
-        background-color: white;
+        background-color: $bg-color;
         width: 410px;
         height: 100%;    
         padding: 40px;
         box-sizing: border-box;
         min-height: 620px;
+        box-shadow: 2px 0px 10px 0 rgba(0,0,0,0.5);
     }
 
     .box {        
@@ -52,6 +53,11 @@ div {
             color: $title-color;
         }
 
+        .cbx_Text {
+            @extend .sub_title;
+            margin-bottom: 0;
+        }
+
         .link_text {
             font-size: 13px;
             line-height: 16px;
@@ -66,7 +72,12 @@ div {
             font-size: 24px;
             width: 100%;
             height: 48px;        
-            border-radius: 3px;            
+            border-radius: 3px; 
+            transition: all 0.2s ease;
+            
+            &:hover {
+                border-color: $textbox-border-hover-color;
+            }
         }
 
         .login_btn {
@@ -78,7 +89,16 @@ div {
             background-color: $highlight-color;
             color: $highlight-highlight-color;
             font-size: 24px;
-            font-weight: 700;            
+            font-weight: 700;
+            transition: all 0.2s ease;
+            
+            &:hover {
+                background-color: $highlight-hover-color;
+            }
+
+            &:active {
+                background-color: $highlight-active-color;
+            }
         }
 
         .link_btn {
@@ -91,11 +111,114 @@ div {
 
         .link_btn:hover {
             text-decoration: underline;
-        }
+        }        
 
         .register_btn {
             @extend .link_btn;
             margin-left: 8px;
+        }
+
+        //NOTE: Checkbox styling
+        //1. 체크박스를 숨긴후
+        //2. 뒤쪽 Label과 합쳐 기본 Display를 설정하고
+        //(라벨을 쓰는 이유: For 속성으로 체크박스와 묶어줌)
+        //For 속성: label의 for에 입력된 id와 같은 id를 가진 element가 있으면 연결시켜줌
+        //3. 체크했을때의 Display 설정
+        //최종 구조 : (first-child:before - 이펙트 담당) - (first-child - 체크 박스) - (svg - 체크 이미지)
+        .cbx_container {
+            height: 24px;
+            margin-bottom: 12px;
+        }
+
+        .ipx {
+            display: none;
+        }
+
+        .cbx {
+            margin: auto;
+            user-select: none;
+            cursor: pointer;                  
+                        
+            span {
+                display: inline-block;
+                vertical-align: middle;
+                transform: translate3d(0,0,0);
+                box-sizing: border-box;
+                margin-top: 6px;  
+
+                //Pseudo class로 표현한 체크박스                 
+                &:first-child {
+                    position: relative;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 3px;
+                    transform: scale(1);
+                    vertical-align: middle;
+                    border: 1px solid $textbox-border-color;                    
+                    transition: all 0.2s ease;                    
+    
+                    svg {
+                        position: absolute;
+                        left: 3px;
+                        top: 4px;                        
+                        fill: none;
+                        stroke: $highlight-highlight-color;
+                        stroke-width: 2;
+                        stroke-linecap: round;
+                        stroke-linejoin: round;
+                        stroke-dasharray: 16px;
+                        stroke-dashoffset: 16px;
+                        transition: all 0.3s ease;
+                        transition-delay: 0.1s;
+                        transform: translate3d(0,0,0);
+                    }
+    
+                    //Pseudo class로 만든 체크변경시 이펙트
+                    &:before {
+                        content: '';
+                        width: 100%;
+                        height: 100%;
+                        background: $highlight-color;
+                        display: block;
+                        transform: scale(0);
+                        opacity: 1;
+                        border-radius: 50%;
+                    }
+                }
+
+                //Span의 Content
+                &:last-child {
+                    padding-left: 8px;
+                }            
+            }                            
+
+            &:hover span:first-child {
+                border-color: $highlight-color;
+            }
+        }
+
+        .ipx:checked + .cbx {
+            span {
+                &:first-child {
+                    background: $highlight-color;
+                    border-color: $highlight-color;
+                    animation: wave 0.4s ease;
+                    svg {
+                        stroke-dashoffset: 0;
+                    }
+                    &:before {
+                        transform: scale(3.5);
+                        opacity: 0;
+                        transition: all 0.6s ease;
+                    }
+                }
+            }
+        }        
+          
+        @keyframes wave {
+            50% {
+                transform: scale(0.9);
+            }
         }
     }    
 }

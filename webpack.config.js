@@ -65,8 +65,8 @@ module.exports = function(mode, args) {
                     test: /\.jsx?$/,
                     exclude: "/node_modules",
                     use: [
-                        {
-                            //proposal class properties 플러그인이 없으면 classproperties is not enabled 에러 발생
+                        {                            
+                            //NOTE:proposal class properties 플러그인이 없으면 classproperties is not enabled 에러 발생
                             //플러그인만 옵션에 넣으면 에러가 계속되어 babelrc 파일을 지우고 프리셋을 전부 이쪽으로 옮겨와야됨                            
                             loader : "babel-loader",
                             options: {

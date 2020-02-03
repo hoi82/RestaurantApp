@@ -18,6 +18,8 @@ class Dialog extends Component {
         this.setState({ isOpen: false });
     }
     
+    //NOTE: state에 속성을 부여해 true면 컴포넌트, false면 null return
+    //state 변경시 컴포넌트를 다시 render한다는 점을 이용
     render() {
         return (  
             <React.Fragment>

@@ -26,7 +26,7 @@ class Login extends Component {
     }
 
     remeberChanged = (event) => {
-        this.setState({ password: event.target.value });
+        this.setState({ remember: event.target.value });
     }
 
     render() {
@@ -35,24 +35,31 @@ class Login extends Component {
                 <div className={styles.login_container}>
                     <div className={styles.box}>
                         <div className={styles.item_container}>
-                            <img src={logo} className={styles.logo}></img>                     
+                            <img src={logo} alt="로고" className={styles.logo}></img>                     
                         </div>
                         <div className={styles.item_container}>
                             <span className={styles.sub_title}>
                                 이메일
                             </span>
-                            <input type="email" className={styles.text_box} value={this.state.email} onChange={this.emailChanged}/>
+                            <input type="email" className={styles.text_box} onChange={this.emailChanged}/>
                         </div>
                         <div className={styles.item_container}>
                             <span className={styles.sub_title}>
                                 비밀번호
                             </span>
-                            <input type="passowrd" className={styles.text_box} value={this.state.password} onChange={this.passwordChanged}/>
+                            <input type="password" className={styles.text_box} onChange={this.passwordChanged}/>
                         </div>
                         <div className={styles.item_container}>                        
-                            <div>
-                                <input type="checkbox" className={styles.checkbox_actual} checked={this.state.remember} onChange={this.remeberChanged}/>
-                                <label className={styles.sub_title}>이메일 저장</label>                            
+                            <div className={styles.cbx_container}>
+                                <input className={styles.ipx} id="cbx" type="checkbox"/>
+                                <label className={styles.cbx} htmlFor="cbx">
+                                    <span>
+                                        <svg width="12px" height="10px" viewBox="0 0 12 10">
+                                            <polyline points="1.5 6 4.5 9 10.5 1"></polyline>                                            
+                                        </svg>
+                                    </span>
+                                    <span className={styles.cbx_Text}>이메일 저장</span>
+                                </label>                                
                             </div>
                             <button className={styles.link_btn} onClick={this.sendInfoByEmail}> 
                                 <span className={styles.link_text}>이메일 / 비밀번호 찾기</span>
