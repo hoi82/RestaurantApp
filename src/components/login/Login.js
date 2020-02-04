@@ -13,8 +13,12 @@ class Login extends Component {
 
     sendInfoByEmail = () => {
         //DB에 일치하는 주소가 있으면 보내고
-        //없으면 
+        //없으면 다이얼로그
         this.dg.current.ShowDialog("테스트 용입니다.");
+    }
+
+    initContent = () => {
+        localStorage.setItem("haveToInitContent", true);
     }
 
     emailChanged = (event) => {
@@ -71,7 +75,7 @@ class Login extends Component {
                             </button>
                             <div>
                                 <span className={styles.sub_title}>아직 가입하지 않으셨나요?</span>
-                                <Link to={"/register"}>
+                                <Link to={"/register"} onClick={ (e) => {this.initContent()}}>
                                     <button className={styles.register_btn}>                                
                                         <span className={styles.link_text}>가입하기</span>
                                     </button>

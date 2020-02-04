@@ -1,30 +1,36 @@
 import React, { Component } from 'react';
 import Profile from "./Profile";
 import Payment from "./Payment";
+import styles from "./Content.module.scss";
 
 class Content extends Component {
     constructor(props) {
-        super(props);
-        this.state = { curContent : "" };
-        this.SetContent = this.SetContent.bind(this);
-    }
-    //NOTE: setState는 비동기다!!!절대 잊지 말것!
-    //순차적인 처리를 원하면 뒤쪽의 Callback property에 해당 method를 넣을것.
-    SetContent(content) {
-        this.setState({ curContent : content },
-                function() {
-                    console.log(this.state.curContent);
-                }
-             );        
+        super(props);                    
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.curContent != nextProps.curContent) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //NOTE: setState는 비동기다!!!절대 잊지 말것!
+    //순차적인 처리를 원하면 뒤쪽의 Callback property에 해당 method를 넣을것.
+    // SetContent(content) {
+    //     this.setState({ curContent : content }, function() {
+    //         localStorage.setItem("curContent", content);
+    //     });                
+    // }
+
     RenderContent() {
-        switch (this.state.curContent) {
+        switch (this.props.curContent) {
             case "profile":
-                return <Profile/>;
+                return <div className={styles.content}><Profile userInfoChange={this.props.userInfoChange}/></div>;
                 break;
             case "payment":
-                return <Payment/>;
+                return <div className={styles.content}><Payment userInfoChange={this.props.userInfoChange}/></div>;
                 break;        
             default:
                 return null;
@@ -34,9 +40,9 @@ class Content extends Component {
     
     render() {
         return (
-            <div>
+            <React.Fragment>
                 {this.RenderContent()}
-            </div>
+            </React.Fragment>            
         );
     }
 }

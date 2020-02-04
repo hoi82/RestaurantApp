@@ -4,18 +4,14 @@ button > * {
     pointer-events: none;
 }
 
-div {
-    width: 100%;
-    margin: 0;
 
-    .nav {
-        position: relative;
+.nav {
+    position: relative;
+    width: 410px;
+    height: 100%;
+
+    button {
         width: 100%;
-        height: 100%;
-
-        button {
-            width: 100%;
-        }
     }
 
     .nav_container {
@@ -23,42 +19,42 @@ div {
         left: 0;
         top: 0;
         background-color: $bg-color;
-        width: 410px;
+        width: 100%;
         height: 100%;
         padding: 40px;
         box-sizing: border-box;
         min-height: 620px;
         box-shadow: 2px 0px 10px 0 rgba(0,0,0,0.5);
     }
-
+    
     .nav_box {
         display: flex;
         flex-flow: column;
         justify-content: flex-start;
-
+    
         .logo {
             width: 80px;
             height: 80px;
             align-self: flex-end;
         }
-
+    
         .small_logo {
             width: 64px;
             height: 64px;
             margin-top: 8px;
             margin-bottom: 8px;
         }
-
+    
         .item_container {
             @extend .nav_box;
             align-items: flex-start;
             height: 104px;
-
+    
             &:first-child {
                 margin-top: 128px;
             }
         }  
-
+    
         .register_btn {
             height: 48px;
             border-radius: 5px;
@@ -68,11 +64,11 @@ div {
             color: $highlight-highlight-color;
             background-color: $highlight-color;
             transition: all 0.2s ease;
-
+    
             &:hover {
                 background-color: $highlight-hover-color;                
             }
-
+    
             &:active {
                 background-color: $highlight-active-color;
             }
@@ -85,7 +81,7 @@ div {
             border: none;
             box-sizing: border-box;
         }
-
+    
         .link_btn {
             @extend .transparent_btn;
             height: 16px;
@@ -96,33 +92,33 @@ div {
                 text-decoration: underline;
             }
         }
-
+    
         .button_box {
             display: flex;
             flex-flow: row;
             justify-content: flex-start;
             align-items: center;            
         }
-
+    
         .large_btn_text {
             display: block;
             margin-left: 16px;
             font-size: 28px;            
         }
-
+    
         .medium_btn_text {
             display: block;
             font-size: 24px;  
             font-weight: 600;          
         }
-
+    
         .medium_sub_btn_text {
             @extend .medium_btn_text;
             color: $title-color;
             margin-left: 4px;
             font-weight: 500;
         }
-
+    
         .small_text {
             display: block;
             margin-top: 1.5px;
@@ -131,7 +127,7 @@ div {
             font-weight: 600;
             color: $title-color;
         }
-
+    
         .link_text {
             @extend .small_text;
             font-size: 13px;            
@@ -139,3 +135,5 @@ div {
         }
     }    
 }
+
+

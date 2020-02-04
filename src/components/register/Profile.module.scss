@@ -1,0 +1,54 @@
+@import "../Global";
+
+.profile {
+    position: relative;
+    width: 100%;    
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .item_box {
+        @extend .profile;
+        justify-content: flex-start;
+        height: 104px;
+
+        &:first-child {
+            margin-top: 104px;
+        }
+
+        .header_box {
+            @extend .profile;
+            flex-flow: row;
+            align-items: center;
+            height: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .item_header {
+            display: block;
+            font-size: 13px;
+            line-height: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: $title-color;
+        }
+
+        input {
+            min-width: 400px;
+            height: 48px;
+            border: 1px solid $textbox-border-color;
+            border-radius: 3px;
+            box-sizing: border-box;
+            color: $content-color;
+            background-color: $bg-color;
+            padding-left: 15px;
+            font-size: 24px;
+            transform: all 0.2s ease;
+
+            &:hover {
+                border-color: $textbox-border-hover-color;
+            }
+        }
+    }    
+}

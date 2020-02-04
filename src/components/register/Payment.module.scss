@@ -1,0 +1,59 @@
+@import "../Global";
+
+.payment {
+    position: relative;
+    width: 100%;    
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: flex-start;    
+    box-sizing: border-box;
+
+    .header {
+        display: block;
+        font-size: 13px;
+        line-height: 16px; 
+        font-weight: 600;
+        color: $title-color;
+        margin-top: 124px;
+        margin-bottom: 16px;               
+    }
+
+    .add_button {
+        width: 124px;
+        height: 40px;
+        background-color: $highlight-color;
+        border-radius: 3px;
+        padding: 0;
+        margin-bottom: 24px;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: $highlight-hover-color;
+        }
+
+        &:active {
+            background-color: $highlight-active-color;
+        }
+    }
+
+    .button_box {
+        display: flex;
+        flex-flow: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        .icon {
+            width: 32px;
+            height: 32px;
+            margin-left: 8px;
+        }
+
+        .btn_text {
+            margin-left: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            color: $highlight-highlight-color;
+        }
+    }
+}

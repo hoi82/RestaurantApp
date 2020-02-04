@@ -1,0 +1,11 @@
+@import "../Global";
+
+.content {
+    position: absolute;
+    width: calc(100% - 410px);
+    height: 100%;
+    transform: translateX(410px);
+    background-color: $bg-color;
+    padding: 40px 40px 0px 40px;
+    box-sizing: border-box;
+}
