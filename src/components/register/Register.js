@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import Content from "./Content";
+import { Payments } from "../common/Variables";
 import styles from "./Register.module.scss";
 
 //NOTE: Nav에 함수를 던져주고 이 함수에서 Content의 Prop를 바꿔야함
@@ -30,7 +31,16 @@ class Register extends Component {
         this.userInfoChange = this.userInfoChange.bind(this);  
         this.changeContent = this.changeContent.bind(this);
         this.initContent = this.initContent.bind(this);
+
+        //테스트용 더미
+        // this.state.userInfo.payments = this.dummy;
     }    
+
+    dummy = [
+        { kind: Payments.VISA, cardNumber: "1111-1111-1111-1111"},
+        { kind: Payments.PAYPAL, email: "aaa@aaa.com"},
+        { kind: Payments.FINTECH, id: "bbb"}
+    ]
 
     changeContent = (param) => {                
         this.setState({ curContent : param }); 
@@ -48,7 +58,7 @@ class Register extends Component {
     render() {
         return (
             <div className={styles.register}>                
-                <Content curContent={this.state.curContent} userInfoChange={this.userInfoChange}></Content>                
+                <Content curContent={this.state.curContent} userInfoChange={this.userInfoChange} userInfo={this.state.userInfo}></Content>                
                 <Nav changeContent={this.changeContent} initContent={this.initContent} userInfo={this.state.userInfo}></Nav>
             </div>
         );

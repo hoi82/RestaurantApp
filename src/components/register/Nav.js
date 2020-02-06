@@ -21,7 +21,7 @@ class Nav extends Component {
                             <img src={logo} alt="로고" className={styles.logo}></img>
                         </div>
                         <div className={styles.item_container}>
-                            <button className={styles.transparent_btn} onClick={ (e) => {this.props.changeContent("profile")}}>
+                            <button className={styles.transparent_btn} onClick={ (e) => {this.props.changeContent("profile"); localStorage.setItem("haveToInitPayment", true)}}>
                                 <div className={styles.button_box}>
                                     <img src={profile} alt="개인정보 아이콘" className={styles.small_logo}></img>
                                     <span className={styles.large_btn_text}>개인정보</span>                                                                    

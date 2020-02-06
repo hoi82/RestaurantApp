@@ -1,1 +1,13 @@
 @import "../Global";
+
+.list {
+    position: relative;
+    width: 100%;
+    min-width: 560px;
+    height: 320px;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    background-color: $bg-color;
+    margin-top: 8px;
+}

@@ -1,0 +1,101 @@
+@import "../Global";
+
+.box_container {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    height: 80px;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .box_button {
+        width: 124px;
+        min-width: 124px;
+        height: 40px;
+        border-radius: 3px;
+        background-color: $contrast-bg-color;
+        padding: 0px;
+        padding-left: 8px;
+    }
+
+    .box_btn_container {
+        display: flex;
+        flex-flow: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .logo {
+        width: 32px;
+        height: 32px;
+    }
+
+    .item_btn_txt {
+        font-size: 16px;
+        font-weight: 600;
+        color: $contrast-color;
+        margin-left: 8px;
+    }
+
+    .input_container {
+        display: flex;
+        flex-flow: row;
+        justify-content: flex-start;
+        align-items: center;
+        margin-left: 16px;
+        box-sizing: border-box;
+        overflow: hidden;
+        padding: 8px;
+        background-color: $contrast-bg-color;
+        border-radius: 5px;
+    }
+
+    .input_box {
+        width: 100%;
+        max-width: 288px;
+        min-width: 100px;
+    }
+
+    .input_header {
+        display: block;
+        font-size: 13px;
+        line-height: 16px;
+        font-weight: 600;
+        color: $contrast-title-color;
+        margin: 4px 0px 12px 4px;            
+    }
+
+    input {
+        width: 100%;
+        padding-left: 15px;
+        font-size: 16px;
+        height: 32px;
+        box-sizing: border-box;
+        border: 1px solid $contrast-textbox-border-color;
+        border-radius: 3px;        
+        color: $contrast-color;
+        background-color: $contrast-textbox-bg-color;    
+    }
+
+    .reg_btn {
+        width: 96px;
+        height: 36px;
+        border-radius: 3px;
+        background-color: rgb(64, 231, 31);
+        margin-left: 16px;
+        box-sizing: border-box;
+    }
+
+    .reg_txt {
+        font-size: 16px;
+        font-weight: 600;
+        color: $contrast-color;
+    }
+}    

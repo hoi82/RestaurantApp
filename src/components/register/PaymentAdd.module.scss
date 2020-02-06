@@ -1,1 +1,27 @@
 @import "../Global";
+
+.add{
+    position: relative;
+    width: 100%;
+    min-width: 560px;
+    
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    background-color: $bg-color;
+    margin-top: 8px;
+
+    .back_btn {
+        width: 560px;
+        height: 48px;
+        margin-top: 24px;
+        border-radius: 3px;
+        background-color: rgb(255, 80, 57);
+    }
+
+    .back_txt {
+        font-size: 16px;
+        font-weight: 600;
+        color: $contrast-color;
+    }
+}

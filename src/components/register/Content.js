@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from "prop-types";
 import Profile from "./Profile";
 import Payment from "./Payment";
 import styles from "./Content.module.scss";
@@ -27,10 +28,10 @@ class Content extends Component {
     RenderContent() {
         switch (this.props.curContent) {
             case "profile":
-                return <div className={styles.content}><Profile userInfoChange={this.props.userInfoChange}/></div>;
+                return <div className={styles.content}><Profile userInfo={this.props.userInfo}/></div>;
                 break;
             case "payment":
-                return <div className={styles.content}><Payment userInfoChange={this.props.userInfoChange}/></div>;
+                return <div className={styles.content}><Payment list={this.props.userInfo.payments}/></div>;
                 break;        
             default:
                 return null;
@@ -45,6 +46,10 @@ class Content extends Component {
             </React.Fragment>            
         );
     }
+}
+
+Content.propTypes = {
+    userInfo: PropTypes.object
 }
 
 export default Content;
