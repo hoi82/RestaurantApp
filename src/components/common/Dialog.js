@@ -5,7 +5,7 @@ import alert from "../../image/alert.svg";
 class Dialog extends Component {
     constructor(props) {
         super(props);
-        this.state = { isOpen: false, title: "aaa", content: "bbb" };
+        this.state = { isOpen: false, title: "", content: "" };
         this.ShowDialog = this.ShowDialog.bind(this);
         this.CloseDialog = this.CloseDialog.bind(this);
     }    

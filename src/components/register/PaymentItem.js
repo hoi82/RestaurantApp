@@ -9,10 +9,16 @@ import unknown from "../../image/test.svg";
 class PaymentItem extends Component {
     constructor(props) {
         super(props);
+
+        this.state = { 
+            payment : this.props.item,
+            isEditable : false,
+            editingValue : ""
+        }
     }
 
     renderLogo = () => {
-        switch (this.props.info.kind) {
+        switch (this.state.payment.kind) {
             case Payments.VISA:
                 return <img src={visa} alt="비자 카드 로고" className={styles.logo}/>;
                 break;
@@ -29,15 +35,15 @@ class PaymentItem extends Component {
     }
 
     renderInfo = () => {
-        switch (this.props.info.kind) {
+        switch (this.state.payment.kind) {
             case Payments.VISA:
-                return this.props.info.cardNumber;
+                return this.state.payment.cardNumber;
                 break;
             case Payments.PAYPAL:
-                return this.props.info.email;
+                return this.state.payment.email;
                 break;
             case Payments.FINTECH:
-                return this.props.info.id;
+                return this.state.payment.id;
                 break;
             default:
                 return "undefined";
@@ -45,21 +51,73 @@ class PaymentItem extends Component {
         }
     }
 
+    handleSubmit = (e) => {
+        if (e.key == "Enter") {
+            this.submit();            
+        }        
+    }
+
+    clickSubmit = (e) => {
+        this.submit();
+    }
+
+    submit = () => {
+        if (this.state.editingValue !== "") {            
+            switch (this.state.payment.kind) {
+                case Payments.VISA:
+                    this.state.payment.cardNumber = this.state.editingValue;
+                    break;
+                case Payments.PAYPAL:
+                    this.state.payment.email = this.state.editingValue;
+                    break;
+                case Payments.FINTECH:
+                    this.state.payment.id = this.state.editingValue;
+                    break;
+                default:                    
+                    break;
+            }
+            console.log(this.props.item);            
+        }        
+        this.rollBack();
+    }
+
+    rollBack = () => {
+        this.setState({isEditable : false}, () => {this.state.editingValue = ""});
+    }
+
     render() {
         return (
             <div className={styles.item}>
                 {this.renderLogo()}
-                <div className={styles.content_box}>
-                    <span className={styles.info_txt}>{this.renderInfo()}</span>                    
-                </div>                
-                <div className={styles.button_box}>
-                    <button className={styles.modify_btn}>
-                        <span className={styles.btn_txt}>수정</span>
-                    </button>
-                    <button className={styles.remove_btn}>
-                        <span className={styles.btn_txt}>삭제</span>
-                    </button>
-                </div>
+                {this.state.isEditable ? 
+                    <React.Fragment>
+                        <div className={styles.content_box}>
+                            <input type="text" value={this.state.editingValue} onChange={(e)=>this.setState({editingValue: e.target.value})} onKeyPress={this.handleSubmit}/>
+                        </div> 
+                        <div className={styles.button_box}>
+                            <button className={styles.submit_btn} onClick={this.submit}>
+                                <span className={styles.btn_txt}>확인</span>
+                            </button>
+                            <button className={styles.cancel_btn} onClick={this.rollBack}>
+                                <span className={styles.btn_txt}>취소</span>
+                            </button>
+                        </div>
+                    </React.Fragment>                    
+                    :
+                    <React.Fragment>
+                        <div className={styles.content_box}>
+                            <span className={styles.info_txt}>{this.renderInfo()}</span>                    
+                        </div>       
+                        <div className={styles.button_box}>
+                            <button className={styles.modify_btn} onClick={() => this.setState({ isEditable : true })}>
+                                <span className={styles.btn_txt}>수정</span>
+                            </button>
+                            <button className={styles.remove_btn} onClick={() => this.props.onRemove(this.props.id)}>
+                                <span className={styles.btn_txt}>삭제</span>
+                            </button>
+                        </div>         
+                    </React.Fragment>                    
+                }                                
             </div>
         );
     }

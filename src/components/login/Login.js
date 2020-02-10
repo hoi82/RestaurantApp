@@ -18,7 +18,7 @@ class Login extends Component {
     }
 
     initContent = () => {
-        localStorage.setItem("haveToInitContent", true);
+        window.sessionStorage.setItem("haveToInitContent", true);
     }
 
     emailChanged = (event) => {

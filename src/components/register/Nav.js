@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styles from "./Nav.module.scss";
+import NavItem from "./NavItem";
 import logo from "../../image/register.svg";
 import profile from "../../image/profile.svg";
 import payment from "../../image/payment.svg";
@@ -8,10 +9,10 @@ import payment from "../../image/payment.svg";
 class Nav extends Component {
     constructor(props) {
         super(props);        
-    }
-    //NOTE: onClick에 Props에 들어있는 method를 지정하면 자동으로 바인딩이 걸려 render시 이벤트가 발생함
-    //이를 막기 위해서는 arrow function로 구현해야함.
-    //But, arrow function은 이벤트 발생때마다 오브젝트를 계속 만들기 때문에 신중하게 선택해야 함
+    }    
+
+    //NOTE: onClick 이벤트에 this.func() 형태로 넣으면 함수의 리턴값을 이벤트로 설정한다는 의미이기 때문에 ()를 제거하고 써야함
+    //부득이하게 파라미터를 넣을거라면 arrow function 형태로 넣을것.
     render() {
         return (
             <div className={styles.nav}>
@@ -21,7 +22,7 @@ class Nav extends Component {
                             <img src={logo} alt="로고" className={styles.logo}></img>
                         </div>
                         <div className={styles.item_container}>
-                            <button className={styles.transparent_btn} onClick={ (e) => {this.props.changeContent("profile"); localStorage.setItem("haveToInitPayment", true)}}>
+                            <button className={styles.transparent_btn} onClick={ (e) => {this.props.changeContent("profile")}}>
                                 <div className={styles.button_box}>
                                     <img src={profile} alt="개인정보 아이콘" className={styles.small_logo}></img>
                                     <span className={styles.large_btn_text}>개인정보</span>                                                                    
@@ -38,13 +39,13 @@ class Nav extends Component {
                             </button>
                         </div>
                         <div className={styles.item_container}>
-                            <button className={styles.register_btn}>
+                            <button className={styles.register_btn} onClick={this.props.onRegister}>
                                 <span className={styles.medium_btn_text}>가입하기</span>
                             </button>
                             <div className={styles.button_box}>
                                 <span className={styles.small_text}>계정이 있으신가요?</span>
                                 <Link to={"/"}>
-                                    <button className={styles.link_btn} onClick={ (e) => {this.props.initContent()}}>
+                                    <button className={styles.link_btn}>
                                         <div className={styles.link_text}>로그인</div>
                                     </button>
                                 </Link>                                

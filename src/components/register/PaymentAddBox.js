@@ -34,6 +34,7 @@ class PaymentAddBox extends Component {
 
     handleClick = () => {        
         this.props.onAdd(this.paymentInfo);
+        this.props.onBack("list");
     }
 
     render() {        

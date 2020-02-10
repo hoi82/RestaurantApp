@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import Content from "./Content";
+import Dialog from "../common/Dialog";
 import { Payments } from "../common/Variables";
+import UserInfo from "../data/UserInfo";
 import styles from "./Register.module.scss";
 
 //NOTE: Nav에 함수를 던져주고 이 함수에서 Content의 Prop를 바꿔야함
@@ -11,30 +13,33 @@ import styles from "./Register.module.scss";
 //Nav에 Content 컴포넌트 초기화 하는 함수를 props로 넘겨서 로그인 페이지 이동 버튼 누를때 호출하도록 함.
 //Refesh 방지용으로 localstroage를 쓰니 로그인 페이지로 이동했다가 가입 페이지로 올때 이전 페이지를 기억하고 있음.
 //localstorage에 초기화할지 물어보는걸로 변경
+//Sessionstorage로 변경
+//최종: 그냥 상위페이지에서 state로 관리하는걸로 변경 -> 어차피 새로고쳐도 url path 기준으로 render되기 때문에.
 class Register extends Component {
     constructor(props) {
-        super(props);        
-        this.state = { curContent : "profile" };        
+        super(props);           
 
-        if (localStorage.getItem("haveToInitContent") == "true") {
-            this.state = { curContent : "profile" };
-        }
-        else {
-            this.state = { curContent : localStorage.getItem("curContent") || "profile" };
-        }        
-
-        //위의 state에 할당하면 if문을 지나면서 없어지기 때문에 여기에서 할당.
-        Object.assign(this.state, {userInfo : { email : "", password : "", name : "", phone : "", address : "", payments : []}});
-        //로그인 창에서 넘어올때는 true로 셋팅되서 넘어오기 때문에 0으로 설정해주면 새로고침시 초기화하지 않음.
-        localStorage.setItem("haveToInitContent", false);
+        this.state = {curPage : "profile"};
+        this.dg = React.createRef();
 
         this.userInfoChange = this.userInfoChange.bind(this);  
-        this.changeContent = this.changeContent.bind(this);
-        this.initContent = this.initContent.bind(this);
+        this.changePage = this.changePage.bind(this);
+        this.register = this.register.bind(this);
 
         //테스트용 더미
         // this.state.userInfo.payments = this.dummy;
     }    
+
+    // userInfo = {
+    //     email: "",
+    //     password: "",
+    //     name: "",
+    //     phone: "",
+    //     address: "",
+    //     payments: []
+    // }
+
+    userInfo = new UserInfo();
 
     dummy = [
         { kind: Payments.VISA, cardNumber: "1111-1111-1111-1111"},
@@ -42,24 +47,31 @@ class Register extends Component {
         { kind: Payments.FINTECH, id: "bbb"}
     ]
 
-    changeContent = (param) => {                
-        this.setState({ curContent : param }); 
-        localStorage.setItem("curContent", param);
-    }
-
-    initContent = () => {
-        this.setState({ curContent : "profile" }); 
+    changePage = (param) => {                
+        this.setState({ curPage : param });        
     }
         
     userInfoChange(field) {        
-        Object.assign(this.state.userInfo, field);
+        Object.assign(this.userInfo, field);
+        console.log(this.userInfo);
+    }
+
+    //TODO: 다이얼로그에 타입 추가(alert, success등등)
+    //register form에 validation추가
+    //login form에 validation추가
+    register() {
+        this.dg.current.ShowDialog("가입되었습니다. 이제 회원으로 로그인 해보세요!");
+        console.log(this.userInfo);     
+        //NOTE:수동으로 route하는 방법.   
+        this.props.history.push("/");
     }
 
     render() {
         return (
             <div className={styles.register}>                
-                <Content curContent={this.state.curContent} userInfoChange={this.userInfoChange} userInfo={this.state.userInfo}></Content>                
-                <Nav changeContent={this.changeContent} initContent={this.initContent} userInfo={this.state.userInfo}></Nav>
+                <Content curPage={this.state.curPage} userInfoChange={this.userInfoChange} userInfo={this.userInfo}></Content>                
+                <Nav onRegister={this.register} changeContent={this.changePage} userInfo={this.userInfo}></Nav>
+                <Dialog ref={this.dg}/>
             </div>
         );
     }

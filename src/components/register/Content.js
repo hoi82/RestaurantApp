@@ -10,7 +10,7 @@ class Content extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.curContent != nextProps.curContent) {
+        if (this.props.curPage != nextProps.curPage) {
             return true;
         } else {
             return false;
@@ -26,12 +26,16 @@ class Content extends Component {
     // }
 
     RenderContent() {
-        switch (this.props.curContent) {
+        switch (this.props.curPage) {
             case "profile":
-                return <div className={styles.content}><Profile userInfo={this.props.userInfo}/></div>;
+                return <div className={styles.content}>
+                    <Profile userInfo={this.props.userInfo} userInfoChange={this.props.userInfoChange}/>
+                    </div>;
                 break;
             case "payment":
-                return <div className={styles.content}><Payment list={this.props.userInfo.payments}/></div>;
+                return <div className={styles.content}>
+                    <Payment userInfo={this.props.userInfo}/>
+                    </div>;
                 break;        
             default:
                 return null;
@@ -49,7 +53,8 @@ class Content extends Component {
 }
 
 Content.propTypes = {
-    userInfo: PropTypes.object
+    userInfo: PropTypes.object,
+    userInfoChange: PropTypes.func
 }
 
 export default Content;
