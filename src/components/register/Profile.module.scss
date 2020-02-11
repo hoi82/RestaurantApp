@@ -30,8 +30,15 @@
             font-size: 13px;
             line-height: 16px;
             font-weight: 600;
-            margin-bottom: 16px;
+            // margin-bottom: 16px;
             color: $title-color;
+        }
+
+        .error_text {
+            @extend .item_header;
+            color: $alert-color;
+            font-weight: 300;
+            margin-left: 8px;
         }
 
         input {

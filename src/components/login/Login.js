@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Dialog from "../common/Dialog";
+import { DialogMode } from "../common/Variables";
 import styles from "./Login.module.scss";
 import logo from "../../image/login.svg";
 
@@ -14,7 +15,24 @@ class Login extends Component {
     sendInfoByEmail = () => {
         //DB에 일치하는 주소가 있으면 보내고
         //없으면 다이얼로그
-        this.dg.current.ShowDialog("테스트 용입니다.");
+
+        let sent = false;
+        if (sent) {
+            this.dg.current.showDialog(DialogMode.SUCCESS, "입력하신 이메일 주소로 비밀번호를 전송했습니다.")
+        }
+        else {
+            this.dg.current.showDialog(DialogMode.ALERT, "가입되지 않은 이메일 주소입니다.\r\n이메일 주소를 확인해주세요.");
+        }        
+    }
+
+    login = () => {
+        let valid = false;
+        if (valid) {
+
+        }
+        else {
+            this.dg.current.showDialog(DialogMode.ALERT, "존재하지 않는 이메일 주소이거나 잘못된 비밀번호입니다.\r\n이메일 주소 혹은 비밀번호를 확인해주세요.")
+        }
     }
 
     initContent = () => {
@@ -70,7 +88,7 @@ class Login extends Component {
                             </button>
                         </div>
                         <div className={styles.item_container}>
-                            <button className={styles.login_btn}>
+                            <button className={styles.login_btn} onClick={this.login}>
                                 <span>로그인</span>
                             </button>
                             <div>

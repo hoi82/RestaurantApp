@@ -25,7 +25,7 @@ class Content extends Component {
     //     });                
     // }
 
-    RenderContent() {
+    renderContent() {
         switch (this.props.curPage) {
             case "profile":
                 return <div className={styles.content}>
@@ -46,7 +46,7 @@ class Content extends Component {
     render() {
         return (
             <React.Fragment>
-                {this.RenderContent()}
+                {this.renderContent()}
             </React.Fragment>            
         );
     }

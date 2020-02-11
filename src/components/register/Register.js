@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Nav from "./Nav";
 import Content from "./Content";
 import Dialog from "../common/Dialog";
-import { Payments } from "../common/Variables";
+import { Payments, DialogMode } from "../common/Variables";
 import UserInfo from "../data/UserInfo";
 import styles from "./Register.module.scss";
 
@@ -56,14 +56,34 @@ class Register extends Component {
         console.log(this.userInfo);
     }
 
-    //TODO: 다이얼로그에 타입 추가(alert, success등등)
-    //register form에 validation추가
-    //login form에 validation추가
-    register() {
-        this.dg.current.ShowDialog("가입되었습니다. 이제 회원으로 로그인 해보세요!");
+    register = () => {
+        if (this.checkInfo()) {
+            this.dg.current.showDialog(DialogMode.SUCCESS, "가입을 축하드립니다!\r\n'닫기'를 누르시면 로그인 화면으로 이동합니다.", "",
+        () => {this.props.history.push("/")});
+        }        
+        else {
+            this.dg.current.showDialog(DialogMode.ALERT, "입력하신 정보가 올바르지 않습니다. 확인해주세요.")
+        }
         console.log(this.userInfo);     
         //NOTE:수동으로 route하는 방법.   
-        this.props.history.push("/");
+        // this.props.history.push("/");
+    }
+
+    checkInfo = () => {
+        let valid = false;
+        //emailCheck
+        if (/^[a-z0-9\_]{3,}\@[a-z0-9\_]+\.[a-z0-9]+(\.[a-z0-9]+)?/i.test(this.userInfo.email))
+            valid = true;
+        //passwordCheck
+        if ((/[0-9]+/i.test(this.userInfo.password)) && (/[^a-z0-9]+/i.test(this.userInfo.password)) && 
+        (this.userInfo.password.length >= 10) && (this.userInfo.password.length <= 16) && 
+        (/(\w)\1\1/.test(this.userInfo.password)))
+            valid = true;
+        //etcCheck
+        if ((this.userInfo.name != "") && (this.userInfo.phone != "") && (this.userInfo.address))
+            valid = true;
+
+        return valid;
     }
 
     render() {

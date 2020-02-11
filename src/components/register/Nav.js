@@ -22,7 +22,7 @@ class Nav extends Component {
                             <img src={logo} alt="로고" className={styles.logo}></img>
                         </div>
                         <div className={styles.item_container}>
-                            <button className={styles.transparent_btn} onClick={ (e) => {this.props.changeContent("profile")}}>
+                            <button className={styles.item_btn} onClick={ (e) => {this.props.changeContent("profile")}}>
                                 <div className={styles.button_box}>
                                     <img src={profile} alt="개인정보 아이콘" className={styles.small_logo}></img>
                                     <span className={styles.large_btn_text}>개인정보</span>                                                                    
@@ -30,7 +30,7 @@ class Nav extends Component {
                             </button>
                         </div>                        
                         <div className={styles.item_container}>
-                            <button className={styles.transparent_btn} onClick={ (e) => {this.props.changeContent("payment")}}>
+                            <button className={styles.item_btn} onClick={ (e) => {this.props.changeContent("payment")}}>
                                 <div className={styles.button_box}>
                                     <img src={payment} alt="결재정보 아이콘" className={styles.small_logo}></img>
                                     <span className={styles.large_btn_text}>결재정보</span>

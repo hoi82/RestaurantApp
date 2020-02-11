@@ -9,7 +9,7 @@ class PaymentList extends Component {
         this.state = { list : this.props.list }        
     }
 
-    RemoveItem = (index) => {
+    removeItem = (index) => {
         this.state.list.splice(index, 1);
         this.forceUpdate();
     }
@@ -22,7 +22,7 @@ class PaymentList extends Component {
     //NOTE:List Render 두번째 방법
     renderList = () => {
         return this.state.list.map((item, i) => {
-            return <PaymentItem item={item} key={i} id={i} onRemove={this.RemoveItem.bind(this)}/>
+            return <PaymentItem item={item} key={i} id={i} onRemove={this.removeItem.bind(this)}/>
         });
     }
 

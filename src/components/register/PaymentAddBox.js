@@ -8,7 +8,7 @@ class PaymentAddBox extends Component {
 
         this.paymentInfo.kind = this.props.kind;
     }
-
+    //TODO: 유효성 검사 구현해야함. 내일은 여기부터.
     paymentInfo = { kind: "", email: "", cardNumber: "", id: "" }
 
     handleChange = (value) => {

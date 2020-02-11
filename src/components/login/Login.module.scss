@@ -21,7 +21,7 @@ div {
         position: absolute;
         left: 0;
         top: 0;        
-        background-color: $bg-color;
+        background-color: $nav-bg-color;
         width: 410px;
         height: 100%;    
         padding: 40px;
@@ -154,6 +154,7 @@ div {
                     border-radius: 3px;
                     transform: scale(1);
                     vertical-align: middle;
+                    background-color: $bg-color;
                     border: 1px solid $textbox-border-color;                    
                     transition: all 0.2s ease;                    
     
