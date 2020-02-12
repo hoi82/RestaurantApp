@@ -63,14 +63,26 @@
         min-width: 100px;
     }
 
-    .input_header {
-        display: block;
-        font-size: 13px;
-        line-height: 16px;
-        font-weight: 600;
-        color: $contrast-title-color;
-        margin: 4px 0px 12px 4px;            
-    }
+    .header_box {
+        display: flex;
+        flex-flow: row;
+        justify-content: flex-start;
+        margin: 4px 0px 12px 4px;      
+
+        .header_text {
+            display: block;
+            font-size: 13px;
+            line-height: 16px;
+            font-weight: 600;
+            color: $contrast-title-color;                  
+        }
+
+        .error_text {
+            @extend .header_text;
+            color: $alert-color;
+            margin-left: 8px;
+        }
+    }    
 
     input {
         width: 100%;

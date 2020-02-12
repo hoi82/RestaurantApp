@@ -7,11 +7,41 @@ class PaymentAddBox extends Component {
         super(props);
 
         this.paymentInfo.kind = this.props.kind;
+
+        this.state = { error : "" }
     }
-    //TODO: 유효성 검사 구현해야함. 내일은 여기부터.
+    
     paymentInfo = { kind: "", email: "", cardNumber: "", id: "" }
 
-    handleChange = (value) => {
+    handleChange = (value) => {        
+        switch (this.props.kind) {
+            case Payments.VISA:                
+                {
+                    if (/[0-9]{4}\-[0-9]{4}\-[0-9]{4}\-[0-9]{4}/.test(value.cardNumber))
+                        this.setState({ error : "" });
+                    else
+                        this.setState({ error : "카드번호가 올바르지 않습니다."});
+                }
+                break;
+            case Payments.PAYPAL:                
+                {
+                    if (/^[a-z0-9\_]{3,}\@[a-z0-9\_]{3,}\.[a-z0-9]+(\.[a-z0-9]+)?/i.test(value.email))
+                        this.setState({ error : "" });
+                    else
+                        this.setState({ error : "올바르지 않은 이메일 형식입니다."});                    
+                }                
+                break;
+            case Payments.FINTECH:            
+                {
+                    if (/[a-z0-9]+/i.test(value.id))
+                        this.setState({ error : ""});                                       
+                    else
+                        this.setState({ error : "ID를 입력해주세요."});
+                }                
+                break;
+            default:
+                break;
+        }
         Object.assign(this.paymentInfo, value);
     }
 
@@ -47,8 +77,11 @@ class PaymentAddBox extends Component {
                     </div>
                 </button>
                 <div className={styles.input_container}>
-                    <div className={styles.input_box}> 
-                        <span className={styles.input_header}>{this.props.header}</span>
+                    <div className={styles.input_box}>
+                        <div className={styles.header_box}>
+                            <span className={styles.header_text}>{this.props.header}</span>
+                            <span className={styles.error_text}>{this.state.error}</span>
+                        </div>                         
                         <React.Fragment>
                             {this.renderInput()}
                         </React.Fragment>

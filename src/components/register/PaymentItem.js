@@ -75,8 +75,7 @@ class PaymentItem extends Component {
                     break;
                 default:                    
                     break;
-            }
-            console.log(this.props.item);            
+            }             
         }        
         this.rollBack();
     }

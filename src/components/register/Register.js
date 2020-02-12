@@ -6,6 +6,7 @@ import Dialog from "../common/Dialog";
 import { Payments, DialogMode } from "../common/Variables";
 import UserInfo from "../data/UserInfo";
 import styles from "./Register.module.scss";
+import TOS from './TOS';
 
 //NOTE: Nav에 함수를 던져주고 이 함수에서 Content의 Prop를 바꿔야함
 //props는 실패. React Component에는 property가 추가되지 않음.(not extensible objet error).ref를 이용해서 그런듯.
@@ -19,7 +20,7 @@ class Register extends Component {
     constructor(props) {
         super(props);           
 
-        this.state = {curPage : "profile"};
+        this.state = {curPage : "profile", tosAgree : false};
         this.dg = React.createRef();
 
         this.userInfoChange = this.userInfoChange.bind(this);  
@@ -59,7 +60,7 @@ class Register extends Component {
     register = () => {
         if (this.checkInfo()) {
             this.dg.current.showDialog(DialogMode.SUCCESS, "가입을 축하드립니다!\r\n'닫기'를 누르시면 로그인 화면으로 이동합니다.", "",
-        () => {this.props.history.push("/")});
+            () => {this.props.history.push("/")});
         }        
         else {
             this.dg.current.showDialog(DialogMode.ALERT, "입력하신 정보가 올바르지 않습니다. 확인해주세요.")
@@ -86,12 +87,28 @@ class Register extends Component {
         return valid;
     }
 
+    tosConfirm = (agreed) => {
+        if (agreed) {
+            this.setState({ tosAgree : true });
+        }
+        else {
+            this.props.history.replace("/");
+        }
+    }
+
     render() {
         return (
-            <div className={styles.register}>                
-                <Content curPage={this.state.curPage} userInfoChange={this.userInfoChange} userInfo={this.userInfo}></Content>                
-                <Nav onRegister={this.register} changeContent={this.changePage} userInfo={this.userInfo}></Nav>
-                <Dialog ref={this.dg}/>
+            <div className={styles.register}>     
+                {
+                    this.state.tosAgree ?     
+                        <React.Fragment>
+                            <Content curPage={this.state.curPage} userInfoChange={this.userInfoChange} userInfo={this.userInfo}></Content>                
+                            <Nav onRegister={this.register} changeContent={this.changePage} userInfo={this.userInfo}></Nav>
+                            <Dialog ref={this.dg}/>
+                        </React.Fragment>                                        
+                        :
+                        <TOS onConfirm={this.tosConfirm}/>
+                }                                
             </div>
         );
     }
