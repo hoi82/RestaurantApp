@@ -98,17 +98,19 @@ class Register extends Component {
 
     render() {
         return (
-            <div className={styles.register}>     
-                {
-                    this.state.tosAgree ?     
-                        <React.Fragment>
-                            <Content curPage={this.state.curPage} userInfoChange={this.userInfoChange} userInfo={this.userInfo}></Content>                
-                            <Nav onRegister={this.register} changeContent={this.changePage} userInfo={this.userInfo}></Nav>
-                            <Dialog ref={this.dg}/>
-                        </React.Fragment>                                        
-                        :
-                        <TOS onConfirm={this.tosConfirm}/>
-                }                                
+            <div className={styles.register}>    
+                <div className={styles.container}>
+                    {
+                        this.state.tosAgree ?     
+                            <React.Fragment>
+                                <Content curPage={this.state.curPage} userInfoChange={this.userInfoChange} userInfo={this.userInfo}></Content>                
+                                <Nav onRegister={this.register} changeContent={this.changePage} userInfo={this.userInfo}></Nav>
+                                <Dialog ref={this.dg}/>
+                            </React.Fragment>                                        
+                            :
+                            <TOS onConfirm={this.tosConfirm}/>
+                    }     
+                </div>                                            
             </div>
         );
     }

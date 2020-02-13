@@ -63,8 +63,10 @@ class PaymentAddBox extends Component {
     }    
 
     handleClick = () => {        
-        this.props.onAdd(this.paymentInfo);
-        this.props.onBack("list");
+        if (this.state.error == "") {
+            this.props.onAdd(this.paymentInfo);
+            this.props.onBack("list");
+        }        
     }
 
     render() {        
@@ -73,7 +75,7 @@ class PaymentAddBox extends Component {
                 <button className={styles.box_button}>
                     <div className={styles.box_btn_container}>
                         <img src={this.props.logo} alt={this.props.alt} className={styles.logo}/>
-                        <span className={styles.item_btn_txt}>visa</span>
+                        <span className={styles.item_btn_txt}>{this.props.kind}</span>
                     </div>
                 </button>
                 <div className={styles.input_container}>

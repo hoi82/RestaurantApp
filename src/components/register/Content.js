@@ -25,6 +25,7 @@ class Content extends Component {
     //     });                
     // }
 
+    //TODO: 프로필, 결재 UI부터 시작해야함
     renderContent() {
         switch (this.props.curPage) {
             case "profile":
