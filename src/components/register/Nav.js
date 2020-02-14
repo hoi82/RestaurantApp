@@ -6,11 +6,10 @@ class Nav extends Component {
     constructor(props) {
         super(props);   
         
-        this.state = { selected : "profile" };
+        this.state = { selected : "payment" };
     }    
 
     handleClick = (e) => {
-        console.log(e.target.value);
         this.props.changeContent(e.target.value);
         this.setState({ selected : e.target.value });
     }
@@ -29,7 +28,7 @@ class Nav extends Component {
                         </button>                        
                         <span className={styles.header}>선택</span>                                            
                         <button value="payment" className={this.state.selected == "payment" ? styles.item_btn + " " + styles.selected : styles.item_btn} onClick={this.handleClick}>
-                            <span className={styles.large_btn_text}>결재정보</span>
+                            <span className={styles.large_btn_text}>결제정보</span>
                         </button>                                                                                     
                     </div>
                     <div className={styles.register_box}>

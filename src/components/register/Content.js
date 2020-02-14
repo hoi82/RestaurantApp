@@ -24,19 +24,14 @@ class Content extends Component {
     //         localStorage.setItem("curContent", content);
     //     });                
     // }
-
-    //TODO: 프로필, 결재 UI부터 시작해야함
+    
     renderContent() {
         switch (this.props.curPage) {
             case "profile":
-                return <div className={styles.content}>
-                    <Profile userInfo={this.props.userInfo} userInfoChange={this.props.userInfoChange}/>
-                    </div>;
+                return <Profile userInfo={this.props.userInfo} userInfoChange={this.props.userInfoChange}/>;                    
                 break;
             case "payment":
-                return <div className={styles.content}>
-                    <Payment userInfo={this.props.userInfo}/>
-                    </div>;
+                return <Payment userInfo={this.props.userInfo}/>;
                 break;        
             default:
                 return null;
@@ -46,9 +41,9 @@ class Content extends Component {
     
     render() {
         return (
-            <React.Fragment>
-                {this.renderContent()}
-            </React.Fragment>            
+            <div className={styles.content}>                
+                {this.renderContent()}                
+            </div>                        
         );
     }
 }

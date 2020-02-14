@@ -20,7 +20,7 @@ class Register extends Component {
     constructor(props) {
         super(props);           
 
-        this.state = {curPage : "profile", tosAgree : false};
+        this.state = {curPage : "payment", tosAgree : true};
         this.dg = React.createRef();
 
         this.userInfoChange = this.userInfoChange.bind(this);  
@@ -98,13 +98,14 @@ class Register extends Component {
 
     render() {
         return (
-            <div className={styles.register}>    
+            <div className={styles.register}>   
+                <div className={styles.panel}/> 
                 <div className={styles.container}>
                     {
                         this.state.tosAgree ?     
                             <React.Fragment>
-                                <Content curPage={this.state.curPage} userInfoChange={this.userInfoChange} userInfo={this.userInfo}></Content>                
                                 <Nav onRegister={this.register} changeContent={this.changePage} userInfo={this.userInfo}></Nav>
+                                <Content curPage={this.state.curPage} userInfoChange={this.userInfoChange} userInfo={this.userInfo}></Content>                                            
                                 <Dialog ref={this.dg}/>
                             </React.Fragment>                                        
                             :

@@ -40,7 +40,7 @@ const GetStyleLoader = (mode, styleRegex) => {
 module.exports = function(mode, args) {
     const _mode = mode;
     return {
-        mode: _mode === "production" ? "production" : "development",
+        mode: _mode === "production" ? "production" : "development",        
 
         entry: {
             index: "./src/index.js"
@@ -93,7 +93,7 @@ module.exports = function(mode, args) {
                 GetStyleLoader(_mode, /\.css$/),
                 {
                     test: /\.scss$/,
-                    use: [MiniCssExtractPlugin.loader, 
+                    use: [mode === "production" ? MiniCssExtractPlugin.loader : "style-loader",
                         {
                             loader: "css-loader",
                             options: {

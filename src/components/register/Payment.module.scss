@@ -2,21 +2,36 @@
 
 .payment {
     position: relative;
-    width: 100%;    
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-start;
-    align-items: flex-start;    
-    box-sizing: border-box;
+    width: 100%;  
+    height: 100%;      
+
+    .panel {        
+        transform: translateX(0%);
+        background-color: $primary-bg-color;
+    }
+
+    .container {
+        display: flex;
+        flex-flow: column;
+        justify-content: flex-start;
+        align-items: flex-start;    
+        box-sizing: border-box;
+        padding: 24px 32px 0px 32px;
+    }
+
+    .panel, .container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
 
     .header {
         display: block;
-        font-size: 13px;
+        font-size: $h4-size;
         line-height: 16px; 
         font-weight: 600;
-        color: $title-color;
-        margin-top: 124px;
-        margin-bottom: 24px;               
+        color: $title-color;        
+        margin: 112px 0px 8px 0px;
     }
 
     .add_button {
@@ -25,7 +40,7 @@
         background-color: $highlight-color;
         border-radius: 3px;
         padding: 0;
-        margin-bottom: 24px;
+        margin: 4px 0px;
         transition: all 0.2s ease;
 
         &:hover {
@@ -51,9 +66,18 @@
 
         .btn_text {
             margin-left: 8px;
-            font-size: 17px;
+            font-size: $h2-size;
             font-weight: 600;
             color: $highlight-highlight-color;
         }
+    }
+
+    .content_box {
+        position: relative;
+        width: 100%;
+        margin-top: 16px;
+        height: 336px;   
+        overflow: hidden; 
+        border-radius: 5px;    
     }
 }

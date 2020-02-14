@@ -6,18 +6,27 @@ div {
     .register {
         position: relative;
         width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .container {
-            position: relative;
+        height: 100%;   
+        
+        .container, .panel {
+            position: absolute;
+            left: calc(50% - 512px);
+            top: calc(50% - 384px);
             width: 1024px;
-            height: 768px;
-            background-color: $bg-color;
-            border-radius: 10px;
+            height: 768px;     
             overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .container {                        
+            display: flex;
+            flex-flow: row;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
+
+        .panel {            
+            background-color: $tertiary-bg-color;            
         }
     }
 }

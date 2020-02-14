@@ -3,11 +3,37 @@
 .list {
     position: relative;
     width: 100%;
-    min-width: 560px;
-    height: 320px;
-    display: flex;
-    flex-flow: column;
-    align-items: flex-start;
-    background-color: $bg-color;
-    margin-top: 8px;
+    height: 100%;    
+    background-color: $second-bg-color;    
+
+    .item_container {
+        @extend .list;
+        display: flex;
+        flex-flow: column;
+        align-items: flex-start;        
+        text-align: center;
+    }
+
+    .empty_container {
+        @extend .list;
+        display: table;
+    }
+    
+    .box_image {
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        right: 64px;
+        bottom: 16px;
+        object-fit: cover;
+    }
+
+    .title {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        font-size: $h3-size;
+        font-weight: 600;
+        color: $deep-title-color;
+    }
 }
