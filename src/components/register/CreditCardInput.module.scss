@@ -3,33 +3,37 @@
 .container {
     position: relative;
     width: 100%;
-    height: 100%;
-    background-color: $contrast-bg-color;
+    height: 100%;    
     display: flex;
     flex-flow: column;
-    justify-content: center;
+    justify-content: stretch;
     align-items: stretch;
     padding: 24px 32px;
-    box-sizing: border-box;
+    box-sizing: border-box;    
 
     input {
         height: 40px;
-        font-size: $h2-size;
+        font-size: $h3-size;
         color: $contrast-color;
         background: none;
         border: 1px solid $textbox-border-color;
-        border-radius: 3px;
-        // border: none;
-        // border-bottom: 2px solid $contrast-color;
-        padding: 0px 8px;
+        border-radius: 3px;        
+        margin: 4px 0px;      
     }
 
-    span {
+    div span {
         display: inline-block;
         font-size: $h4-size;
         font-weight: 600;
         color: $contrast-title-color;     
-        margin: 0px 0px 16px 8px;        
+        margin: 0px 0px 8px 8px;        
+    }
+
+    .logo {        
+        width: 240px;
+        height: 240px;        
+        object-fit: cover;    
+        flex-grow: 1;    
     }
 
     .num_box {
@@ -38,10 +42,11 @@
         flex-flow: column;
         justify-content: center;
         align-items: flex-start;
-        margin-bottom: 32px;             
+        margin: 24px 0px 16px 0px;                           
 
         .num_input {
-            width: 216px; 
+            width: 256px; 
+            padding: 0px 48px;
         }
     }
 
@@ -49,23 +54,26 @@
         display: flex;
         flex-flow: row;
         justify-content: space-between;
-        align-content: flex-start;
+        align-content: stretch;
+        margin-bottom: 16px;
+        flex-grow: 1;
 
         .expire_box, .cvc_box {
             display: flex;
             flex-flow: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-content: center;
         }
 
         .expire_input {
-            width: 80px;            
+            width: 76px;    
+            padding: 0px 12px;        
         }
 
         .cvc_input {
             width: 48px;
         }
-    }
+    }        
 
     .close_icon {
         width: 100%;
@@ -81,5 +89,17 @@
         width: 16px;
         height: 16px;
         padding: 0;
+    }
+
+    .add_btn {
+        height: 40px;
+        border-radius: 3px;
+        background-color: $confirm-color;
+
+        .add_btn_text {
+            font-size: $h2-size;
+            color: $highlight-highlight-color;
+            font-weight: 500;
+        }
     }
 }

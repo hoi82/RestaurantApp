@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
+import Validator from "../common/Validator";
 import styles from "./Profile.module.scss";
 
 class Profile extends Component {
@@ -15,75 +16,29 @@ class Profile extends Component {
         }
     }    
 
-    emailRegex = new RegExp("^[a-z0-9\_]{3,}\@[a-z0-9\_]{3,}\.[a-z0-9]+(\.[a-z0-9]+)?" , "i");    
-
     emailChange = (e) => {
-        let value = e.target.value;
-        if (!this.emailRegex.test(value)) {
-            this.setState({ emailError : "이메일 주소가 올바르지 않습니다." });
-        }
-        else {
-            this.setState({ emailError : "" });            
-        }
-        this.props.userInfoChange({email : value});
+        let value = e.target.value;        
+        Validator.validateEmailCallback(value, (error) => {this.setState({emailError : error}, this.props.userInfoChange({email : value}))});        
     }
 
     passwordChange = (e) => {
         let value = e.target.value;
-        let validated = true;        
-
-        if (!(/[0-9]+/i.test(value)) || !(/[^a-z0-9]+/i.test(value))) {
-            this.setState({ passwordError : "비밀번호는 영문, 숫자, 기호 중 두가지 이상으로 이루어져야 합니다."});
-            validated = false;
-        }
-
-        if ((value.length < 10) || (value.length > 16)) {
-            this.setState({ passwordError : "비밀번호의 길이는 10~16 입니다." });
-            validated = false;            
-        }
-
-        if (/(\w)\1\1/.test(value)) {
-            this.setState({ passwordError : "같은 문자를 3번 이상 연속으로 사용할 수 없습니다."});
-            validated = false;
-        }            
-
-        if (validated) {
-            this.setState({ passwordError : "" })            
-        }
-        this.props.userInfoChange({password : value});
+        Validator.validatePasswordCallback(value, (error) => {this.setState({passwordError : error}, this.props.userInfoChange({password : value}))});        
     }
 
     nameChange = (e) => {
         let value = e.target.value;
-        if (!/[a-z0-9]+/i.test(value)) {
-            this.setState({ nameError : "필수 입력 항목입니다." });
-        }
-        else {
-            this.setState({ nameChange : "" });            
-        }
-        this.props.userInfoChange({name : value});
+        Validator.validateNameCallback(value, (error) => {this.setState({nameError : error}, this.props.userInfoChange({name : value}))});        
     }
 
     phoneChange = (e) => {
         let value = e.target.value;
-        if (!/[a-z0-9]+/i.test(value)) {
-            this.setState({ phoneError : "필수 입력 항목입니다." });
-        }
-        else {
-            this.setState({ phoneError : "" });            
-        }
-        this.props.userInfoChange({phone : value});
+        Validator.validatePhoneNumberCallback(value, (error) => {this.setState({phoneError : error}, this.props.userInfoChange({phone : value}))});
     }
 
     addrChange = (e) => {
         let value = e.target.value;
-        if (!/[a-z0-9]+/i.test(value)) {
-            this.setState({ addrError : "필수 입력 항목입니다."});        
-        }
-        else {
-            this.setState({ addrError : "" });            
-        }
-        this.props.userInfoChange({address : value});
+        Validator.validateAddressCallback(value, (error) => {this.setState({addrError : error}, this.props.userInfoChange({address : value}))});
     }
 
     render() {

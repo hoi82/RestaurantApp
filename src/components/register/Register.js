@@ -20,7 +20,7 @@ class Register extends Component {
     constructor(props) {
         super(props);           
 
-        this.state = {curPage : "payment", tosAgree : true};
+        this.state = {curPage : "profile", tosAgree : true};
         this.dg = React.createRef();
 
         this.userInfoChange = this.userInfoChange.bind(this);  

@@ -6,7 +6,7 @@ class Nav extends Component {
     constructor(props) {
         super(props);   
         
-        this.state = { selected : "payment" };
+        this.state = { selected : "profile" };
     }    
 
     handleClick = (e) => {

@@ -8,25 +8,25 @@ class PaymentSelect extends Component {
     render() {
         return (
             <div className={styles.select}>
-                <button className={styles.btn} onClick={ (e) => this.props.onMove("visa")}>
+                <button className={styles.btn} onClick={ () => this.props.onMove("visa")}>
                     <div className={styles.button_box}>
                         <img src={visa} className={styles.logo}/>
                         <span className={styles.btn_text}>Visa</span>
                     </div>                    
                 </button>
-                <button className={styles.btn} onClick={ (e) => this.props.onMove("paypal")}>
+                <button className={styles.btn} onClick={ () => this.props.onMove("paypal")}>
                     <div className={styles.button_box}>
                         <img src={paypal} className={styles.logo}/>
                         <span className={styles.btn_text}>Paypal</span>
                     </div>                    
                 </button>
-                <button className={styles.btn} onClick={ (e) => this.props.onMove("fintech")}>
+                <button className={styles.btn} onClick={ () => this.props.onMove("fintech")}>
                     <div className={styles.button_box}>
                         <img src={fintech} className={styles.logo}/>
                         <span className={styles.btn_text}>Fintech</span>
                     </div>                    
                 </button>
-                <button className={styles.back_btn} onClick={ (e) => this.props.onMove("list")}>
+                <button className={styles.back_btn} onClick={ () => this.props.onMove("list")}>
                     <span className={styles.btn_text}>돌아가기</span>
                 </button>                
             </div>

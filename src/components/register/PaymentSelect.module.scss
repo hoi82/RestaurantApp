@@ -8,7 +8,6 @@
     flex-flow: column;
     justify-content: center;
     align-items: stretch;
-    background-color: $second-bg-color;
     padding: 16px;
     box-sizing: border-box;
 
@@ -55,12 +54,12 @@
     .logo {
         width: 32px;
         height: 32px;
-        object-fit: cover;        
+        object-fit: cover;          
     }
 
     .btn_text {
         font-size: $h3-size;
-        font-weight: 600;
+        font-weight: 500;
         color: $highlight-highlight-color;        
     }
     

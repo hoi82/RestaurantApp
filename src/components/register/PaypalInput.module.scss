@@ -1,1 +1,71 @@
 @import "../Global";
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: stretch;
+    align-items: stretch;
+    padding: 24px 32px;
+    box-sizing: border-box;
+
+    .content_container {
+        position: relative;
+        flex-grow: 1;
+        display: flex;
+        flex-flow: column;
+        justify-content: flex-start;
+        align-items: flex-start;     
+        margin-top: 24px;   
+
+        & span {
+            display: inline-block;
+            font-size: $h4-size;
+            font-weight: 600;
+            color: $contrast-title-color;     
+            margin: 0px 0px 8px 8px;   
+        }
+    
+        input {
+            width: 100%;
+            height: 40px;
+            font-size: $h3-size;
+            color: $contrast-color;
+            background: none;
+            border: 1px solid $textbox-border-color;
+            border-radius: 3px;        
+            margin: 4px 0px 20px 0px;    
+            padding-left: 8px;    
+        }
+    }    
+
+    .close_icon {
+        width: 100%;
+        height: 100%;                
+        object-fit: cover;
+    }
+
+    .close_btn {
+        position: absolute;
+        right: 24px;
+        top: 24px;
+        background: none;
+        width: 16px;
+        height: 16px;
+        padding: 0;
+    }
+
+    .add_btn {
+        height: 40px;
+        border-radius: 3px;
+        background-color: $confirm-color;
+
+        .add_btn_text {
+            font-size: $h2-size;
+            color: $highlight-highlight-color;
+            font-weight: 500;
+        }
+    }
+}

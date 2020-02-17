@@ -10,9 +10,16 @@ import icon from "../../image/addPaymentIcon.svg";
 class Payment extends Component {
     constructor(props) {
         super(props);
-        this.state = { curPage : props.curPage || "visa", payments : this.props.userInfo.payments };
+        this.state = { curPage : props.curPage || "list", payments : this.props.userInfo.payments };
         
         this.addPayment = this.addPayment.bind(this);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state.curPage != nextState.curPage)
+            return true;
+        else
+            return false;
     }
 
     changePage = (page) => {
@@ -46,7 +53,30 @@ class Payment extends Component {
         }
     }
 
-    render() {
+    toggleContentClass = (kind) => {
+        switch (kind) {
+            case "list":
+                return styles.content_box;
+                break;
+            case "select":
+                return styles.content_box;
+                break;
+            case "visa":
+                return styles.content_box_small;
+                break;
+            case "paypal":
+                return styles.content_box_small;
+                break;
+            case "fintech":
+                return styles.content_box_small;
+                break;
+            default:
+                return null;
+                break;
+        }
+    }
+
+    render() {            
         return (
             <div className={styles.payment}>
                 <div className={styles.panel}/>
@@ -58,12 +88,9 @@ class Payment extends Component {
                             <span className={styles.btn_text}>추가하기</span>
                         </div>                    
                     </button>
-                    <div className={styles.content_box}>
-                        {
-                            this.renderContent(this.state.curPage)
-                            // this.state.curPage == "list" ? <PaymentList list={this.state.payments}/> : 
-                            // // <PaymentAdd addPayment={this.addPayment} onBack={this.changePage}/>
-                            // <PaymentSelect onBack={this.changePage}/>
+                    <div className={this.toggleContentClass(this.state.curPage)}>
+                        {                            
+                            this.renderContent(this.state.curPage)                            
                         }
                     </div>
                 </div>                
