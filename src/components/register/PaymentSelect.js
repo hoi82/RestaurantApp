@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from "./PaymentSelect.module.scss";
-import visa from "../../image/visa.svg";
+import card from "../../image/credit-card.svg";
 import paypal from "../../image/paypal.svg";
 import fintech from "../../image/fintech.svg";
 
@@ -8,10 +8,10 @@ class PaymentSelect extends Component {
     render() {
         return (
             <div className={styles.select}>
-                <button className={styles.btn} onClick={ () => this.props.onMove("visa")}>
+                <button className={styles.btn} onClick={ () => this.props.onMove("card")}>
                     <div className={styles.button_box}>
-                        <img src={visa} className={styles.logo}/>
-                        <span className={styles.btn_text}>Visa</span>
+                        <img src={card} className={styles.logo}/>
+                        <span className={styles.btn_text}>신용카드</span>
                     </div>                    
                 </button>
                 <button className={styles.btn} onClick={ () => this.props.onMove("paypal")}>
@@ -23,7 +23,7 @@ class PaymentSelect extends Component {
                 <button className={styles.btn} onClick={ () => this.props.onMove("fintech")}>
                     <div className={styles.button_box}>
                         <img src={fintech} className={styles.logo}/>
-                        <span className={styles.btn_text}>Fintech</span>
+                        <span className={styles.btn_text}>전자결제</span>
                     </div>                    
                 </button>
                 <button className={styles.back_btn} onClick={ () => this.props.onMove("list")}>

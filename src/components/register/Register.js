@@ -20,7 +20,7 @@ class Register extends Component {
     constructor(props) {
         super(props);           
 
-        this.state = {curPage : "profile", tosAgree : true};
+        this.state = {curPage : "profile", tosAgree : false};
         this.dg = React.createRef();
 
         this.userInfoChange = this.userInfoChange.bind(this);  
@@ -53,8 +53,7 @@ class Register extends Component {
     }
         
     userInfoChange(field) {        
-        Object.assign(this.userInfo, field);
-        console.log(this.userInfo);
+        Object.assign(this.userInfo, field);        
     }
 
     register = () => {
@@ -64,8 +63,7 @@ class Register extends Component {
         }        
         else {
             this.dg.current.showDialog(DialogMode.ALERT, "입력하신 정보가 올바르지 않습니다. 확인해주세요.")
-        }
-        console.log(this.userInfo);     
+        }          
         //NOTE:수동으로 route하는 방법.   
         // this.props.history.push("/");
     }

@@ -33,11 +33,20 @@
             height: 40px;
             font-size: $h3-size;
             color: $contrast-color;
-            background: none;
-            border: 1px solid $textbox-border-color;
+            background: $contrast-textbox-bg-color;
+            border: 1px solid $contrast-textbox-border-color;
             border-radius: 3px;        
             margin: 4px 0px 20px 0px;    
             padding-left: 8px;    
+            @include global_transition;
+
+            &:hover {
+                border-color: $contrast-textbox-border-hover-color;
+            }
+
+            &:focus {
+                border-color: $contrast-textbox-border-active-color;
+            }
         }
     }    
 
@@ -60,12 +69,21 @@
     .add_btn {
         height: 40px;
         border-radius: 3px;
-        background-color: $confirm-color;
+        background-color: $highlight-color;
+        @include global_transition;
 
         .add_btn_text {
             font-size: $h2-size;
             color: $highlight-highlight-color;
             font-weight: 500;
+        }
+
+        &:hover {
+            background-color: $highlight-hover-color;
+        }
+
+        &:active {
+            background-color: $highlight-active-color;
         }
     }
 }

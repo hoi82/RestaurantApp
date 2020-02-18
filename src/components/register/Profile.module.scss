@@ -59,7 +59,7 @@
         .error_text {
             @extend .item_header;
             color: $alert-color;
-            font-weight: 500;
+            font-weight: 600;
             margin-left: 8px;
         }
 
@@ -70,13 +70,17 @@
             border-radius: 3px;
             box-sizing: border-box;
             color: $content-color;
-            background-color: $bg-color;
+            background-color: $textbox-bg-color;
             padding-left: 8px;
             font-size: $h2-size;
-            transform: all 0.2s ease;            
+            @include global_transition;         
 
             &:hover {
                 border-color: $textbox-border-hover-color;
+            }
+
+            &:focus {
+                border-color: $textbox-border-active-color;
             }
         }
     }    

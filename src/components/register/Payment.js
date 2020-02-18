@@ -38,7 +38,7 @@ class Payment extends Component {
             case "select":
                 return <PaymentSelect onMove={this.changePage}/>;
                 break;
-            case "visa":
+            case "card":
                 return <CreditCardInput onBack={this.changePage}/>;
                 break;
             case "paypal":
@@ -61,7 +61,7 @@ class Payment extends Component {
             case "select":
                 return styles.content_box;
                 break;
-            case "visa":
+            case "card":
                 return styles.content_box_small;
                 break;
             case "paypal":

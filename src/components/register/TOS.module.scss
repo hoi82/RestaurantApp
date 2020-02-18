@@ -41,6 +41,7 @@
     .content_box {        
         overflow: scroll;        
         padding: 16px; 
+        background-color: $primary-bg-color;
         //NOTE:flex-grow : flex container 안에서 item 각각이 차지하는 비율. 0 = 비활성, 숫자 = 비율
         flex-grow: 1;       
 
@@ -68,7 +69,7 @@
             border-radius: 3px;
             // flex-grow: 1;   
             box-sizing: border-box;  
-            transition: all 0.2s ease;
+            @include global_transition;
             
             span {
                 font-size: $h3-size;

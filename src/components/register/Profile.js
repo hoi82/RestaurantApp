@@ -17,29 +17,29 @@ class Profile extends Component {
     }    
 
     emailChange = (e) => {
-        let value = e.target.value;        
+        let value = e.target.value.trim();        
         Validator.validateEmailCallback(value, (error) => {this.setState({emailError : error}, this.props.userInfoChange({email : value}))});        
     }
 
     passwordChange = (e) => {
-        let value = e.target.value;
+        let value = e.target.value.trim();
         Validator.validatePasswordCallback(value, (error) => {this.setState({passwordError : error}, this.props.userInfoChange({password : value}))});        
     }
 
     nameChange = (e) => {
-        let value = e.target.value;
+        let value = e.target.value.trim();
         Validator.validateNameCallback(value, (error) => {this.setState({nameError : error}, this.props.userInfoChange({name : value}))});        
     }
 
     phoneChange = (e) => {
-        let value = e.target.value;
+        let value = e.target.value.trim();
         Validator.validatePhoneNumberCallback(value, (error) => {this.setState({phoneError : error}, this.props.userInfoChange({phone : value}))});
     }
 
     addrChange = (e) => {
-        let value = e.target.value;
+        let value = e.target.value.trim();
         Validator.validateAddressCallback(value, (error) => {this.setState({addrError : error}, this.props.userInfoChange({address : value}))});
-    }
+    }    
 
     render() {
         return (
@@ -51,35 +51,35 @@ class Profile extends Component {
                             <span className={styles.item_header}>이메일</span>
                             <span className={styles.error_text}>{this.state.emailError}</span>
                         </div>                    
-                        <input type="email" defaultValue={this.props.userInfo.email} onChange={this.emailChange}/>
+                        <input type="email" defaultValue={this.props.userInfo.email} onChange={this.emailChange} onBlur={this.emailChange}/>
                     </div>
                     <div className={styles.item_box}>
                         <div className={styles.header_box}>
                             <span className={styles.item_header}>비밀번호</span>
                             <span className={styles.error_text}>{this.state.passwordError}</span>
                         </div>                                                                
-                        <input type="password" defaultValue={this.props.userInfo.password} onChange={this.passwordChange}/>
+                        <input type="password" defaultValue={this.props.userInfo.password} maxLength="16" onChange={this.passwordChange} onBlur={this.passwordChange}/>
                     </div>
                     <div className={styles.item_box}>
                         <div className={styles.header_box}>
                             <span className={styles.item_header}>이름</span>
                             <span className={styles.error_text}>{this.state.nameError}</span>
                         </div>                    
-                        <input type="text" defaultValue={this.props.userInfo.name} onChange={this.nameChange}/>
+                        <input type="text" defaultValue={this.props.userInfo.name} maxLength="16" onChange={this.nameChange} onBlur={this.nameChange}/>
                     </div>
                     <div className={styles.item_box}>
                         <div className={styles.header_box}>
                             <span className={styles.item_header}>연락처</span>
                             <span className={styles.error_text}>{this.state.phoneError}</span>
                         </div>                    
-                        <input type="text" defaultValue={this.props.userInfo.phone} onChange={this.phoneChange}/>
+                        <input type="text" defaultValue={this.props.userInfo.phone} onChange={this.phoneChange} onBlur={this.phoneChange}/>
                     </div>
                     <div className={styles.item_box}>
                         <div className={styles.header_box}>
                             <span className={styles.item_header}>주소</span>
                             <span className={styles.error_text}>{this.state.addrError}</span>
                         </div>                    
-                        <input type="text" defaultValue={this.props.userInfo.address} onChange={this.addrChange}/>
+                        <input type="text" defaultValue={this.props.userInfo.address} onChange={this.addrChange} onBlur={this.addrChange}/>
                     </div>
                 </div>                
             </div>

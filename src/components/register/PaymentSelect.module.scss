@@ -16,7 +16,7 @@
         margin-bottom: 16px;
         border-radius: 3px;
         background-color: $highlight-color;
-        transition: all 0.2s ease;
+        @include global_transition;
 
         &:last-child {
             margin-bottom: 0;

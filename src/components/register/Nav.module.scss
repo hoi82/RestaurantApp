@@ -108,7 +108,7 @@ button > * {
             margin-bottom: 16px;
             color: $highlight-highlight-color;
             background-color: $highlight-color;
-            transition: all 0.2s ease;
+            @include global_transition;
     
             &:hover {
                 background-color: $highlight-hover-color;                
