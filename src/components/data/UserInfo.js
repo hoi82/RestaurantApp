@@ -1,4 +1,5 @@
 'use strict';
+import ValidObject from "./ValidObject";
 
 class UserInfo {
     constructor() {

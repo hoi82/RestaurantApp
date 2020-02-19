@@ -5,8 +5,12 @@ const emailRegex = new RegExp("^[a-z0-9\_]{3,}\@[a-z0-9\_]{3,}\.[a-z0-9]+(\.[a-z
 const Validator = {    
 
     validateEmail : (value) => {
+        if (value == undefined || value == null) {
+            return "이메일 주소를 입력해 주세요."
+        }
+
         if (value.trim() == "") {
-            return "필수 입력 항목입니다."
+            return "이메일 주소를 입력해 주세요."
         }
 
         if (!emailRegex.test(value)) {
@@ -28,7 +32,11 @@ const Validator = {
     },
     
     validatePassword : (value) => {        
-        let result = "";        
+        let result = "";   
+        
+        if (value == undefined || value == null) {
+            return "비밀번호를 입력해 주세요."
+        }
 
         if (!(/[0-9]+/i.test(value)) || !(/[^a-z0-9]+/i.test(value))) {
             result = "비밀번호는 영문, 숫자, 기호 중 두가지 이상으로 이루어져야 합니다.";            
@@ -43,7 +51,7 @@ const Validator = {
         }            
 
         if (value.trim() == "") {
-            result = "필수 입력 항목입니다."
+            result = "비밀번호를 입력해 주세요."
         }
 
         return result;
@@ -60,8 +68,12 @@ const Validator = {
     },
 
     validateName : (value) => {
+        if (value == undefined || value == null) {
+            return "이름을 입력해 주세요."
+        }
+
         if (value.trim() == "") {
-            return "필수 입력 항목입니다."
+            return "이름을 입력해 주세요."
         }
 
         if (!(/^[a-z0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+$/i.test(value))) {
@@ -83,8 +95,12 @@ const Validator = {
     },
 
     validatePhoneNumber : (value) => {
+        if (value == undefined || value == null) {
+            return "연락처를 입력해 주세요."
+        }
+
         if (value.trim() == "") {
-            return "필수 입력 항목입니다."
+            return "연락처를 입력해 주세요."
         }
         else {
             return "";
@@ -102,8 +118,12 @@ const Validator = {
     },
 
     validateAddress : (value) => {
-        if (!/[a-z0-9]+/i.test(value)) {
-            return "필수 입력 항목입니다.";
+        if (value == undefined || value == null) {
+            return "주소를 입력해 주세요."
+        }
+
+        if (value.trim() == "") {
+            return "주소를 입력해 주세요.";
         }
         else {
             return "";

@@ -4,9 +4,10 @@ import Nav from "./Nav";
 import Content from "./Content";
 import Dialog from "../common/Dialog";
 import { Payments, DialogMode } from "../common/Variables";
-import UserInfo from "../data/UserInfo";
+import ValidUserInfo from "../data/ValidUserInfo";
 import styles from "./Register.module.scss";
 import TOS from './TOS';
+import Validator from '../common/Validator';
 
 //NOTE: Nav에 함수를 던져주고 이 함수에서 Content의 Prop를 바꿔야함
 //props는 실패. React Component에는 property가 추가되지 않음.(not extensible objet error).ref를 이용해서 그런듯.
@@ -20,27 +21,28 @@ class Register extends Component {
     constructor(props) {
         super(props);           
 
-        this.state = {curPage : "profile", tosAgree : false};
-        this.dg = React.createRef();
+        this.state = {
+            curPage : "profile", 
+            tosAgree : false,    
+            errors : null               
+        };
 
-        this.userInfoChange = this.userInfoChange.bind(this);  
+        this.dg = React.createRef();
+        
         this.changePage = this.changePage.bind(this);
         this.register = this.register.bind(this);
 
+        this.userInfoChanges.email = this.handleEmail;
+        this.userInfoChanges.password = this.hanlePassword;
+        this.userInfoChanges.name = this.handleName;
+        this.userInfoChanges.phone = this.handlePhone;
+        this.userInfoChanges.addr = this.handleAddr;
+
         //테스트용 더미
         // this.state.userInfo.payments = this.dummy;
-    }    
+    }        
 
-    // userInfo = {
-    //     email: "",
-    //     password: "",
-    //     name: "",
-    //     phone: "",
-    //     address: "",
-    //     payments: []
-    // }
-
-    userInfo = new UserInfo();
+    userInfo = new ValidUserInfo();    
 
     dummy = [
         { kind: Payments.VISA, cardNumber: "1111-1111-1111-1111"},
@@ -48,42 +50,55 @@ class Register extends Component {
         { kind: Payments.FINTECH, id: "bbb"}
     ]
 
-    changePage = (param) => {                
-        this.setState({ curPage : param });        
-    }
-        
-    userInfoChange(field) {        
-        Object.assign(this.userInfo, field);        
+    changePage = (param) => {        
+        this.setState({curPage:param});
+    }        
+
+    userInfoChanges = {
+        email : null,
+        password : null,
+        name : null,
+        phone : null,
+        addr : null,
+    }    
+
+    handleEmail = (value) => {
+        this.userInfo.email = value;  
+        console.log(this);      
     }
 
-    register = () => {
-        if (this.checkInfo()) {
+    hanlePassword = (value) => {
+        this.userInfo.password = value;
+    }
+
+    handleName = (value) => {
+        this.userInfo.name = value;
+    }
+
+    handlePhone = (value) => {
+        this.userInfo.phone = value;
+    }
+
+    handleAddr = (value) => {
+        this.userInfo.address = value;
+    }
+
+    register = () => {    
+        this.userInfo.validateAll();    
+        if (this.userInfo.valid) {
             this.dg.current.showDialog(DialogMode.SUCCESS, "가입을 축하드립니다!\r\n'닫기'를 누르시면 로그인 화면으로 이동합니다.", "",
             () => {this.props.history.push("/")});
-        }        
+        }
         else {
-            this.dg.current.showDialog(DialogMode.ALERT, "입력하신 정보가 올바르지 않습니다. 확인해주세요.")
-        }          
+            this.setState({curPage : "profile"});            
+            this.dg.current.showDialog(DialogMode.ALERT, "입력하신 정보가 올바르지 않습니다. 확인해주세요.");
+        }                    
+
         //NOTE:수동으로 route하는 방법.   
         // this.props.history.push("/");
     }
 
-    checkInfo = () => {
-        let valid = false;
-        //emailCheck
-        if (/^[a-z0-9\_]{3,}\@[a-z0-9\_]+\.[a-z0-9]+(\.[a-z0-9]+)?/i.test(this.userInfo.email))
-            valid = true;
-        //passwordCheck
-        if ((/[0-9]+/i.test(this.userInfo.password)) && (/[^a-z0-9]+/i.test(this.userInfo.password)) && 
-        (this.userInfo.password.length >= 10) && (this.userInfo.password.length <= 16) && 
-        (/(\w)\1\1/.test(this.userInfo.password)))
-            valid = true;
-        //etcCheck
-        if ((this.userInfo.name != "") && (this.userInfo.phone != "") && (this.userInfo.address))
-            valid = true;
-
-        return valid;
-    }
+    
 
     tosConfirm = (agreed) => {
         if (agreed) {
@@ -103,7 +118,7 @@ class Register extends Component {
                         this.state.tosAgree ?     
                             <React.Fragment>
                                 <Nav onRegister={this.register} changeContent={this.changePage} userInfo={this.userInfo}></Nav>
-                                <Content curPage={this.state.curPage} userInfoChange={this.userInfoChange} userInfo={this.userInfo}></Content>                                            
+                                <Content curPage={this.state.curPage} userInfoChanges={this.userInfoChanges} userInfo={this.userInfo}></Content>                                            
                                 <Dialog ref={this.dg}/>
                             </React.Fragment>                                        
                             :

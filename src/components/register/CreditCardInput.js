@@ -103,6 +103,7 @@ class CreditCardInput extends Component {
     
     //TODO: Expire 에러메세지 표시부터
     //Profile에도 Blur시 에러메세지 표시하는걸로 변경할것.
+    //Profile 항목들 아이템으로 분리해야됨.
     render() {
         return (
             <div className={styles.container}>                                             

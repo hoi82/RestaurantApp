@@ -6,7 +6,7 @@ class Nav extends Component {
     constructor(props) {
         super(props);   
         
-        this.state = { selected : "profile" };
+        this.state = { selected : "profile" };              
     }    
 
     handleClick = (e) => {
@@ -14,9 +14,14 @@ class Nav extends Component {
         this.setState({ selected : e.target.value });
     }
 
+    handleRegister = (e) => {
+        this.setState({ selected : "profile"});
+        this.props.onRegister();
+    }
+
     //NOTE: onClick 이벤트에 this.func() 형태로 넣으면 함수의 리턴값을 이벤트로 설정한다는 의미이기 때문에 ()를 제거하고 써야함
     //부득이하게 파라미터를 넣을거라면 arrow function 형태로 넣을것.
-    render() {
+    render() {        
         return (
             <div className={styles.nav}>
                 <div className={styles.nav_panel}/>
@@ -32,7 +37,7 @@ class Nav extends Component {
                         </button>                                                                                     
                     </div>
                     <div className={styles.register_box}>
-                        <button className={styles.register_btn} onClick={this.props.onRegister}>
+                        <button className={styles.register_btn} onClick={this.handleRegister}>
                             <span className={styles.medium_btn_text}>가입하기</span>
                         </button>
                         <div className={styles.button_box}>

@@ -7,15 +7,7 @@ import styles from "./Content.module.scss";
 class Content extends Component {
     constructor(props) {
         super(props);                    
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.curPage != nextProps.curPage) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    }    
 
     //NOTE: setState는 비동기다!!!절대 잊지 말것!
     //순차적인 처리를 원하면 뒤쪽의 Callback property에 해당 method를 넣을것.
@@ -28,7 +20,7 @@ class Content extends Component {
     renderContent() {
         switch (this.props.curPage) {
             case "profile":
-                return <Profile userInfo={this.props.userInfo} userInfoChange={this.props.userInfoChange}/>;                    
+                return <Profile userInfo={this.props.userInfo} userInfoChanges={this.props.userInfoChanges}/>;                    
                 break;
             case "payment":
                 return <Payment userInfo={this.props.userInfo}/>;
