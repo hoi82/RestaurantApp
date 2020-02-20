@@ -1,0 +1,58 @@
+@import "../Global";
+
+.profileInput {
+    display: flex;
+    flex-flow: column;        
+    justify-content: flex-start;    
+    align-items: flex-start;
+    margin-bottom: 16px;    
+
+    &:first-child {
+        margin-top: 24px;
+    }
+
+    .header_box {
+        display: flex;            
+        justify-content: flex-start;                            
+        flex-flow: row;
+        align-items: center;            
+        margin-bottom: 8px;
+    }
+    
+    .header {
+        display: block;
+        font-size: $h4-size;  
+        line-height: 16px;          
+        font-weight: 600;
+        margin-left: 7px;
+        color: $title-color;
+    }
+
+    .error_text {
+        @extend .header;
+        color: $alert-color;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+
+    & input {
+        min-width: 400px;
+        height: 48px;
+        border: 1px solid $textbox-border-color;
+        border-radius: 3px;
+        box-sizing: border-box;
+        color: $content-color;
+        background-color: $textbox-bg-color;
+        padding-left: 8px;
+        font-size: $h2-size;
+        @include global_transition;         
+
+        &:hover {
+            border-color: $textbox-border-hover-color;
+        }
+
+        &:focus {
+            border-color: $textbox-border-active-color;
+        }
+    }
+}    

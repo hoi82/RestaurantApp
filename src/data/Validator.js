@@ -94,7 +94,7 @@ const Validator = {
         runCallback(messageCallback, message);
     },
 
-    validatePhoneNumber : (value) => {
+    validateContact : (value) => {
         if (value == undefined || value == null) {
             return "연락처를 입력해 주세요."
         }
@@ -111,8 +111,8 @@ const Validator = {
      * @param {string} value - value to check
      * @param {function} messageCallback : callback function to save message
     */
-    validatePhoneNumberCallback : (value, messageCallback) => {
-        const message = Validator.validatePhoneNumber(value);
+    validateContactCallback : (value, messageCallback) => {
+        const message = Validator.validateContact(value);
 
         runCallback(messageCallback, message);
     },

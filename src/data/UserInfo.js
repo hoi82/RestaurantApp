@@ -6,7 +6,7 @@ class UserInfo {
         this.email = "";
         this.password = "";
         this.name = "";
-        this.phone = "";
+        this.contact = "";
         this.address = "";
         this.payments = []
     }

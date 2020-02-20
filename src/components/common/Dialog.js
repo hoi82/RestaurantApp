@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DialogMode } from "./Variables";
+import { DialogMode } from "../../data/Variables";
 import styles from "./Dialog.module.scss";
 import alert from "../../image/alert.svg";
 import success from "../../image/success.svg";

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from "./CreditCardInput.module.scss";
 import close from "../../image/close.svg";
-import Validator from '../common/Validator';
+import Validator from '../../data/Validator';
 
 class CreditCardInput extends Component {
     constructor(props) {
@@ -104,6 +104,11 @@ class CreditCardInput extends Component {
     //TODO: Expire 에러메세지 표시부터
     //Profile에도 Blur시 에러메세지 표시하는걸로 변경할것.
     //Profile 항목들 아이템으로 분리해야됨.
+    //표시 규칙
+    //1. 데이터 집어넣고 있는 도중에는 에러메세지 오프
+    //2. 포커스 이동하면 에러매세지 출력
+    //3. 초기 로드되고 데이터 입력한적이 없으면 포커스 이동해도 에러메세지 출력안함
+    //4. 포커스 되지 않고 등록버튼 누르면 모든 입력창에서 에러매세지 출력
     render() {
         return (
             <div className={styles.container}>                                             

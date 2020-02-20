@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Dialog from "../common/Dialog";
-import { DialogMode } from "../common/Variables";
+import { DialogMode } from "../../data/Variables";
 import styles from "./Login.module.scss";
 import logo from "../../image/login.svg";
 

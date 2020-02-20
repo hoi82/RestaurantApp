@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Payments } from "../common/Variables";
+import { Payments } from "../../data/Variables";
 import styles from "./PaymentItem.module.scss";
 import visa from "../../image/visa.svg";
 import paypal from "../../image/paypal.svg";

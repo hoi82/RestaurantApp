@@ -1,8 +1,8 @@
 'use strict';
 
 class ValidObject {
-    constructor(validator) {
-        this._val = null;        
+    constructor(value, validator) {
+        this._val = value;        
         this._error = "";
         this._validator = validator;
     }    
