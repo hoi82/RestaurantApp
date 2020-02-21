@@ -6,14 +6,11 @@ class ProfileInput extends Component {
         super(props);   
         
         this.state = {error: ""};
-    }    
-    
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     console.log("update");
-    //     if (prevProps.value != this.props.value) {
-    //         this.setState({error: ""});
-    //     }        
-    // }
+
+        if (this.props.value != "") {
+            this.props.validator(this.props.value, (error) => {this.state.error = error});
+        }        
+    }        
 
     handleInput = (e) => {
         let value = e.target.value.trim();
@@ -23,8 +20,8 @@ class ProfileInput extends Component {
     }
 
     handleBlur = (e) => {   
-        if (e.target.data != undefined) {
-            this.props.validator(this.props.value, (error) => this.setState({error: error}));
+        if (e.target.data != undefined) {            
+            this.props.validator(this.props.value, (error) => this.setState({error: error}));            
         }           
     }
 
@@ -35,7 +32,7 @@ class ProfileInput extends Component {
                     <span className={styles.header}>{this.props.header}</span>
                     <span className={styles.error_text}>{this.state.error}</span>
                 </div>                    
-                <input type={this.props.type} defaultValue={this.props.value} onInput={this.handleInput} onBlur={this.handleBlur}/>
+                <input type={this.props.type} defaultValue={this.props.value} onInput={this.handleInput} onBlur={this.handleBlur}/>                                                
             </div>
         );
     }

@@ -20,10 +20,10 @@ class Content extends Component {
     renderContent() {
         switch (this.props.curPage) {
             case "profile":
-                return <Profile userInfo={this.props.userInfo} userInfoChanges={this.props.userInfoChanges}/>;                    
+                return <Profile/>;
                 break;
             case "payment":
-                return <Payment userInfo={this.props.userInfo}/>;
+                return <Payment/>;
                 break;        
             default:
                 return null;

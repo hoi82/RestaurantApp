@@ -5,8 +5,19 @@ class RegisterInfo {
         this.name = "";
         this.contact = "";
         this.address = "";
-        this.payments = []
-    }    
+        this.payments = [];
+        this.init = this.init.bind(this);
+    }  
+    
+    init = () => {
+        this.email = "";
+        this.password = "";
+        this.name = "";
+        this.contact = "";
+        this.address = "";
+        this.payments = [];
+        console.log(this);
+    }
 }
 
 // const regInitialState = {    

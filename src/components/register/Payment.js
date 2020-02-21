@@ -10,9 +10,9 @@ import icon from "../../image/addPaymentIcon.svg";
 class Payment extends Component {
     constructor(props) {
         super(props);
-        this.state = { curPage : props.curPage || "list", payments : this.props.userInfo.payments };
-        
-        this.addPayment = this.addPayment.bind(this);
+        this.state = { 
+            curPage : props.curPage || "list", 
+            payments : [] };            
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -24,16 +24,12 @@ class Payment extends Component {
 
     changePage = (page) => {
         this.setState( { curPage : page } );
-    }
-
-    addPayment = (payment) => {
-        this.state.payments.push(payment);
-    }
+    }    
 
     renderContent = (kind) => {
         switch (kind) {
             case "list":
-                return <PaymentList list={this.state.payments}/>;
+                return <PaymentList/>;
                 break;
             case "select":
                 return <PaymentSelect onMove={this.changePage}/>;

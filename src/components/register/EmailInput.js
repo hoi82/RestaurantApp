@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import ProfileInput from './ProfileInput';
 import { connect } from "react-redux";
-import { updateInfo } from '../../actions/register';
+import { updateProfile } from '../../actions/register';
 import Validator from '../../data/Validator';
 
 class EmailInput extends Component {
     constructor(props) {
         super(props);        
-    }    
+    }        
 
     handleChange = (value) => {             
-        this.props.handleChange({email: value});                  
+        this.props.handleEmail({email: value});                  
     }    
 
     render() {
@@ -22,7 +22,7 @@ class EmailInput extends Component {
     }
 }
 
-let mapStateToProps = (state, props) => {    
+let mapStateToProps = (state, props) => {      
     return {
         value: state.register.email
     };
@@ -30,7 +30,7 @@ let mapStateToProps = (state, props) => {
 
 let mapDispatchToProps = (dispatch) => {        
     return {
-        handleChange: (field) => dispatch(updateInfo(field))
+        handleEmail: (field) => dispatch(updateProfile(field))
     };    
 }
 

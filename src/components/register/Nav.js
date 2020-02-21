@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styles from "./Nav.module.scss";
+import { initInfo } from '../../actions/register';
+import { connect } from 'react-redux';
 
 class Nav extends Component {
     constructor(props) {
@@ -17,6 +19,10 @@ class Nav extends Component {
     handleRegister = (e) => {
         this.setState({ selected : "profile"});
         this.props.onRegister();
+    }
+
+    handleBack = (e) => {
+        this.props.handleBack();
     }
 
     //NOTE: onClick 이벤트에 this.func() 형태로 넣으면 함수의 리턴값을 이벤트로 설정한다는 의미이기 때문에 ()를 제거하고 써야함
@@ -43,7 +49,7 @@ class Nav extends Component {
                         <div className={styles.button_box}>
                             <span className={styles.small_text}>계정이 있으신가요?</span>
                             <Link to={"/"}>
-                                <button className={styles.link_btn}>
+                                <button className={styles.link_btn} onClick={this.handleBack}>
                                     <div className={styles.link_text}>로그인</div>
                                 </button>
                             </Link>                                
@@ -55,4 +61,10 @@ class Nav extends Component {
     }
 }
 
-export default Nav;
+let mapDispatchToProps = (dispatch) => {    
+    return {
+        handleBack: () => dispatch(initInfo())
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Nav);

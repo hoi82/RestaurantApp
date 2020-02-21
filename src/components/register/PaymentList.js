@@ -7,7 +7,7 @@ class PaymentList extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { list : this.props.list }        
+        this.state = { list : this.props.list || [] }        
     }
 
     removeItem = (index) => {
@@ -22,7 +22,7 @@ class PaymentList extends Component {
 
     //NOTE:List Render 두번째 방법
     renderList = () => {
-        if (this.props.list.length == 0) {
+        if (this.state.list.length == 0) {
             return <div className={styles.empty_container}>
                 <span className={styles.title}>저장된 결제 방법이 없어요.</span>
                 <img src={box} className={styles.box_image}/>
