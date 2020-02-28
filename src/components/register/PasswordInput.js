@@ -1,39 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ProfileInput from './ProfileInput';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateProfile, validateProfile } from '../../actions/register';
 import Validator from '../../data/Validator';
-import { updateProfile } from '../../actions/register';
-import { connect } from 'react-redux';
 
-class PasswordInput extends Component {
-    constructor(props) {
-        super(props);
+export default function PasswordInput() {   
+    const password = useSelector((store) => store.register.password);
+    const error = useSelector((store) => store.register.errors.password);
+    const dispatch = useDispatch(); 
+
+    const handleChange = (value) => {
+        dispatch(updateProfile({password: value}));        
     }
 
-    handleChange = (value) => {
-        this.props.handlePassword({password : value});
+    const handleValidate = () => {
+        dispatch(validateProfile("password"));
     }
-
-    render() {
-        return (
-            <React.Fragment>
-                <ProfileInput header="비밀번호" type="password" value={this.props.value} onChange={this.handleChange} validator={Validator.validatePasswordCallback}/>
-            </React.Fragment>
-        );
-    }
+    
+    return (
+        <React.Fragment>
+            <ProfileInput header="비밀번호" type="password" value={password} error={error} onChange={handleChange} onRefresh={handleValidate}/>
+        </React.Fragment>
+    );    
 }
-
-let mapStateToProps = (state, props) => {
-    return {
-        value: state.register.password
-    }
-}
-
-let mapDispatchToProps = (dispatch) => {
-    return {
-        handlePassword: (field) => dispatch(updateProfile(field))
-    }
-}
-
-PasswordInput = connect(mapStateToProps, mapDispatchToProps)(PasswordInput);
-
-export default PasswordInput;

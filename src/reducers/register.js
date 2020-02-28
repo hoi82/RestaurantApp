@@ -1,17 +1,30 @@
 import regInitialState from "../stores/register";
-import { UPDATE_REG_PROFILE, ADD_REG_PAYMENT, UPDATE_REG_PAYMENT, INIT_REG } from "../actions/register";
+import { UPDATE_REG_PROFILE, ADD_REG_PAYMENT, UPDATE_REG_PAYMENT, INIT_REG, VALIDATE_FIELD_REG, VALIDATE_ALL_REG } from "../actions/register";
 
 const register = (state = regInitialState, action) => {
     switch (action.type) {
         case UPDATE_REG_PROFILE:
-            {                                                                 
-                let obj = Object.assign({}, state, action.value);                
-                return obj;
+            {                                                                                               
+                let obj = state.clone();
+                Object.assign(obj, action.value);
+                return obj;                
             }            
             break;
+        case VALIDATE_FIELD_REG:
+            {                
+                let obj = state.clone();
+                obj.validate(action.value);
+                return obj;
+            }
+        case VALIDATE_ALL_REG:
+            {
+                let obj = state.clone();
+                obj.validate("all");
+                return obj;
+            }
         case INIT_REG:
             {                             
-                return regInitialState;
+                return state.init();
             }
             break;
         case ADD_REG_PAYMENT: 

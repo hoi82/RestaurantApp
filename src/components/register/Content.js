@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
 import Profile from "./Profile";
 import Payment from "./Payment";
 import styles from "./Content.module.scss";
 
-class Content extends Component {
-    constructor(props) {
-        super(props);                    
-    }    
-
+export default function Content(props) {    
     //NOTE: setState는 비동기다!!!절대 잊지 말것!
     //순차적인 처리를 원하면 뒤쪽의 Callback property에 해당 method를 넣을것.
     // SetContent(content) {
@@ -17,8 +13,8 @@ class Content extends Component {
     //     });                
     // }
     
-    renderContent() {
-        switch (this.props.curPage) {
+    const renderContent = () => {        
+        switch (props.curPage) {
             case "profile":
                 return <Profile/>;
                 break;
@@ -30,19 +26,16 @@ class Content extends Component {
                 break;
         }
     }
+        
+    return (
+        <div className={styles.content}>                
+            {renderContent()}                
+        </div>                        
+    );
     
-    render() {
-        return (
-            <div className={styles.content}>                
-                {this.renderContent()}                
-            </div>                        
-        );
-    }
 }
 
 Content.propTypes = {
     userInfo: PropTypes.object,
     userInfoChange: PropTypes.func
 }
-
-export default Content;

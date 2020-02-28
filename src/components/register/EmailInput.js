@@ -1,39 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ProfileInput from './ProfileInput';
-import { connect } from "react-redux";
-import { updateProfile } from '../../actions/register';
+import { useSelector, useDispatch } from "react-redux";
+import { updateProfile, validateProfile } from '../../actions/register';
 import Validator from '../../data/Validator';
 
-class EmailInput extends Component {
-    constructor(props) {
-        super(props);        
-    }        
+export default function EmailInput() {
+    const email = useSelector((store) => store.register.email);
+    const error = useSelector((store) => store.register.errors.email);
+    const dispatch = useDispatch();
 
-    handleChange = (value) => {             
-        this.props.handleEmail({email: value});                  
+    const handleChange = (value) => {  
+        dispatch(updateProfile({email : value}));                        
     }    
 
-    render() {
-        return (
-            <React.Fragment>
-                <ProfileInput header="이메일" type="email" value={this.props.value} onChange={this.handleChange} validator={Validator.validateEmailCallback}/>
-            </React.Fragment>
-        );
+    const handleValidate = () => {
+        dispatch(validateProfile("email"));
     }
+    
+    return (
+        <React.Fragment>
+            <ProfileInput header="이메일" type="email" value={email} error={error} onChange={handleChange} onRefresh={handleValidate}/>
+        </React.Fragment>
+    );   
 }
 
-let mapStateToProps = (state, props) => {      
-    return {
-        value: state.register.email
-    };
-}
-
-let mapDispatchToProps = (dispatch) => {        
-    return {
-        handleEmail: (field) => dispatch(updateProfile(field))
-    };    
-}
-
-EmailInput = connect(mapStateToProps, mapDispatchToProps)(EmailInput);
-
-export default EmailInput;

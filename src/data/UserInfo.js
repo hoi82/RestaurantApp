@@ -1,15 +1,13 @@
 'use strict';
 import ValidObject from "./ValidObject";
 
-class UserInfo {
+export default class UserInfo {
     constructor() {
         this.email = "";
         this.password = "";
         this.name = "";
         this.contact = "";
         this.address = "";
-        this.payments = []
-    }
+        this.payments = [];                
+    }    
 }
-
-export default UserInfo;

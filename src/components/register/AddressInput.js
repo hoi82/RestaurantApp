@@ -1,37 +1,25 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import ProfileInput from './ProfileInput';
-import { updateProfile } from '../../actions/register';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateProfile, validateProfile } from '../../actions/register';
 import Validator from '../../data/Validator';
 
-class AddressInput extends Component {
-    constructor(props) {
-        super(props);
+export default function AddressInput() {    
+    const address = useSelector((store) => store.register.address);
+    const error = useSelector((store) => store.register.errors.address);
+    const dispatch = useDispatch();
+
+    const handleChange = (value) => {
+        dispatch(updateProfile({address: value}));
     }
 
-    handleChange = (value) => {
-        this.props.handleAddr({address: value});
+    const handleValidate = () => {
+        dispatch(validateProfile("address"));
     }
-
-    render() {
-        return (
-            <React.Fragment>
-                <ProfileInput header="주소" type="text" value={this.props.value} onChange={this.handleChange} validator={Validator.validateAddressCallback}/>
-            </React.Fragment>
-        );
-    }
+    
+    return (
+        <React.Fragment>
+            <ProfileInput header="주소" type="text" value={address} error={error} onChange={handleChange} onRefresh={handleValidate}/>
+        </React.Fragment>
+    );    
 }
-
-let mapStateToProps = (state, props) => {
-    return {
-        value: state.register.address
-    }
-}
-
-let mapDispatchToProps = (dispatch) => {
-    return {
-        handleAddr: (field) => dispatch(updateProfile(field))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddressInput);

@@ -1,41 +1,28 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from "./ProfileInput.module.scss";
+import { useDispatch } from 'react-redux';
 
-class ProfileInput extends Component {
-    constructor(props) {
-        super(props);   
-        
-        this.state = {error: ""};
-
-        if (this.props.value != "") {
-            this.props.validator(this.props.value, (error) => {this.state.error = error});
-        }        
-    }        
-
-    handleInput = (e) => {
+export default function ProfileInput(props) {    
+    const handleInput = (e) => {
         let value = e.target.value.trim();
-        this.props.onChange(value);
-        e.target.data = e.target.value;
-        this.setState({error: ""});
+        props.onChange(value);
+        e.target.data = e.target.value;        
     }
 
-    handleBlur = (e) => {   
+    const handleBlur = (e) => {           
         if (e.target.data != undefined) {            
-            this.props.validator(this.props.value, (error) => this.setState({error: error}));            
+            props.onRefresh();
         }           
     }
 
-    render() {
-        return (            
-            <div className={styles.profileInput}>
-                <div className={styles.header_box}>
-                    <span className={styles.header}>{this.props.header}</span>
-                    <span className={styles.error_text}>{this.state.error}</span>
-                </div>                    
-                <input type={this.props.type} defaultValue={this.props.value} onInput={this.handleInput} onBlur={this.handleBlur}/>                                                
-            </div>
-        );
-    }
+    
+    return (            
+        <div className={styles.profileInput}>
+            <div className={styles.header_box}>
+                <span className={styles.header}>{props.header}</span>
+                <span className={styles.error_text}>{props.error}</span>
+            </div>                    
+            <input type={props.type} defaultValue={props.value} onInput={handleInput} onBlur={handleBlur}/>                                                
+        </div>
+    );    
 }
-
-export default ProfileInput;
