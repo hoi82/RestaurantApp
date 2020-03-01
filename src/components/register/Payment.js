@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PaymentList from "./PaymentList";
 import PaymentSelect from "./PaymentSelect";
 import CreditCardInput from "./CreditCardInput";
@@ -6,42 +6,29 @@ import PaypalInput from "./PaypalInput";
 import FintechInput from "./FintechInput";
 import styles from "./Payment.module.scss";
 import icon from "../../image/addPaymentIcon.svg";
+import { useDispatch, useSelector } from 'react-redux';
+import { navigatePayment } from '../../actions/registerNavigation';
 
-class Payment extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            curPage : props.curPage || "list", 
-            payments : [] };            
-    }
+export default function Payment(props) {        
+    const dispatch = useDispatch();    
+    const page = useSelector((store) => store.registerNavigation.payment);    
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.state.curPage != nextState.curPage)
-            return true;
-        else
-            return false;
-    }
-
-    changePage = (page) => {
-        this.setState( { curPage : page } );
-    }    
-
-    renderContent = (kind) => {
-        switch (kind) {
+    const renderContent = (page) => {
+        switch (page) {
             case "list":
                 return <PaymentList/>;
                 break;
             case "select":
-                return <PaymentSelect onMove={this.changePage}/>;
+                return <PaymentSelect/>;
                 break;
             case "card":
-                return <CreditCardInput onBack={this.changePage}/>;
+                return <CreditCardInput/>;
                 break;
             case "paypal":
-                return <PaypalInput onBack={this.changePage}/>;
+                return <PaypalInput/>;
                 break;
             case "fintech":
-                return <FintechInput onBack={this.changePage}/>;
+                return <FintechInput/>;
                 break;
             default:
                 return null;
@@ -49,8 +36,8 @@ class Payment extends Component {
         }
     }
 
-    toggleContentClass = (kind) => {
-        switch (kind) {
+    const toggleContentClass = (page) => {
+        switch (page) {
             case "list":
                 return styles.content_box;
                 break;
@@ -71,28 +58,22 @@ class Payment extends Component {
                 break;
         }
     }
-
-    render() {            
-        return (
-            <div className={styles.payment}>
-                <div className={styles.panel}/>
-                <div className={styles.container}>
-                    <span className={styles.header}>*결제 방법을 추가하려면 '추가하기'를 눌러주세요. (최대 3개까지 가능합니다.)</span>
-                    <button className={styles.add_button} onClick={ () => this.changePage("select")}>
-                        <div className={styles.button_box}>
-                            <img src={icon} alt="추가하기 아이콘" className={styles.icon}/>
-                            <span className={styles.btn_text}>추가하기</span>
-                        </div>                    
-                    </button>
-                    <div className={this.toggleContentClass(this.state.curPage)}>
-                        {                            
-                            this.renderContent(this.state.curPage)                            
-                        }
-                    </div>
-                </div>                
-            </div>
-        );
-    }
+          
+    return (
+        <div className={styles.payment}>
+            <div className={styles.panel}/>
+            <div className={styles.container}>
+                <span className={styles.header}>*결제 방법을 추가하려면 '추가하기'를 눌러주세요. (최대 3개까지 가능합니다.)</span>
+                <button className={styles.add_button} onClick={ () => dispatch(navigatePayment("select"))}>
+                    <div className={styles.button_box}>
+                        <img src={icon} alt="추가하기 아이콘" className={styles.icon}/>
+                        <span className={styles.btn_text}>추가하기</span>
+                    </div>                    
+                </button>
+                <div className={toggleContentClass(page)}>
+                    {renderContent(page)}
+                </div>
+            </div>                
+        </div>
+    );    
 }
-
-export default Payment;

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Profile from "./Profile";
 import Payment from "./Payment";
 import styles from "./Content.module.scss";
+import { useSelector } from 'react-redux';
 
 export default function Content(props) {    
     //NOTE: setState는 비동기다!!!절대 잊지 말것!
@@ -12,9 +13,10 @@ export default function Content(props) {
     //         localStorage.setItem("curContent", content);
     //     });                
     // }
+    const page = useSelector((store) => store.registerNavigation.root)
     
     const renderContent = () => {        
-        switch (props.curPage) {
+        switch (page) {
             case "profile":
                 return <Profile/>;
                 break;

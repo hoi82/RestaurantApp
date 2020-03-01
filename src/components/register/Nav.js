@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import styles from "./Nav.module.scss";
 import { initInfo } from '../../actions/register';
 import { useDispatch } from 'react-redux';
+import { navigateRoot } from '../../actions/registerNavigation';
 
 export default function Nav(props) {
     const [selected, setSelected] = useState("profile");
     const dispatch = useDispatch();
 
-    const handleClick = (e) => {
-        props.changeContent(e.target.value);
+    const handleClick = (e) => {        
+        dispatch(navigateRoot(e.target.value));
         setSelected(e.target.value);        
     }
 

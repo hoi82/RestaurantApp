@@ -16,10 +16,9 @@ import { validateAllProfile } from '../../actions/register';
 //localstorage에 초기화할지 물어보는걸로 변경
 //Sessionstorage로 변경
 //최종: 그냥 상위페이지에서 state로 관리하는걸로 변경 -> 어차피 새로고쳐도 url path 기준으로 render되기 때문에.
-export default function Register() {    
+export default function Register(props) {    
     const [curPage, setPage] = useState("profile");
-    const [tosAgree, setTOSAgree] = useState(false);
-    const errors = useSelector((store) => store.register.errors);
+    const [tosAgree, setTOSAgree] = useState(false);    
     const dialogref = useRef(null);
     const dispatch = useDispatch();
 
@@ -39,7 +38,7 @@ export default function Register() {
             setTOSAgree(true);            
         }
         else {
-            history.replace("/");            
+            props.history.replace("/");            
         }
     }
     
@@ -50,8 +49,8 @@ export default function Register() {
                 {
                     tosAgree ?     
                         <React.Fragment>
-                            <Nav onRegister={register} changeContent={changePage}></Nav>
-                            <Content curPage={curPage}></Content>                                            
+                            <Nav onRegister={register}></Nav>
+                            <Content></Content>                                            
                             <Dialog ref={dialogref}/>
                         </React.Fragment>                                        
                         :

@@ -67,7 +67,7 @@ export default function Login() {
                     </div>
                     <div className={styles.item_container}>                        
                         <div className={styles.cbx_container}>
-                            <input className={styles.ipx} id="cbx" type="checkbox"/>
+                            <input className={styles.ipx} id="cbx" type="checkbox" onChange={remeberChanged}/>
                             <label className={styles.cbx} htmlFor="cbx">
                                 <span>
                                     <svg width="12px" height="10px" viewBox="0 0 12 10">
