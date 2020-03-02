@@ -23,9 +23,7 @@ class RegisterInfo {
         return new RegisterInfo();
     }
 
-    validate = (field) => {
-        console.log(field);
-        console.log(this);
+    validate = (field) => {        
         switch (field) {
             case "email":
                 this.errors.email = Validator.validateEmail(this.email);
@@ -54,8 +52,7 @@ class RegisterInfo {
         }
     }   
     
-    clone = () => {
-        console.log(this);
+    clone = () => {        
         let obj = new RegisterInfo();
 
         obj.email = this.email;
@@ -64,7 +61,12 @@ class RegisterInfo {
         obj.contact = this.contact;
         obj.address = this.address;
 
-        obj.errors = Object.assign({}, this.errors);
+        for (let i = 0; i < this.payments.length; i++) {
+            const element = this.payments[i].clone();
+            obj.payments.push(element);
+        }
+
+        obj.errors = Object.assign({}, this.errors);        
         return obj;      
     }
 }

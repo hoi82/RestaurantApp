@@ -1,6 +1,8 @@
 const regNaviInitial = {
     root: "profile",
-    payment: "list"
+    payment: "list",
+    hasParams: false,
+    params: null
 }
 
 export default regNaviInitial;

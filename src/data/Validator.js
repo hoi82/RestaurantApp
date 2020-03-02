@@ -168,16 +168,16 @@ const Validator = {
         runCallback(nameCallback, name);
     },
     
-    validateExpire : (value) => {
-        let val = value.trim().replace(/[\D]/g, "");
+    validateExpire : (value) => {                
+        let val = value.trim().replace(/[\D]/g, "");        
         if (val.length != 4) {
             return "올바르지 않은 유효 기간입니다.";
         }
         else {
             const month = parseInt(val.slice(0,2));
             const year = parseInt(val.slice(2));            
-            const now = new Date().getFullYear() % 100;
-            if ((month > 12) || (year - now > 5) || (Math.abs(year - now) < 95)) {
+            const now = new Date().getFullYear() % 100;            
+            if ((month > 12) || (year - now > 5) || ((Math.abs(year - now) > 5) && (Math.abs(year - now) < 95))) {
                 return "올바르지 않은 유효 기간입니다.";
             }
             else {

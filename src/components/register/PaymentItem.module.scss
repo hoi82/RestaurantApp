@@ -1,19 +1,19 @@
 @import "../Global";
 
-.item {
-    width: 100%;
-    max-width: 560px;
+.item {    
     height: 72px;
+    width: 100%;
+    margin: 8px 0px;
     background-color: $contrast-bg-color;
     border-radius: 5px;
     display: flex;
     flex-flow: row;
     justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 32px;
-
-    &:last-child {
-        margin-bottom: 0;
+    align-items: center;    
+    box-sizing: border-box;    
+    
+    &:first-child {
+        margin-top: 0px;
     }
 
     .logo {

@@ -64,7 +64,7 @@ export default function Payment(props) {
             <div className={styles.panel}/>
             <div className={styles.container}>
                 <span className={styles.header}>*결제 방법을 추가하려면 '추가하기'를 눌러주세요. (최대 3개까지 가능합니다.)</span>
-                <button className={styles.add_button} onClick={ () => dispatch(navigatePayment("select"))}>
+                <button className={styles.add_button} disabled={page == "list" ? false : true} onClick={ () => dispatch(navigatePayment("select"))}>
                     <div className={styles.button_box}>
                         <img src={icon} alt="추가하기 아이콘" className={styles.icon}/>
                         <span className={styles.btn_text}>추가하기</span>

@@ -3,14 +3,16 @@
 .list {
     position: relative;
     width: 100%;
-    height: 100%;         
+    height: 100%;    
+    box-sizing: border-box;         
 
     .item_container {
-        @extend .list;
+        @extend .list;        
         display: flex;
+        padding: 16px;
         flex-flow: column;
-        align-items: flex-start;        
-        text-align: center;
+        align-items: stretch;        
+        text-align: center;        
     }
 
     .empty_container {

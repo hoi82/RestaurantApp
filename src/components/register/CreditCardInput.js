@@ -1,21 +1,28 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import styles from "./CreditCardInput.module.scss";
 import close from "../../image/close.svg";
-import Validator from '../../data/Validator';
+import PaymentInfo from '../../stores/payment';
+import { useSelector, useDispatch } from 'react-redux';
+import { addPayment } from '../../actions/register';
+import { navigatePayment } from '../../actions/registerNavigation';
+import { Payments } from '../../data/Variables';
+import { Formatter } from '../../data/Formatter';
 
-class CreditCardInput extends Component {
-    constructor(props) {
-        super(props);        
+export default function CreditCardInput(props) {        
+    let payment = new PaymentInfo(Payments.CREDIT_CARD);    
+    const isEdit = useSelector((store) => store.registerNavigation.hasParams);
+    const oldPayment = useSelector((store) => store.registerNavigation.params);    
+    const dispatch = useDispatch();
 
-        this.state = {
-            cardType: "",
-            numberError: "",
-            expireError: "",
-            nameError: ""
-        }
+    if (isEdit) {
+        payment = oldPayment.clone();
     }
 
-    handleNumber = (e) => {       
+    const [numberError, setNumberError] = useState("");
+    const [expireError, setExpireError] = useState("");
+    const [cvcError, setcvcError] = useState("");
+    
+    const handleNumber = (e) => {       
         var code = e.keyCode;
         
         if (code > 47 && code < 58) {
@@ -33,8 +40,8 @@ class CreditCardInput extends Component {
         event.preventDefault();
     }
 
-    handleExpire = (e) => {
-        this.handleNumber(e);        
+    const handleExpire = (e) => {
+        handleNumber(e);        
         const val = e.target.value.replace(/\D/g,"");
         
         if (val.length == 0) {
@@ -50,93 +57,106 @@ class CreditCardInput extends Component {
         }     
     }
 
-    cardNumberChange = (e) => {
-        let val = e.target.value;
-        let parts = [];
-        let idx = 0;
+    const handleCVC = (e) => {
+        handleNumber(e);
+    }
 
-        val = val.replace(/[^0-9]/gi, "");
-
-        for (idx = 0; idx < val.length; idx += 4) {            
-            parts.push(val.substr(idx, 4));            
-        }
-        
-        if (idx < val.length - 1) {
-            parts.push(val.substr(idx, val.length - idx));
-        }        
-
-        if (parts.length > 0)
-            e.target.value = parts.join(" ");        
-
-        const result= Validator.validateCreditNumber(e.target.value);
-        this.setState({cardType : result.name});
-        
+    const cardNumberChange = (e) => {
+        e.target.value = Formatter.formatCardNumber(e.target.value);        
+        payment.detail.creditCard.number = e.target.value;        
         e.target.data = e.target.value;
     }    
 
-    expireDateChange = (e) => {        
-        let pattern = "^(0[1-9]|1[0-2])";
-        let regex = new RegExp(pattern, "g"); 
-        let val = e.target.value;
-        let oldval = e.target.data;
-
-        // //NOTE:exec method는 최초 일치만 찾기 때문에 while 루프를 돌아야한다.
-        // //이때 regexp flag에 g(global)이 없다면 무한루프 빠지므로 주의할것.
-        // while ((match = regex.exec(e.target.value)) != null) {
-        //     count++;
-        // }                                    
-        
-        if (regex.test(val) && oldval.length <= 2) {
-            e.target.value = e.target.value.slice(0,2) + "/" + e.target.value.slice(2);
-        }
-        
+    const expireDateChange = (e) => {                
+        e.target.value = Formatter.formatExpireDate(e.target.data, e.target.value);
+        payment.detail.creditCard.expire = e.target.value;        
         e.target.data = e.target.value;     
     }
 
-    cardNumberOut = (e) => {
+    const cvcChange = (e) => {
+        payment.detail.creditCard.cvc = e.target.value;
+        e.target.data = e.target.value;
+    }
+
+    const cardNumberOut = (e) => {
         if (e.target.data != undefined)
         {
-            const valid = Validator.validateCreditNumber(e.target.value);
-            this.setState({numberError : valid.error});
+            payment.detail.creditCard.validateNumber();
+            setNumberError(payment.detail.creditCard.error.number);
         }
     }
-    
-    //TODO: Expire 에러메세지 표시부터
-    //Profile에도 Blur시 에러메세지 표시하는걸로 변경할것.
-    //Profile 항목들 아이템으로 분리해야됨.
-    //표시 규칙
-    //1. 데이터 집어넣고 있는 도중에는 에러메세지 오프
-    //2. 포커스 이동하면 에러매세지 출력
-    //3. 초기 로드되고 데이터 입력한적이 없으면 포커스 이동해도 에러메세지 출력안함
-    //4. 포커스 되지 않고 등록버튼 누르면 모든 입력창에서 에러매세지 출력
-    render() {
-        return (
-            <div className={styles.container}>                                             
-                <div className={styles.num_box}>
-                    <span>카드 번호</span>
-                    <span>{this.state.numberError}</span>
-                    <input type="text" className={styles.num_input} maxLength="19" placeholder="1234 1234 1234 1234" data="" 
-                    onKeyDown={this.handleNumber} onChange={this.cardNumberChange} onBlur={this.cardNumberOut}/>
-                </div>
-                <div className={styles.etc_box}>
-                    <div className={styles.expire_box}>
-                        <span>만료일</span>
-                        <input type="text" className={styles.expire_input} maxLength="5" placeholder="MM/YY" data="" onKeyDown={this.handleExpire} onInput={this.expireDateChange}/>
-                    </div>
-                    <div className={styles.cvc_box}>
-                        <span>CVC</span>
-                        <input type="password" className={styles.cvc_input} maxLength="3"/>
-                    </div>
-                </div>                
-                <button className={styles.add_btn}>
-                    <span className={styles.add_btn_text}>저장하기</span>
-                </button>
-                <button className={styles.close_btn} onClick={ () => this.props.onBack("select")}>
-                    <img src={close} className={styles.close_icon}/>
-                </button>                
-            </div>
-        );
-    }
-}
 
-export default CreditCardInput;
+    const expireOut = (e) => {
+        if (e.target.data != undefined)
+        {
+            payment.detail.creditCard.validateExpire();
+            setExpireError(payment.detail.creditCard.error.expire);
+        }
+    }
+
+    const cvcOut = (e) => {
+        if (e.target.data != undefined)
+        {
+            payment.detail.creditCard.validateCVC();
+            setcvcError(payment.detail.creditCard.error.cvc);
+        }
+    }
+
+    const handleAdd = (e) => {
+        payment.detail.creditCard.validateAll();
+        setNumberError(payment.detail.creditCard.error.number);
+        setExpireError(payment.detail.creditCard.error.expire);
+        setcvcError(payment.detail.creditCard.error.cvc);
+        console.log(payment);
+        if (payment.detail.creditCard.valid) {
+            dispatch(addPayment(payment));
+            dispatch(navigatePayment("list"));
+        }   
+        else {
+
+        }     
+    }
+
+    const handleClose = (e) => {
+        if (isEdit) {
+            dispatch(navigatePayment("list"));
+        }
+        else {
+            dispatch(navigatePayment("select"));
+        }        
+    }    
+    
+    //TODO: 마무리 작업
+    return (
+        <div className={styles.container}>                                             
+            <div className={styles.num_box}>
+                <span>카드 번호</span>
+                <span>{numberError}</span>
+                <input type="text" className={styles.num_input} maxLength="19" placeholder="1234 1234 1234 1234" defaultValue={payment.detail.creditCard.number} data="" 
+                onKeyDown={handleNumber} onChange={cardNumberChange} onBlur={cardNumberOut}/>
+            </div>
+            <div className={styles.etc_box}>
+                <div className={styles.expire_box}>
+                    <span>만료일</span>
+                    <span>{expireError}</span>
+                    <input type="text" className={styles.expire_input} maxLength="5" placeholder="MM/YY" defaultValue={payment.detail.creditCard.expire} data="" 
+                    onKeyDown={handleExpire} onChange={expireDateChange} onBlur={expireOut}/>
+                </div>
+                <div className={styles.cvc_box}>
+                    <span>CVC</span>
+                    <span> </span>
+                    <input type="password" className={styles.cvc_input} maxLength="3" defaultValue={payment.detail.creditCard.cvc} data=""
+                    onKeyDown={handleCVC} onChange={cvcChange} onBlur={cvcOut}/>
+                </div>
+            </div>                
+            <button className={styles.add_btn} onClick={handleAdd}>
+                <span className={styles.add_btn_text}>
+                    {isEdit ? "저장하기" : "추가하기"}
+                </span>
+            </button>
+            <button className={styles.close_btn} onClick={handleClose}>
+                <img src={close} className={styles.close_icon}/>
+            </button>                
+        </div>
+    );    
+}

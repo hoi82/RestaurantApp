@@ -7,7 +7,9 @@ const regNavi = (state = regNaviInitial, action) => {
             {
                 return {
                     root: action.value,
-                    payment: state.payment
+                    payment: state.payment,
+                    hasParams: false,
+                    params: null
                 }
             }
             break;
@@ -15,7 +17,9 @@ const regNavi = (state = regNaviInitial, action) => {
             {
                 return {
                     root: state.root,
-                    payment: action.value
+                    payment: action.value,
+                    hasParams: action.hasParams,
+                    params: action.params
                 }
             }
             break;
