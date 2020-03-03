@@ -39,7 +39,15 @@ export default function PaymentItem(props) {
     }    
     
     const handleEdit = (e) => {
-        dispatch(navigatePayment("card", true, payment));
+        switch (payment.kind) {
+            case Payments.CREDIT_CARD:
+                dispatch(navigatePayment("card", true, payment));       
+                break;
+            case Payments.PAYPAL:
+                dispatch(navigatePayment("paypal", true, payment));
+            default:
+                break;
+        }        
     }
     
     return (

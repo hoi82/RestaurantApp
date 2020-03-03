@@ -7,20 +7,27 @@ import { addPayment } from '../../actions/register';
 import { navigatePayment } from '../../actions/registerNavigation';
 import { Payments } from '../../data/Variables';
 import { Formatter } from '../../data/Formatter';
+import { ErrorMessages } from '../../data/ErrorMessages';
 
 export default function CreditCardInput(props) {        
-    let payment = new PaymentInfo(Payments.CREDIT_CARD);    
+    let payment = new PaymentInfo(Payments.CREDIT_CARD);
+    let credit = payment.detail.creditCard;
     const isEdit = useSelector((store) => store.registerNavigation.hasParams);
     const oldPayment = useSelector((store) => store.registerNavigation.params);    
     const dispatch = useDispatch();
+    let startValidate = ((stdError) => {
+        return stdError != ErrorMessages.CORRECT;
+    })(numberError);
 
     if (isEdit) {
         payment = oldPayment.clone();
+        credit = payment.detail.creditCard;
     }
 
-    const [numberError, setNumberError] = useState("");
-    const [expireError, setExpireError] = useState("");
-    const [cvcError, setcvcError] = useState("");
+    const [numberError, setNumberError] = useState(ErrorMessages.CORRECT);
+    const [expireError, setExpireError] = useState(ErrorMessages.CORRECT);
+    const [cvcError, setcvcError] = useState(ErrorMessages.CORRECT);
+    const [nameError, setNameError] = useState(ErrorMessages.CORRECT);
     
     const handleNumber = (e) => {       
         var code = e.keyCode;
@@ -61,60 +68,68 @@ export default function CreditCardInput(props) {
         handleNumber(e);
     }
 
-    const cardNumberChange = (e) => {
-        e.target.value = Formatter.formatCardNumber(e.target.value);        
-        payment.detail.creditCard.number = e.target.value;        
-        e.target.data = e.target.value;
-    }    
-
-    const expireDateChange = (e) => {                
-        e.target.value = Formatter.formatExpireDate(e.target.data, e.target.value);
-        payment.detail.creditCard.expire = e.target.value;        
-        e.target.data = e.target.value;     
-    }
-
-    const cvcChange = (e) => {
-        payment.detail.creditCard.cvc = e.target.value;
-        e.target.data = e.target.value;
-    }
-
-    const cardNumberOut = (e) => {
-        if (e.target.data != undefined)
-        {
-            payment.detail.creditCard.validateNumber();
-            setNumberError(payment.detail.creditCard.error.number);
+    const handleChange = (e) => {
+        startValidate = true;
+        switch (e.target.name) {
+            case "number":
+                e.target.value = Formatter.formatCardNumber(e.target.value);        
+                credit.number = e.target.value;                
+                break;            
+            case "expire":
+                e.target.value = Formatter.formatExpireDate(e.target.data, e.target.value);
+                credit.expire = e.target.value;
+                break;
+            case "cvc":
+                credit.cvc = e.target.value;        
+                break;
+            case "name":
+                credit.name = e.target.value;
+                break;
+            default:
+                break;
+        }
+    }      
+    
+    const handleBlur = (e) => {
+        if (startValidate) {
+            switch (e.target.name) {
+                case "number":
+                    credit.validateNumber();
+                    setNumberError(credit.error.number);
+                    break;            
+                case "expire":
+                    credit.validateExpire();
+                    setExpireError(credit.error.expire);
+                    break;
+                case "cvc":
+                    credit.validateCVC();
+                    setcvcError(credit.error.cvc);      
+                    break;
+                case "name":
+                    credit.validateName();
+                    setNameError(credit.error.name);                    
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-    const expireOut = (e) => {
-        if (e.target.data != undefined)
-        {
-            payment.detail.creditCard.validateExpire();
-            setExpireError(payment.detail.creditCard.error.expire);
-        }
-    }
+    const handleAddorEdit = (e) => {
+        credit.validateAll();
+        setNumberError(credit.error.number);
+        setExpireError(credit.error.expire);
+        setcvcError(credit.error.cvc);      
+        setNameError(credit.error.name);                
+        if (credit.valid) {
+            if (isEdit) {
 
-    const cvcOut = (e) => {
-        if (e.target.data != undefined)
-        {
-            payment.detail.creditCard.validateCVC();
-            setcvcError(payment.detail.creditCard.error.cvc);
-        }
-    }
-
-    const handleAdd = (e) => {
-        payment.detail.creditCard.validateAll();
-        setNumberError(payment.detail.creditCard.error.number);
-        setExpireError(payment.detail.creditCard.error.expire);
-        setcvcError(payment.detail.creditCard.error.cvc);
-        console.log(payment);
-        if (payment.detail.creditCard.valid) {
-            dispatch(addPayment(payment));
+            }
+            else {
+                dispatch(addPayment(payment));                
+            }            
             dispatch(navigatePayment("list"));
-        }   
-        else {
-
-        }     
+        }           
     }
 
     const handleClose = (e) => {
@@ -125,31 +140,36 @@ export default function CreditCardInput(props) {
             dispatch(navigatePayment("select"));
         }        
     }    
-    
-    //TODO: 마무리 작업
+        
     return (
         <div className={styles.container}>                                             
             <div className={styles.num_box}>
-                <span>카드 번호</span>
-                <span>{numberError}</span>
-                <input type="text" className={styles.num_input} maxLength="19" placeholder="1234 1234 1234 1234" defaultValue={payment.detail.creditCard.number} data="" 
-                onKeyDown={handleNumber} onChange={cardNumberChange} onBlur={cardNumberOut}/>
+                <span>카드 번호</span>                
+                <input name="number" type="text" className={styles.num_input} maxLength="19" placeholder="1234 1234 1234 1234" defaultValue={credit.number} 
+                onKeyDown={handleNumber} onChange={handleChange} onBlur={handleBlur}/>
+                <span className={styles.error_text}>{numberError}</span>
             </div>
             <div className={styles.etc_box}>
                 <div className={styles.expire_box}>
-                    <span>만료일</span>
-                    <span>{expireError}</span>
-                    <input type="text" className={styles.expire_input} maxLength="5" placeholder="MM/YY" defaultValue={payment.detail.creditCard.expire} data="" 
-                    onKeyDown={handleExpire} onChange={expireDateChange} onBlur={expireOut}/>
+                    <span>만료일</span>                    
+                    <input name="expire" type="text" className={styles.expire_input} maxLength="5" placeholder="MM/YY" defaultValue={credit.expire}
+                    onKeyDown={handleExpire} onChange={handleChange} onBlur={handleBlur}/>
+                    <span className={styles.error_text}>{expireError}</span>
                 </div>
                 <div className={styles.cvc_box}>
-                    <span>CVC</span>
-                    <span> </span>
-                    <input type="password" className={styles.cvc_input} maxLength="3" defaultValue={payment.detail.creditCard.cvc} data=""
-                    onKeyDown={handleCVC} onChange={cvcChange} onBlur={cvcOut}/>
+                    <span>CVC</span>                    
+                    <input name="cvc" type="password" className={styles.cvc_input} maxLength="3" defaultValue={credit.cvc}
+                    onKeyDown={handleCVC} onChange={handleChange} onBlur={handleBlur}/>
+                    <span className={styles.error_text}>{cvcError}</span>
                 </div>
-            </div>                
-            <button className={styles.add_btn} onClick={handleAdd}>
+            </div>   
+            <div className={styles.name_box}>
+                <span>소유자 이름</span>
+                <input name="name" type="text" className={styles.name_input} placeholder="John Doe" defaultValue={credit.name}
+                onChange={handleChange} onBlur={handleBlur}/>
+                <span className={styles.error_text}>{nameError}</span>
+            </div>             
+            <button className={styles.add_btn} onClick={handleAddorEdit}>
                 <span className={styles.add_btn_text}>
                     {isEdit ? "저장하기" : "추가하기"}
                 </span>

@@ -19,11 +19,5 @@ export default function Profile() {
                 <AddressInput/>
             </div>                
         </div>
-    );
-    
-}
-
-Profile.propTypes = {
-    userInfo: PropTypes.object,
-    userInfoChange: PropTypes.func
+    );    
 }

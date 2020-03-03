@@ -1,5 +1,6 @@
 import { Payments } from "../data/Variables";
 import Validator from "../data/Validator";
+import { ErrorMessages } from "../data/ErrorMessages";
 
 class PaymentInfo {
     constructor(kind) {
@@ -47,13 +48,15 @@ class CreditCardInfo {
         this.type = "";
         this.number = "";
         this.expire = "";
-        this.cvc = "";  
+        this.cvc = ""; 
+        this.name = ""; 
         
         this.error = {
             type: "",
-            number: "필수 입력 항목입니다.",
-            expire: "필수 입력 항목입니다.",
-            cvc: "필수 입력 항목입니다."                
+            number: ErrorMessages.EMPTY_CARD_NUMBER,
+            expire: ErrorMessages.EMPTY_EXPIRE_DATE,
+            cvc: ErrorMessages.EMPTY_CVC,
+            name: ErrorMessages.EMPTY_NAME,
         };
     }
 
@@ -64,6 +67,7 @@ class CreditCardInfo {
         obj.number = this.number;
         obj.expire = this.expire;
         obj.cvc = this.cvc;
+        obj.name = this.name;
 
         Object.assign(obj.error, this.error);
 
@@ -71,7 +75,7 @@ class CreditCardInfo {
     }
 
     validateNumber = () => {
-        let result = Validator.validateCreditNumber(this.number);
+        let result = Validator.validateCreditNumber(this.number);             
         this.type = result.name;
         this.error.number = result.error;        
     }
@@ -81,22 +85,24 @@ class CreditCardInfo {
     }
 
     validateCVC = () => {
-        if (this.cvc == "") {
-            this.error.cvc = "필수 입력 항목입니다.";
-        }
-        else {
-            this.error.cvc = "";
-        }
+        this.error.cvc = Validator.validateCVC(this.cvc);
+    }
+
+    validateName = () => {
+        this.error.name = Validator.validateName(this.name);
     }
 
     validateAll = () => {
         this.validateNumber();
         this.validateExpire();
-        this.validateCVC();
+        this.validateCVC();  
+        this.validateName();      
     }
 
     get valid() {
-        return (this.type != "") && (this.error.number == "") && (this.error.expire == "") && (this.error.cvc == "");
+        return (this.type != "") && (this.error.number == ErrorMessages.CORRECT) && 
+        (this.error.expire == ErrorMessages.CORRECT) && (this.error.cvc == ErrorMessages.CORRECT)
+        && (this.error.name == ErrorMessages.CORRECT);
     }
 }
 
@@ -106,8 +112,8 @@ class PaypalInfo {
         this.password = "";
 
         this.error = {
-            email: "필수 입력 항목입니다.",
-            password: "필수 입력 항목입니다.",
+            email: ErrorMessages.EMPTY_EMAIL,
+            password: ErrorMessages.EMPTY_PASSWORD,
         }
     }
 
@@ -126,12 +132,7 @@ class PaypalInfo {
     }
 
     validatePassword = () => {
-        if (this.password == "") {
-            this.error.password = "필수 입력 항목입니다.";
-        }
-        else {
-            this.error.password = "";
-        }
+        this.error.password = Validator.validateExternalPassword(this.password);
     }
 
     validateAll = () => {
@@ -140,7 +141,7 @@ class PaypalInfo {
     }
 
     get valid() {
-        return (this.error.email == "") && (this.error.password == "");
+        return (this.error.email == ErrorMessages.CORRECT) && (this.error.password == ErrorMessages.CORRECT);
     }
 }
 

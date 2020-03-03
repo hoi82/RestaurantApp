@@ -1,4 +1,4 @@
-import { string } from "prop-types";
+import { ErrorMessages } from "./ErrorMessages";
 
 const emailRegex = new RegExp("^[a-z0-9\_]{3,}\@[a-z0-9\_]{3,}\.[a-z0-9]+(\.[a-z0-9]+)?" , "i");
 
@@ -6,18 +6,18 @@ const Validator = {
 
     validateEmail : (value) => {
         if (value == undefined || value == null) {
-            return "이메일 주소를 입력해 주세요."
+            return ErrorMessages.EMPTY_EMAIL;
         }
 
         if (value.trim() == "") {
-            return "이메일 주소를 입력해 주세요."
+            return ErrorMessages.EMPTY_EMAIL;
         }
 
         if (!emailRegex.test(value)) {
-            return "이메일 주소가 올바르지 않습니다.";
+            return ErrorMessages.INVALID_EMAIL;
         }
         else {
-            return "";     
+            return ErrorMessages.CORRECT;     
         }        
     },  
     
@@ -35,23 +35,23 @@ const Validator = {
         let result = "";   
         
         if (value == undefined || value == null) {
-            return "비밀번호를 입력해 주세요."
+            return ErrorMessages.EMPTY_PASSWORD;
         }
 
         if (!(/[0-9]+/i.test(value)) || !(/[^a-z0-9]+/i.test(value))) {
-            result = "비밀번호는 영문, 숫자, 기호 중 두가지 이상으로 이루어져야 합니다.";            
+            result = ErrorMessages.ONLY_ALPHABET_PASSWORD;
         }
 
         if ((value.length < 10) || (value.length > 16)) {
-            result = "비밀번호의 길이는 10~16 입니다.";            
+            result = ErrorMessages.INVALID_LENGTH_PASSWORD;
         }
 
         if (/(\w)\1\1/.test(value)) {
-            result = "같은 문자를 3번 이상 연속으로 사용할 수 없습니다.";            
+            result = ErrorMessages.DUPLICATED_PASSWORD;
         }            
 
         if (value.trim() == "") {
-            result = "비밀번호를 입력해 주세요."
+            result = ErrorMessages.EMPTY_PASSWORD;
         }
 
         return result;
@@ -69,18 +69,18 @@ const Validator = {
 
     validateName : (value) => {
         if (value == undefined || value == null) {
-            return "이름을 입력해 주세요."
+            return ErrorMessages.EMPTY_NAME;
         }
 
         if (value.trim() == "") {
-            return "이름을 입력해 주세요."
+            return ErrorMessages.EMPTY_NAME;
         }
 
         if (!(/^[a-z0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+$/i.test(value))) {
-            return "특수 문자는 들어갈수 없습니다.";
+            return ErrorMessages.NON_ALPHABET_NAME;
         }
         else {
-            return "";            
+            return ErrorMessages.CORRECT;
         }
     },
 
@@ -96,14 +96,14 @@ const Validator = {
 
     validateContact : (value) => {
         if (value == undefined || value == null) {
-            return "연락처를 입력해 주세요."
+            return ErrorMessages.EMPTY_CONTACT;
         }
 
         if (value.trim() == "") {
-            return "연락처를 입력해 주세요."
+            return ErrorMessages.EMPTY_CONTACT;
         }
         else {
-            return "";
+            return ErrorMessages.CORRECT;
         }        
     },
 
@@ -119,14 +119,14 @@ const Validator = {
 
     validateAddress : (value) => {
         if (value == undefined || value == null) {
-            return "주소를 입력해 주세요."
+            return ErrorMessages.EMPTY_ADDRESS;
         }
 
         if (value.trim() == "") {
-            return "주소를 입력해 주세요.";
+            return ErrorMessages.EMPTY_ADDRESS;
         }
         else {
-            return "";
+            return ErrorMessages.CORRECT;
         }
     },
 
@@ -140,9 +140,14 @@ const Validator = {
         runCallback(messageCallback, message);
     },
 
-    validateCreditNumber : (value) => {
+    validateCreditNumber : (value) => {        
         let val = value.trim().replace(/\D/g, "");        
         let exp = null;
+
+        if (val == "") {            
+            return { name: "", error: ErrorMessages.EMPTY_CARD_NUMBER };
+        }        
+
         for (let i = 0; i < CreditCardInfo.Exps.length; i++) {
             exp = CreditCardInfo.Exps[i];
             if (exp.startWith.test(val) && CreditCardInfo.checkLuhn(val)) {                
@@ -152,10 +157,10 @@ const Validator = {
         
         for (let i = 0; i < exp.width.length; i++) {
             if (val.length == exp.width[i])
-                return { name : exp.name, error : ""};
+                return { name : exp.name, error : ErrorMessages.CORRECT };
         }        
 
-        return { name : "", error: "올바르지 않은 카드 번호입니다."};
+        return { name : "", error: ErrorMessages.INVALID_CARD_NUMBER };
     },
 
     /** 
@@ -169,19 +174,24 @@ const Validator = {
     },
     
     validateExpire : (value) => {                
-        let val = value.trim().replace(/[\D]/g, "");        
+        let val = value.trim().replace(/[\D]/g, "");  
+        
+        if (val == "") {
+            return ErrorMessages.EMPTY_EXPIRE_DATE;
+        }
+
         if (val.length != 4) {
-            return "올바르지 않은 유효 기간입니다.";
+            return ErrorMessages.INVALID_EXPIRE_DATE;
         }
         else {
             const month = parseInt(val.slice(0,2));
             const year = parseInt(val.slice(2));            
             const now = new Date().getFullYear() % 100;            
             if ((month > 12) || (year - now > 5) || ((Math.abs(year - now) > 5) && (Math.abs(year - now) < 95))) {
-                return "올바르지 않은 유효 기간입니다.";
+                return ErrorMessages.INVALID_EXPIRE_DATE;
             }
             else {
-                return "";
+                return ErrorMessages.CORRECT;
             }
         }
     },
@@ -194,6 +204,28 @@ const Validator = {
         const message = Validator.validateExpire(value);
 
         runCallback(messageCallback, message);
+    },
+
+    validateCVC : (value) => {
+        if (value == "") {
+            return ErrorMessages.EMPTY_CVC;
+        }
+
+        if (/^[\d]+$/i.test(value)) {
+            return ErrorMessages.CORRECT;
+        }
+        else {
+            return ErrorMessages.INVALID_CVC;
+        }
+    },
+
+    validateExternalPassword : (value) => {
+        if (value == "") {
+            return ErrorMessages.EMPTY_PASSWORD;
+        }
+        else {
+            return ErrorMessages.CORRECT;
+        }
     }
 }
 

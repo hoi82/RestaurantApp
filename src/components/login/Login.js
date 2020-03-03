@@ -4,12 +4,15 @@ import Dialog from "../common/Dialog";
 import { DialogMode } from "../../data/Variables";
 import styles from "./Login.module.scss";
 import logo from "../../image/login.svg";
+import { useDispatch } from 'react-redux';
+import { navigateRoot, navigatePayment } from '../../actions/registerNavigation';
 
 export default function Login() {    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
     const dialogRef = useRef(null);
+    const dispatch = useDispatch();
 
     const sendInfoByEmail = () => {
         //DB에 일치하는 주소가 있으면 보내고
@@ -44,6 +47,11 @@ export default function Login() {
 
     const remeberChanged = (e) => {
         setRemember(e.target.value);
+    }
+
+    const handleRegister = (e) => {        
+        dispatch(navigateRoot("profile"));
+        dispatch(navigatePayment("list"));
     }
     
     return (        
@@ -87,7 +95,7 @@ export default function Login() {
                         </button>
                         <div>
                             <span className={styles.sub_title}>아직 가입하지 않으셨나요?</span>
-                            <Link to={"/register"}>
+                            <Link to={"/register"} onClick={handleRegister}>
                                 <button className={styles.register_btn}>                                
                                     <span className={styles.link_text}>가입하기</span>
                                 </button>

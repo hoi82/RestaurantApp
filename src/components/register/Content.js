@@ -33,11 +33,5 @@ export default function Content(props) {
         <div className={styles.content}>                
             {renderContent()}                
         </div>                        
-    );
-    
-}
-
-Content.propTypes = {
-    userInfo: PropTypes.object,
-    userInfoChange: PropTypes.func
+    );   
 }

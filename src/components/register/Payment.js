@@ -36,22 +36,22 @@ export default function Payment(props) {
         }
     }
 
-    const toggleContentClass = (page) => {
+    const renderContentPanel = (page) => {        
         switch (page) {
             case "list":
-                return styles.content_box;
+                return styles.content_bg_panel + " " + styles.panel_list;
                 break;
             case "select":
-                return styles.content_box;
+                return styles.content_bg_panel + " " + styles.panel_select;
                 break;
             case "card":
-                return styles.content_box_small;
+                return styles.content_bg_panel + " " + styles.panel_card;
                 break;
             case "paypal":
-                return styles.content_box_small;
+                return styles.content_bg_panel + " " + styles.panel_paypal;
                 break;
             case "fintech":
-                return styles.content_box_small;
+                return styles.content_bg_panel + " " + styles.panel_card;
                 break;
             default:
                 return null;
@@ -70,9 +70,12 @@ export default function Payment(props) {
                         <span className={styles.btn_text}>추가하기</span>
                     </div>                    
                 </button>
-                <div className={toggleContentClass(page)}>
-                    {renderContent(page)}
-                </div>
+                <div className={styles.content_container}>
+                    <div className={renderContentPanel(page)}/>
+                    <div className={styles.content_box}>
+                        {renderContent(page)}
+                    </div>
+                </div>                
             </div>                
         </div>
     );    
