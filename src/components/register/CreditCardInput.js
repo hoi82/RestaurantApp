@@ -1,34 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from "./CreditCardInput.module.scss";
 import close from "../../image/close.svg";
-import PaymentInfo from '../../stores/payment';
-import { useSelector, useDispatch } from 'react-redux';
-import { addPayment } from '../../actions/register';
-import { navigatePayment } from '../../actions/registerNavigation';
-import { Payments } from '../../data/Variables';
-import { Formatter } from '../../data/Formatter';
-import { ErrorMessages } from '../../data/ErrorMessages';
+import { ErrorMessages } from "../../data/ErrorMessages";
 
-export default function CreditCardInput(props) {        
-    let payment = new PaymentInfo(Payments.CREDIT_CARD);
-    let credit = payment.detail.creditCard;
-    const isEdit = useSelector((store) => store.registerNavigation.hasParams);
-    const oldPayment = useSelector((store) => store.registerNavigation.params);    
-    const dispatch = useDispatch();
-    let startValidate = ((stdError) => {
-        return stdError != ErrorMessages.CORRECT;
-    })(numberError);
-
-    if (isEdit) {
-        payment = oldPayment.clone();
-        credit = payment.detail.creditCard;
-    }
-
-    const [numberError, setNumberError] = useState(ErrorMessages.CORRECT);
-    const [expireError, setExpireError] = useState(ErrorMessages.CORRECT);
-    const [cvcError, setcvcError] = useState(ErrorMessages.CORRECT);
-    const [nameError, setNameError] = useState(ErrorMessages.CORRECT);
-    
+export default function CreditCardInput(props) {             
     const handleNumber = (e) => {       
         var code = e.keyCode;
         
@@ -62,119 +37,55 @@ export default function CreditCardInput(props) {
         else {
 
         }     
-    }
+    }        
 
     const handleCVC = (e) => {
         handleNumber(e);
-    }
-
-    const handleChange = (e) => {
-        startValidate = true;
-        switch (e.target.name) {
-            case "number":
-                e.target.value = Formatter.formatCardNumber(e.target.value);        
-                credit.number = e.target.value;                
-                break;            
-            case "expire":
-                e.target.value = Formatter.formatExpireDate(e.target.data, e.target.value);
-                credit.expire = e.target.value;
-                break;
-            case "cvc":
-                credit.cvc = e.target.value;        
-                break;
-            case "name":
-                credit.name = e.target.value;
-                break;
-            default:
-                break;
-        }
-    }      
+    }     
     
-    const handleBlur = (e) => {
-        if (startValidate) {
-            switch (e.target.name) {
-                case "number":
-                    credit.validateNumber();
-                    setNumberError(credit.error.number);
-                    break;            
-                case "expire":
-                    credit.validateExpire();
-                    setExpireError(credit.error.expire);
-                    break;
-                case "cvc":
-                    credit.validateCVC();
-                    setcvcError(credit.error.cvc);      
-                    break;
-                case "name":
-                    credit.validateName();
-                    setNameError(credit.error.name);                    
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    const handleAddorEdit = (e) => {
-        credit.validateAll();
-        setNumberError(credit.error.number);
-        setExpireError(credit.error.expire);
-        setcvcError(credit.error.cvc);      
-        setNameError(credit.error.name);                
-        if (credit.valid) {
-            if (isEdit) {
-
-            }
-            else {
-                dispatch(addPayment(payment));                
-            }            
-            dispatch(navigatePayment("list"));
-        }           
-    }
-
-    const handleClose = (e) => {
-        if (isEdit) {
-            dispatch(navigatePayment("list"));
+    const toggleInputClass = (basis, error) => {
+        if (error == ErrorMessages.CORRECT) {
+            return basis.concat(" ", styles.normal_input);
         }
         else {
-            dispatch(navigatePayment("select"));
-        }        
-    }    
+            return basis.concat(" ", styles.error_input);
+        }
+    }
         
-    return (
+    return (        
         <div className={styles.container}>                                             
             <div className={styles.num_box}>
                 <span>카드 번호</span>                
-                <input name="number" type="text" className={styles.num_input} maxLength="19" placeholder="1234 1234 1234 1234" defaultValue={credit.number} 
-                onKeyDown={handleNumber} onChange={handleChange} onBlur={handleBlur}/>
-                <span className={styles.error_text}>{numberError}</span>
+                <input name="number" type="text" className={toggleInputClass(styles.num_input, props.numberError)} maxLength="19" placeholder="1234 1234 1234 1234" autoComplete="off" value={props.number} 
+                onKeyDown={handleNumber} onChange={props.functions.change} onBlur={props.functions.blur}/>
+                <span className={styles.error_text}>{props.numberError}</span>
             </div>
             <div className={styles.etc_box}>
                 <div className={styles.expire_box}>
                     <span>만료일</span>                    
-                    <input name="expire" type="text" className={styles.expire_input} maxLength="5" placeholder="MM/YY" defaultValue={credit.expire}
-                    onKeyDown={handleExpire} onChange={handleChange} onBlur={handleBlur}/>
-                    <span className={styles.error_text}>{expireError}</span>
+                    <input name="expire" type="text" className={toggleInputClass(styles.expire_input, props.expireError)} maxLength="5" placeholder="MM/YY" autoComplete="cc-exp" value={props.expire}
+                    onKeyDown={handleExpire} onChange={props.functions.change} onBlur={props.functions.blur}/>
+                    <span className={styles.error_text}>{props.expireError}</span>
                 </div>
                 <div className={styles.cvc_box}>
                     <span>CVC</span>                    
-                    <input name="cvc" type="password" className={styles.cvc_input} maxLength="3" defaultValue={credit.cvc}
-                    onKeyDown={handleCVC} onChange={handleChange} onBlur={handleBlur}/>
-                    <span className={styles.error_text}>{cvcError}</span>
+                    <input name="cvc" type="password" className={toggleInputClass(styles.cvc_input, props.cvcError)} maxLength="3" autoComplete="off" value={props.cvc}
+                    onKeyDown={handleCVC} onChange={props.functions.change} onBlur={props.functions.blur}/>
+                    <span className={styles.error_text}>{props.cvcError}</span>
                 </div>
             </div>   
             <div className={styles.name_box}>
                 <span>소유자 이름</span>
-                <input name="name" type="text" className={styles.name_input} placeholder="John Doe" defaultValue={credit.name}
-                onChange={handleChange} onBlur={handleBlur}/>
-                <span className={styles.error_text}>{nameError}</span>
+                <input name="name" type="text" className={toggleInputClass(styles.name_input, props.cashHolderError)} placeholder="John Doe" value={props.cashHolder}
+                onChange={props.functions.change} onBlur={props.functions.blur}/>
+                <span className={styles.error_text}>{props.cashHolderError}</span>
             </div>             
-            <button className={styles.add_btn} onClick={handleAddorEdit}>
+            <button className={styles.add_btn} onClick={props.edit ? props.functions.edit : props.functions.add}>
                 <span className={styles.add_btn_text}>
-                    {isEdit ? "저장하기" : "추가하기"}
+                    {props.edit ? "저장하기" : "추가하기"}
                 </span>
             </button>
-            <button className={styles.close_btn} onClick={handleClose}>
+            <button className={styles.close_btn} onClick={props.functions.close}>
                 <img src={close} className={styles.close_icon}/>
             </button>                
         </div>

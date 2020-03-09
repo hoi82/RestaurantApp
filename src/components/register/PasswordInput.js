@@ -1,25 +1,23 @@
 import React from 'react';
 import ProfileInput from './ProfileInput';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateProfile, validateProfile } from '../../actions/register';
-import Validator from '../../data/Validator';
+import { useDispatch } from 'react-redux';
+import { updatePassword, validatePassword } from '../../actions/register/profile';
 
-export default function PasswordInput() {   
-    const password = useSelector((store) => store.register.password);
-    const error = useSelector((store) => store.register.errors.password);
+export default function PasswordInput(props) {       
     const dispatch = useDispatch(); 
 
-    const handleChange = (value) => {
-        dispatch(updateProfile({password: value}));        
-    }
+    const handleChange = (e) => {        
+        let value = e.target.value.trim();
+        dispatch(updatePassword(value));
+    }    
 
-    const handleValidate = () => {
-        dispatch(validateProfile("password"));
+    const handleBlur = (e) => {
+        dispatch(validatePassword());   
     }
     
     return (
         <React.Fragment>
-            <ProfileInput header="비밀번호" type="password" value={password} error={error} onChange={handleChange} onRefresh={handleValidate}/>
+            <ProfileInput header="비밀번호" type="password" value={props.password} error={props.error} onInput={handleChange} onBlur={handleBlur}/>
         </React.Fragment>
     );    
 }

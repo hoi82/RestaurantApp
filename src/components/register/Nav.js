@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from "./Nav.module.scss";
-import { initInfo } from '../../actions/register';
 import { useDispatch } from 'react-redux';
-import { navigateRoot } from '../../actions/registerNavigation';
+import { navigateRoot } from '../../actions/register/registerNavigation';
+import { refreshProfile, clearProfile } from '../../actions/register/profile';
 
 export default function Nav(props) {
     const [selected, setSelected] = useState("profile");
@@ -11,17 +11,15 @@ export default function Nav(props) {
 
     const handleClick = (e) => {        
         dispatch(navigateRoot(e.target.value));
+        dispatch(clearProfile());
         setSelected(e.target.value);        
     }
 
     const handleRegister = (e) => {
+        dispatch(refreshProfile());
         setSelected("profile");        
         props.onRegister();
-    }    
-
-    const handleBack = (e) => {
-        dispatch(initInfo());
-    }    
+    }        
 
     //NOTE: onClick 이벤트에 func() 형태로 넣으면 함수의 리턴값을 이벤트로 설정한다는 의미이기 때문에 ()를 제거하고 써야함
     //부득이하게 파라미터를 넣을거라면 arrow function 형태로 넣을것.    
@@ -46,7 +44,7 @@ export default function Nav(props) {
                     <div className={styles.button_box}>
                         <span className={styles.small_text}>계정이 있으신가요?</span>
                         <Link to={"/"}>
-                            <button className={styles.link_btn} onClick={handleBack}>
+                            <button className={styles.link_btn}>
                                 <div className={styles.link_text}>로그인</div>
                             </button>
                         </Link>                                

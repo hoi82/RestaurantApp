@@ -37,6 +37,7 @@
             font-weight: 300;
             color: $alert-color;
             margin: 8px 0px 0px 4px;
+            transition: opacity 0.2s ease-out;
         }
     
         input {
@@ -49,8 +50,10 @@
             border-radius: 3px;        
             margin: 4px 0px;
             padding-left: 8px;    
-            @include global_transition;
+            @include global_transition;            
+        }
 
+        .normal_input {
             &:hover {
                 border-color: $contrast-textbox-border-hover-color;
             }
@@ -58,6 +61,14 @@
             &:focus {
                 border-color: $contrast-textbox-border-active-color;
             }
+        }
+
+        .error_input {
+            border-color: $alert-color;
+        }
+
+        input:focus ~ .error_text {
+            opacity: 0;
         }
     }    
 

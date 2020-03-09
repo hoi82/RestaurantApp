@@ -1,5 +1,5 @@
-import regNaviInitial from "../stores/registerNavigation";
-import { NAVIGATE_ROOT, NAVIGATE_PAYMENT } from "../actions/registerNavigation";
+import regNaviInitial from "../../stores/register/registerNavigation";
+import { NAVIGATE_ROOT, NAVIGATE_PAYMENT } from "../../actions/register/registerNavigation";
 
 const regNavi = (state = regNaviInitial, action) => {
     switch (action.type) {

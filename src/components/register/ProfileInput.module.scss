@@ -2,7 +2,7 @@
 
 .profileInput {
     display: flex;
-    flex-flow: column;        
+    flex-flow: column-reverse;        
     justify-content: flex-start;    
     align-items: flex-start;
     margin-bottom: 16px;    
@@ -33,9 +33,10 @@
         color: $alert-color;
         font-weight: 600;
         margin-left: 8px;
+        transition: opacity 0.2s ease-out;
     }
 
-    & input {
+    .input {
         min-width: 400px;
         height: 48px;
         border: 1px solid $textbox-border-color;
@@ -53,6 +54,21 @@
 
         &:focus {
             border-color: $textbox-border-active-color;
+        }
+    }    
+
+    .input:focus ~ .header_box .error_text {
+        opacity: 0;
+    }
+
+    .input_error_border {
+        border-color: $alert-color;
+        transition: none;
+        &:hover {
+            border-color: $alert-color;
+        }
+        &:focus {
+            border-color: $alert-color;
         }
     }
 }    

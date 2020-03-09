@@ -1,25 +1,23 @@
 import React from 'react';
 import ProfileInput from './ProfileInput';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateProfile, validateProfile } from '../../actions/register';
-import Validator from '../../data/Validator';
+import { useDispatch } from 'react-redux';
+import { updateAddress, validateAddress } from '../../actions/register/profile';
 
-export default function AddressInput() {    
-    const address = useSelector((store) => store.register.address);
-    const error = useSelector((store) => store.register.errors.address);
+export default function AddressInput(props) {        
     const dispatch = useDispatch();
 
-    const handleChange = (value) => {
-        dispatch(updateProfile({address: value}));
+    const handleChange = (e) => {                
+        let value = e.target.value.trim();
+        dispatch(updateAddress(value));
     }
 
-    const handleValidate = () => {
-        dispatch(validateProfile("address"));
+    const handleBlur = (e) => {
+        dispatch(validateAddress());
     }
     
     return (
         <React.Fragment>
-            <ProfileInput header="주소" type="text" value={address} error={error} onChange={handleChange} onRefresh={handleValidate}/>
+            <ProfileInput header="주소" type="text" value={props.address} error={props.error} onInput={handleChange} onBlur={handleBlur}/>
         </React.Fragment>
     );    
 }

@@ -1,25 +1,23 @@
 import React from 'react';
 import ProfileInput from './ProfileInput';
-import { useSelector, useDispatch } from "react-redux";
-import { updateProfile, validateProfile } from '../../actions/register';
-import Validator from '../../data/Validator';
+import { useDispatch } from "react-redux";
+import { updateEmail, validateEmail } from '../../actions/register/profile';
 
-export default function EmailInput() {
-    const email = useSelector((store) => store.register.email);
-    const error = useSelector((store) => store.register.errors.email);
+export default function EmailInput(props) {      
     const dispatch = useDispatch();
 
-    const handleChange = (value) => {  
-        dispatch(updateProfile({email : value}));                        
-    }    
-
-    const handleValidate = () => {
-        dispatch(validateProfile("email"));
+    const handleChange = (e) => {                
+        let value = e.target.value.trim();
+        dispatch(updateEmail(value));        
+    }     
+    
+    const handleBlur = (e) => {
+        dispatch(validateEmail());
     }
     
     return (
         <React.Fragment>
-            <ProfileInput header="이메일" type="email" value={email} error={error} onChange={handleChange} onRefresh={handleValidate}/>
+            <ProfileInput header="이메일" type="email" value={props.email} error={props.error} onInput={handleChange} onBlur={handleBlur}/>
         </React.Fragment>
     );   
 }

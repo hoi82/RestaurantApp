@@ -5,15 +5,10 @@ import card from "../../image/visa.svg";
 import paypal from "../../image/paypal.svg";
 import fintech from "../../image/fintech.svg";
 import unknown from "../../image/test.svg";
-import { useSelector, useDispatch } from 'react-redux';
-import { navigatePayment } from '../../actions/registerNavigation';
 
-export default function PaymentItem(props) {
-    const payment = useSelector((store) => store.register.payments[props.id]); 
-    const dispatch = useDispatch();    
-    
+export default function PaymentItem(props) {        
     const renderLogo = () => {
-        switch (payment.kind) {
+        switch (props.payment.kind) {
             case Payments.CREDIT_CARD:
                 return <img src={card} alt="비자 카드 로고" className={styles.logo}/>;                
             case Payments.PAYPAL:
@@ -26,11 +21,11 @@ export default function PaymentItem(props) {
     }
 
     const renderInfo = () => {        
-        switch (payment.kind) {
+        switch (props.payment.kind) {
             case Payments.CREDIT_CARD:
-                return payment.detail.creditCard.number;                
+                return props.payment.number;                
             case Payments.PAYPAL:
-                return payment.detail.paypal.email;                
+                return props.payment.email;                
             case Payments.FINTECH:
                 return payment.id;                
             default:
@@ -38,16 +33,12 @@ export default function PaymentItem(props) {
         }
     }    
     
-    const handleEdit = (e) => {
-        switch (payment.kind) {
-            case Payments.CREDIT_CARD:
-                dispatch(navigatePayment("card", true, payment));       
-                break;
-            case Payments.PAYPAL:
-                dispatch(navigatePayment("paypal", true, payment));
-            default:
-                break;
-        }        
+    const handleEdit = (e) => {        
+        props.onEdit(props.payment);        
+    }
+
+    const handleRemove = (e) => {        
+        props.onRemove(props.payment.id);        
     }
     
     return (
@@ -60,19 +51,10 @@ export default function PaymentItem(props) {
                 <button className={styles.modify_btn} onClick={handleEdit}>
                     <span className={styles.btn_txt}>수정</span>
                 </button>
-                <button className={styles.remove_btn}>
+                <button className={styles.remove_btn} onClick={handleRemove}>
                     <span className={styles.btn_txt}>삭제</span>
                 </button>
             </div>    
         </div>
     );    
-}
-
-PaymentItem.defaultProps = {
-    info: {
-        kind: null,
-        cardNumber: "1111-1111-1111-1111",
-        email: "aaa@aaa.com",
-        id: "bbbb"
-    }
 }

@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from "prop-types";
 import Profile from "./Profile";
-import Payment from "./Payment";
+import PaymentContainer from './PaymentContainer';
 import styles from "./Content.module.scss";
 import { useSelector } from 'react-redux';
 
@@ -13,7 +12,7 @@ export default function Content(props) {
     //         localStorage.setItem("curContent", content);
     //     });                
     // }
-    const page = useSelector((store) => store.registerNavigation.root)
+    const page = useSelector((store) => store.navigation.root);     
     
     const renderContent = () => {        
         switch (page) {
@@ -21,7 +20,7 @@ export default function Content(props) {
                 return <Profile/>;
                 break;
             case "payment":
-                return <Payment/>;
+                return <PaymentContainer/>;
                 break;        
             default:
                 return null;

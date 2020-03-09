@@ -20,8 +20,10 @@
         border: 1px solid $contrast-textbox-border-color;
         border-radius: 3px;        
         margin: 4px 0px;  
-        @include global_transition;
-        
+        @include global_transition;            
+    }
+
+    .normal_input {
         &:hover {
             border-color: $contrast-textbox-border-hover-color;
         }
@@ -29,6 +31,10 @@
         &:focus {
             border-color: $contrast-textbox-border-active-color;
         }
+    }
+
+    .error_input {
+        border-color: $alert-color;        
     }
 
     div span {
@@ -42,8 +48,13 @@
     .error_text {
         font-weight: 300;
         color: $alert-color;
-        margin: 8px 0px 0px 4px;        
+        margin: 8px 0px 0px 4px;
+        transition: opacity 0.2s ease-out;
     }
+
+    input:focus ~ .error_text {
+        opacity: 0;
+    }    
 
     .logo {        
         width: 240px;

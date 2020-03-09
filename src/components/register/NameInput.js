@@ -1,25 +1,23 @@
 import React from 'react';
 import ProfileInput from './ProfileInput';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateProfile, validateProfile } from '../../actions/register';
-import Validator from '../../data/Validator';
+import { useDispatch } from 'react-redux';
+import { updateName, validateName } from '../../actions/register/profile';
 
-export default function NameInput() {   
-    const name = useSelector((store) => store.register.name);
-    const error = useSelector((store) => store.register.errors.name);
+export default function NameInput(props) {       
     const dispatch = useDispatch(); 
 
-    const handleChange = (value) => {
-        dispatch(updateProfile({name: value}));        
+    const handleChange = (e) => {
+        let value = e.target.value.trim();
+        dispatch(updateName(value));     
     }
 
-    const handleValidate = () => {
-        dispatch(validateProfile("name"));
+    const handleBlur = (e) => {
+        dispatch(validateName());
     }
     
     return (
         <React.Fragment>
-            <ProfileInput header="이름" type="text" value={name} error={error} onChange={handleChange} onRefresh={handleValidate}/>
+            <ProfileInput header="이름" type="text" value={props.name} error={props.error} onInput={handleChange} onBlur={handleBlur}/>
         </React.Fragment>
     );    
 }

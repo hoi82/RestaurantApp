@@ -5,8 +5,10 @@ import Dialog from "../common/Dialog";
 import { DialogMode } from "../../data/Variables";
 import styles from "./Register.module.scss";
 import TOS from './TOS';
-import { useDispatch, useSelector } from 'react-redux';
-import { validateAllProfile } from '../../actions/register';
+import { createStore } from 'redux';
+import register from '../../reducers/register/register';
+import { Provider } from 'react-redux';
+import { ErrorMessages } from '../../data/ErrorMessages';
 
 //NOTE: Nav에 함수를 던져주고 이 함수에서 Content의 Prop를 바꿔야함
 //props는 실패. React Component에는 property가 추가되지 않음.(not extensible objet error).ref를 이용해서 그런듯.
@@ -16,21 +18,31 @@ import { validateAllProfile } from '../../actions/register';
 //localstorage에 초기화할지 물어보는걸로 변경
 //Sessionstorage로 변경
 //최종: 그냥 상위페이지에서 state로 관리하는걸로 변경 -> 어차피 새로고쳐도 url path 기준으로 render되기 때문에.
-export default function Register(props) {    
-    const [curPage, setPage] = useState("profile");
+//여기에 Store를 구현하면 App 실행시 한번만 호출되기 때문에 컴포넌트가 랜더링 될때마다 호출되로록 변경
+
+export default function Register(props) { 
+    const store = createStore(register);      
     const [tosAgree, setTOSAgree] = useState(false);    
-    const dialogref = useRef(null);
-    const dispatch = useDispatch();
+    const dialogref = useRef(null);    
 
-    const changePage = (param) => {    
-        setPage(param);            
-    }        
+    const valid = (profile) => {
+        return (profile.emailError == ErrorMessages.CORRECT)
+            && (profile.passwordError == ErrorMessages.CORRECT)
+            && (profile.nameError == ErrorMessages.CORRECT)
+            && (profile.contactError == ErrorMessages.CORRECT)
+            && (profile.addressError == ErrorMessages.CORRECT);
+    }
 
-    const register = () => { 
-        dispatch(validateAllProfile());           
+    const handleRegister = () => {  
+        if (valid(store.getState().profile)) {
+
+        }
+        else {
+            let message = "개인 정보가 올바르지 않습니다. 개인 정보를 확인해주세요.";
+            dialogref.current.showDialog(DialogMode.ALERT, message, null, () => {console.log("dialog closed")});
+        }
         //NOTE:수동으로 route하는 방법.   
-        // this.props.history.push("/");
-        dialogref.current.showDialog(DialogMode.ALERT, "테스트", null, () => {console.log("dialog closed")});
+        // this.props.history.push("/");                
     }    
 
     const tosConfirm = (agreed) => {
@@ -43,20 +55,22 @@ export default function Register(props) {
     }
     
     return (
-        <div className={styles.register}>   
-            <div className={styles.panel}/> 
-            <div className={styles.container}>
-                {
-                    tosAgree ?     
-                        <React.Fragment>
-                            <Nav onRegister={register}></Nav>
-                            <Content></Content>                                            
-                            <Dialog ref={dialogref}/>
-                        </React.Fragment>                                        
-                        :
-                        <TOS onConfirm={tosConfirm}/>
-                }     
-            </div>                                            
-        </div>
+        <Provider store={store}>
+            <div className={styles.register}>   
+                <div className={styles.panel}/> 
+                <div className={styles.container}>
+                    {
+                        tosAgree ?     
+                            <React.Fragment>
+                                <Nav onRegister={handleRegister}></Nav>
+                                <Content></Content>                                            
+                                <Dialog ref={dialogref}/>
+                            </React.Fragment>                                        
+                            :
+                            <TOS onConfirm={tosConfirm}/>
+                    }     
+                </div>                                            
+            </div>
+        </Provider>        
     );
 }
