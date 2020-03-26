@@ -6,7 +6,7 @@ import { updatePayment, createPayment } from '../../actions/register/payments';
 import { navigatePayment } from '../../actions/register/registerNavigation';
 
 function PaypalContainer(props) {
-    const paypal = useSelector((store) => store.paypal);          
+    const paypal = useSelector((store) => store.register.paypal);          
     const dispatch = useDispatch();
 
     const handleClose = (e) => {

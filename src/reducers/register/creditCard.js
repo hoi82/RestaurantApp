@@ -24,7 +24,7 @@ const creditCard = (state = initialCreditCard, action) => {
             return Object.assign({}, state, { expireError: state.expireChanged ? Validator.validateExpire(state.expire) : state.expireError });
         case VALIDATE_CVC:
             return Object.assign({}, state, { cvcError: state.cvcChanged ? Validator.validateCVC(state.cvc) : state.cvcError });
-        case VALIDATE_CASHHOLDER:
+        case VALIDATE_CASHHOLDER:            
             return Object.assign({}, state, { cashHolderError: state.cashHolderChanged ? Validator.validateName(state.cashHolder) : state.cashHolderError });
         case REFRESH_CREDIT_CARD:      
             //NOTE:state를 변경하지 않고 새 오브젝트에 바로 넣어주면 event handler에서 이 액션을 호출할 경우 다시 랜더링이 되지 않음.
@@ -33,7 +33,7 @@ const creditCard = (state = initialCreditCard, action) => {
             state.numberError = obj.error;
             state.expireError = Validator.validateExpire(state.expire);
             state.cvcError = Validator.validateCVC(state.cvc);
-            state.cashHolderError = Validator.validateName(state.cashHolderError);            
+            state.cashHolderError = Validator.validateName(state.cashHolder);            
             return Object.assign({}, state);          
         case ASSIGN_CREDIT_CARD:
             return Object.assign({}, state, action.value);

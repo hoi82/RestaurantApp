@@ -7,10 +7,10 @@ import { updateNumber, updateExpire, updateCVC, updateCashHolder, validateNumber
 import { updatePayment, createPayment } from '../../actions/register/payments';
 
 export default function CreditCardContainer({edit = false}) {        
-    const credit = useSelector((store) => store.credit);    
+    const credit = useSelector((store) => store.register.credit);    
     const dispatch = useDispatch();      
     
-    const handleChange = (e) => {                
+    const handleChange = (e) => {                  
         switch (e.target.name) {
             case "number":                                
                 e.target.value = Formatter.formatCardNumber(e.target.value);
@@ -63,7 +63,7 @@ export default function CreditCardContainer({edit = false}) {
     }
 
     const handleAdd = () => {
-        dispatch(refreshCredit());        
+        dispatch(refreshCredit());                        
         if (credit.getValid()) {
             dispatch(createPayment(credit));
             dispatch(navigatePayment("list"));

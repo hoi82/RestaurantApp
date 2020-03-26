@@ -8,7 +8,7 @@ import AddressInput from './AddressInput';
 import { useSelector } from 'react-redux';
 
 export default function Profile() {
-    const profile = useSelector((store) => store.profile)
+    const profile = useSelector((store) => store.register.profile)
     return (
         <div className={styles.profile}>
             <div className={styles.panel}/>

@@ -12,7 +12,7 @@ export default function Content(props) {
     //         localStorage.setItem("curContent", content);
     //     });                
     // }
-    const page = useSelector((store) => store.navigation.root);     
+    const page = useSelector((store) => store.register.navigation.root);     
     
     const renderContent = () => {        
         switch (page) {

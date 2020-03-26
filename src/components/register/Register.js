@@ -1,14 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Nav from "./Nav";
 import Content from "./Content";
-import Dialog from "../common/Dialog";
 import { DialogMode } from "../../data/Variables";
 import styles from "./Register.module.scss";
 import TOS from './TOS';
-import { createStore } from 'redux';
-import register from '../../reducers/register/register';
-import { Provider } from 'react-redux';
-import { ErrorMessages } from '../../data/ErrorMessages';
+import { useDispatch, useSelector } from 'react-redux';
+import { showDialog } from '../../actions/common/dialog';
 
 //NOTE: Nav에 함수를 던져주고 이 함수에서 Content의 Prop를 바꿔야함
 //props는 실패. React Component에는 property가 추가되지 않음.(not extensible objet error).ref를 이용해서 그런듯.
@@ -20,26 +17,57 @@ import { ErrorMessages } from '../../data/ErrorMessages';
 //최종: 그냥 상위페이지에서 state로 관리하는걸로 변경 -> 어차피 새로고쳐도 url path 기준으로 render되기 때문에.
 //여기에 Store를 구현하면 App 실행시 한번만 호출되기 때문에 컴포넌트가 랜더링 될때마다 호출되로록 변경
 
-export default function Register(props) { 
-    const store = createStore(register);      
+export default function Register(props) {     
     const [tosAgree, setTOSAgree] = useState(false);    
-    const dialogref = useRef(null);    
-
-    const valid = (profile) => {
-        return (profile.emailError == ErrorMessages.CORRECT)
-            && (profile.passwordError == ErrorMessages.CORRECT)
-            && (profile.nameError == ErrorMessages.CORRECT)
-            && (profile.contactError == ErrorMessages.CORRECT)
-            && (profile.addressError == ErrorMessages.CORRECT);
-    }
+    const dispatch = useDispatch();
+    const profile = useSelector((store) => store.register.profile);
+    const payments = useSelector((store) => store.register.payments);    
 
     const handleRegister = () => {  
-        if (valid(store.getState().profile)) {
-
+        let valid = profile.getValid();
+        if (valid) {
+            fetch("http://localhost:3005/api/users",{
+                method: "POST",
+                headers: {                
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(
+                    {
+                        email: profile.email,
+                        password: profile.password,
+                        name: profile.name,
+                        contact: profile.contact,
+                        address: profile.address,
+                        payments: payments.list
+                    }
+                )    
+            }).then((res) => res.json()).then((data) => {
+                if (data.success) {
+                    dispatch(showDialog({
+                        mode: DialogMode.SUCCESS,
+                        content: "가입을 축하드립니다. \r\n 닫기를 누르시면 로그인 화면으로 이동합니다.",
+                        onClose: () => props.history.replace("/login")
+                    }))
+                }
+                else {
+                    dispatch(showDialog({
+                        mode: DialogMode.ALERT,
+                        content: "서버에서 에러가 발생했습니다."
+                    }))
+                }
+            }).catch(dispatch(showDialog({
+                mode: DialogMode.ALERT,
+                content: "서버로 전송하던 도중 에러가 발생했습니다."
+            })))
         }
         else {
-            let message = "개인 정보가 올바르지 않습니다. 개인 정보를 확인해주세요.";
-            dialogref.current.showDialog(DialogMode.ALERT, message, null, () => {console.log("dialog closed")});
+            let message = "개인 정보가 올바르지 않습니다. 개인 정보를 확인해주세요.";            
+            dispatch(showDialog({
+                mode: DialogMode.ALERT,
+                content: message,
+                onClose: () => {console.log("dialog closed")}
+            }));
         }
         //NOTE:수동으로 route하는 방법.   
         // this.props.history.push("/");                
@@ -54,23 +82,20 @@ export default function Register(props) {
         }
     }
     
-    return (
-        <Provider store={store}>
-            <div className={styles.register}>   
-                <div className={styles.panel}/> 
-                <div className={styles.container}>
-                    {
-                        tosAgree ?     
-                            <React.Fragment>
-                                <Nav onRegister={handleRegister}></Nav>
-                                <Content></Content>                                            
-                                <Dialog ref={dialogref}/>
-                            </React.Fragment>                                        
-                            :
-                            <TOS onConfirm={tosConfirm}/>
-                    }     
-                </div>                                            
-            </div>
-        </Provider>        
+    return (        
+        <div className={styles.register}>   
+            <div className={styles.panel}/> 
+            <div className={styles.container}>
+                {
+                    tosAgree ?     
+                        <React.Fragment>
+                            <Nav onRegister={handleRegister}></Nav>
+                            <Content></Content>                                                                        
+                        </React.Fragment>                                        
+                        :
+                        <TOS onConfirm={tosConfirm}/>
+                }     
+            </div>                                            
+        </div>        
     );
 }

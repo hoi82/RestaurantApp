@@ -1,11 +1,9 @@
 import React from 'react';
 import ProfileInput from './ProfileInput';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateContact, validateContact } from '../../actions/register/profile';
 
-export default function ContactInput() {    
-    const contact = useSelector((store) => store.profile.contact);    
-    const error = useSelector((store) => store.profile.contactError);    
+export default function ContactInput(props) {        
     const dispatch = useDispatch();
 
     const handleChange = (e) => {                
@@ -19,7 +17,7 @@ export default function ContactInput() {
     
     return (
         <React.Fragment>
-            <ProfileInput header="연락처" type="text" value={contact} error={error} onInput={handleChange} onBlur={handleBlur}/>
+            <ProfileInput header="연락처" type="text" value={props.contact} error={props.error} onInput={handleChange} onBlur={handleBlur}/>
         </React.Fragment>
     );    
 }

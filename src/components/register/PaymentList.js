@@ -4,7 +4,7 @@ import box from "../../image/box.svg";
 import { useSelector } from 'react-redux';
 
 export default function PaymentList(props) {
-    const list = useSelector((store) => store.payments.list);    
+    const list = useSelector((store) => store.register.payments.list);    
 
     //NOTE:List Render 일반적인 방법.state는 사용할수 없음
     // list = this.state.list.map((item, i) => {

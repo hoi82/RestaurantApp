@@ -1,37 +1,60 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import Dialog from "../common/Dialog";
-import { DialogMode } from "../../data/Variables";
 import styles from "./Login.module.scss";
 import logo from "../../image/login.svg";
+import { showDialog } from '../../actions/common/dialog';
+import { DialogMode } from '../../data/Variables';
+import { useDispatch } from 'react-redux';
 
-export default function Login() {    
+export default function Login(props) {    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
-    const dialogRef = useRef(null);    
+    const dispatch = useDispatch();
 
     const sendInfoByEmail = () => {
         //DB에 일치하는 주소가 있으면 보내고
-        //없으면 다이얼로그
-
-        let sent = false;
-        if (sent) {
-            dialogRef.current.showDialog(DialogMode.SUCCESS, "입력하신 이메일 주소로 비밀번호를 전송했습니다.")
-        }
-        else {
-            dialogRef.current.showDialog(DialogMode.ALERT, "가입되지 않은 이메일 주소입니다.\r\n이메일 주소를 확인해주세요.");
-        }        
+        //없으면 다이얼로그        
+        // let sent = true;
+        // if (sent) {            
+        //     dispatch(showDialog({
+        //         mode: DialogMode.SUCCESS,
+        //         content: "입력하신 이메일 주소로 비밀번호를 전송했습니다."
+        //     }));
+        // }
+        // else {            
+        //     dispatch(showDialog({
+        //         mode: DialogMode.ALERT,
+        //         content: "가입되지 않은 이메일 주소입니다. \r\n이메일 주소를 확인해주세요."                
+        //     }));
+        // }        
     }
 
-    const login = () => {
-        let valid = false;
-        if (valid) {
-
-        }
-        else {
-            dialogRef.current.showDialog(DialogMode.ALERT, "존재하지 않는 이메일 주소이거나 잘못된 비밀번호입니다.\r\n이메일 주소 혹은 비밀번호를 확인해주세요.")
-        }
+    const login = () => {        
+        fetch(`http://localhost:3005/api/users/${email}/${password}/`, {
+            method: "POST",              
+            headers: {                
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            credentials: "include",            
+        }).then((res) => res.json()).then((data) => {
+            if (data.sid) {
+                localStorage.setItem("sid", data.sid);
+                props.history.push("/");
+            }   
+            else {
+                dispatch(showDialog({
+                    mode: DialogMode.ALERT,
+                    content: "가입되지 않은 이메일 주소이거나 잘못된 비밀번호입니다.\r\n이메일 주소 혹은 비밀번호를 확인해주세요."
+                }))
+            }   
+        }).catch((error) => {
+            dispatch(showDialog({
+                mode: DialogMode.ALERT,
+                content: `에러가 발생했습니다.\r\n${error}`
+            }))
+        });                  
     }    
 
     const emailChanged = (e) => {
@@ -95,8 +118,7 @@ export default function Login() {
                         </div>
                     </div>
                 </div>                
-            </div>
-            <Dialog ref={dialogRef}></Dialog>
+            </div>            
         </div>            
     );    
 }

@@ -3,13 +3,14 @@ import Payment from './Payment';
 import { useSelector, useDispatch } from 'react-redux';
 import { deletePayment } from '../../actions/register/payments';
 import { navigatePayment } from '../../actions/register/registerNavigation';
-import { Payments } from '../../data/Variables';
+import { Payments, DialogMode } from '../../data/Variables';
 import { assignCredit, newCreditCard } from '../../actions/register/creditCard';
 import { newPaypal, assignPaypal } from '../../actions/register/paypal';
+import { showDialog } from '../../actions/common/dialog';
 
 export default function PaymentContainer(props) {
-    const payments = useSelector((store) => store.payments.list);
-    const page = useSelector((store) => store.navigation.payment);
+    const payments = useSelector((store) => store.register.payments.list);
+    const page = useSelector((store) => store.register.navigation.payment);
     const dispatch = useDispatch();
 
     const onEditItem = (item) => {                                  
@@ -30,8 +31,16 @@ export default function PaymentContainer(props) {
         dispatch(deletePayment(index));        
     }
 
-    const handleSelect = () => {
-        dispatch(navigatePayment("select"));
+    const handleSelect = () => {        
+        if (payments.length <= 3) {
+            dispatch(navigatePayment("select"));
+        }        
+        else {
+            dispatch(showDialog({
+                mode: DialogMode.ALERT,
+                coontent: "결재 정보는 최대 3개까지 가능합니다."
+            }))
+        }
     }
 
     const handleCreate = (kind) => {              

@@ -2,11 +2,13 @@ const path = require("path");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
-const GetStyleLoader = (mode, styleRegex) => {
+const GetStyleLoader = (mode, styleRegex) => {  
+    const pattern = styleRegex.source;        
     const loader = { test: styleRegex };
-    switch (styleRegex) {
-        case /\.css$/:
+    switch (pattern) {
+        case "\\.css$":
             Object.assign(loader, 
                 {
                     use: [ 
@@ -15,7 +17,7 @@ const GetStyleLoader = (mode, styleRegex) => {
                     ]
                 });
             break;
-        case /\.scss$/:
+        case "\\.scss$":
             Object.assign(loader, 
                 {
                     use: [
@@ -34,11 +36,13 @@ const GetStyleLoader = (mode, styleRegex) => {
         default:
             break;
     };
+    console.log(loader);
     return loader;
 }
 
-module.exports = function(mode, args) {
-    const _mode = mode;
+module.exports = function(env, args) {   
+    console.log(path.resolve(__dirname, "dist", "assets"));   
+    const _mode = args.mode;
     return {
         mode: _mode === "production" ? "production" : "development",        
 
@@ -90,18 +94,7 @@ module.exports = function(mode, args) {
                         }
                     ]
                 },
-                GetStyleLoader(_mode, /\.css$/),
-                {
-                    test: /\.scss$/,
-                    use: [mode === "production" ? MiniCssExtractPlugin.loader : "style-loader",
-                        {
-                            loader: "css-loader",
-                            options: {
-                                importLoaders: 1,
-                                modules: true
-                            }
-                        }, "sass-loader"]
-                },
+                GetStyleLoader(_mode, /\.scss$/),                
                 {
                     test: /\.(png|jpg|svg)/,
                     use: [
@@ -132,15 +125,12 @@ module.exports = function(mode, args) {
                 filename: "index.html"
             }),
             new MiniCssExtractPlugin({
-                filename: "assets/[hash].css",
+                // outputPath: path.resolve(__dirname, "dist", "assets"),
+                //outputpath 적용안됨
+                filename: "assets/[chunkhash].css",
             }),
-            new CleanWebpackPlugin()
-        ],
-        optimization: {
-            splitChunks: {
-                chunks: "all",
-                name: "[chunkhash]"
-            }
-        }
+            new CleanWebpackPlugin(),
+            new BundleAnalyzerPlugin()
+        ],        
     }
 }
