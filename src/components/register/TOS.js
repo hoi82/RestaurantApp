@@ -2,9 +2,9 @@ import React from 'react';
 import styles from "./TOS.module.scss";
 
 export default function TOS(props) {    
+    console.log("tos rendering");
     return (
-        <div className={styles.tos}>
-        
+        <div className={styles.tos}>        
             <div className={styles.header_box}>
                 <span className={styles.title}>이용약관</span>
                 <span className={styles.sub_title}>우리는 이런 것들을 지키고 있어요!</span>

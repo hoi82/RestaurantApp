@@ -1,0 +1,24 @@
+{
+    "env": {
+        "development": {
+            "plugins": [
+
+            ]
+        }
+    },
+    "plugins": [
+        "@loadable/babel-plugin"
+    ],
+    "presets": [        
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "browsers": "last 2 versions",
+                    "node": "current"                    
+                }
+            }
+        ],
+        "@babel/preset-react"
+    ]
+}

@@ -1,8 +1,10 @@
 import React from 'react';
-import Profile from "./Profile";
-import PaymentContainer from './PaymentContainer';
 import styles from "./Content.module.scss";
 import { useSelector } from 'react-redux';
+import loadable from '@loadable/component';
+
+const Profile = loadable(() => import("./Profile"));
+const PaymentContainer = loadable(() => import("./PaymentContainer"));
 
 export default function Content(props) {    
     //NOTE: setState는 비동기다!!!절대 잊지 말것!

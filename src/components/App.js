@@ -1,24 +1,31 @@
 import React from "react";
-import { Route, BrowserRouter} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import styles from "./App.module.scss";
-import bg from "../image/wall.jpg";
 import Dialog from "./common/Dialog";
-import loadable from "@loadable/component";
+import routes from "../routes";
 
-const Main = loadable(() => import("./main/Main"));
-const Login = loadable(()=> import("./login/Login"));
-const Register = loadable(()=> import("./register/Register"));
-
-export default function App() {
-    return (
-        <BrowserRouter>
-            <div className={styles.box}>
-                <img src={bg} className={styles.bgimg}></img>
-                <Route exact path="/login" component={Login}/>
-                <Route path="/register" component={Register}/>   
-                <Route path="/" component={Main}/>
-                <Dialog/>
-            </div>
-        </BrowserRouter>            
+export default function App(props) {    
+    return (        
+        <div className={styles.box}>
+            <img className={styles.bgimg}></img>            
+            <Switch>
+                {
+                    routes.map((route, i) => (
+                        <Route
+                            key={i}
+                            exact={!!route.exact}
+                            path={route.path}
+                            render={ rednerProps => (<route.component {...props} {...rednerProps}/>) }
+                        />
+                    ))
+                }
+            </Switch>
+            <Dialog/>
+        </div>        
     );    
+}
+
+if (module.hot) {
+    console.log("hot");
+    module.hot.accept();
 }

@@ -51,6 +51,21 @@ div {
             opacity: 0.2;
         }
 
+        .logo_alert {
+            @extend .logo;
+            content: url("../../image//alert.svg");
+        }
+
+        .logo_yesorno {
+            @extend .logo;
+            content: url("../../image/true.svg");
+        }
+
+        .logo_confirm {
+            @extend .logo;
+            content: url("../../image/success.svg");
+        }
+
         .content_box {
             font-size: 14px;
             font-weight: 600;

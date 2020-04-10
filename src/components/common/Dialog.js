@@ -1,13 +1,9 @@
 import React from 'react';
 import { DialogMode } from "../../data/Variables";
 import styles from "./Dialog.module.scss";
-import alert from "../../image/alert.svg";
-import success from "../../image/success.svg";
-import yesorno from "../../image/true.svg";
 import { useSelector, useDispatch } from 'react-redux';
 import { closeDialog } from '../../actions/common/dialog';
 
-//TODO:함수형 컴포넌트로 바꿀것, Redux를 이용해 Global하게 바꿀것. redux 구조는 구현해놨음
 export default function Dialog(props) {
     const dialog = useSelector((store) => store.shared.dialog);     
     const dispatch = useDispatch();       
@@ -20,14 +16,14 @@ export default function Dialog(props) {
 
     const renderBg = () => {   
         switch (dialog.mode) {
-            case DialogMode.ALERT:
-                return <img src={alert} className={styles.logo}/>;
+            case DialogMode.ALERT:                
+                return <img className={styles.logo_alert}/>;
                 break;
             case DialogMode.CONFIRM:
-                return <img src={yesorno} className={styles.logo}/>;
+                return <img className={styles.logo_yesorno}/>;
                 break;
             case DialogMode.SUCCESS:
-                return <img src={success} className={styles.logo}/>;
+                return <img className={styles.logo_confirm}/>;
                 break;
             default:
                 break;

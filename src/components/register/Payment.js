@@ -1,12 +1,14 @@
 import React from 'react';
 import styles from "./Payment.module.scss";
 import icon from "../../image/addPaymentIcon.svg";
-import PaymentList from './PaymentList';
-import PaymentItem from './PaymentItem';
-import PaymentSelect from './PaymentSelect';
-import FintechInput from './FintechInput';
-import CreditCardContainer from './CreditCardContainer';
-import PaypalContainer from './PaypalContainer';
+import loadable from '@loadable/component';
+
+const PaymentList = loadable(() => import("./PaymentList"));
+const PaymentItem = loadable(() => import("./PaymentItem"));
+const PaymentSelect = loadable(() => import("./PaymentSelect"));
+const CreditCardContainer = loadable(() => import("./CreditCardContainer"));
+const PaypalContainer = loadable(() => import("./PaypalContainer"));
+const FintechInput = loadable(() => import("./FintechInput"));
 
 export default function Payment(props) {
     const renderContent = (page) => {

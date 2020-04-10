@@ -43,7 +43,7 @@ export default function Nav(props) {
                     </button>
                     <div className={styles.button_box}>
                         <span className={styles.small_text}>계정이 있으신가요?</span>
-                        <Link to={"/"}>
+                        <Link to={"/login"}>
                             <button className={styles.link_btn}>
                                 <div className={styles.link_text}>로그인</div>
                             </button>

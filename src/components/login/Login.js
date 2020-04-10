@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import styles from "./Login.module.scss";
-import logo from "../../image/login.svg";
 import { showDialog } from '../../actions/common/dialog';
 import { DialogMode } from '../../data/Variables';
 import { useDispatch } from 'react-redux';
+import axios from "axios";
 
 export default function Login(props) {    
     const [email, setEmail] = useState("");
@@ -30,31 +30,15 @@ export default function Login(props) {
         // }        
     }
 
-    const login = () => {        
-        fetch(`http://localhost:3005/api/users/${email}/${password}/`, {
-            method: "POST",              
-            headers: {                
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            credentials: "include",            
-        }).then((res) => res.json()).then((data) => {
-            if (data.sid) {
-                localStorage.setItem("sid", data.sid);
-                props.history.push("/");
-            }   
-            else {
-                dispatch(showDialog({
-                    mode: DialogMode.ALERT,
-                    content: "가입되지 않은 이메일 주소이거나 잘못된 비밀번호입니다.\r\n이메일 주소 혹은 비밀번호를 확인해주세요."
-                }))
-            }   
-        }).catch((error) => {
-            dispatch(showDialog({
-                mode: DialogMode.ALERT,
-                content: `에러가 발생했습니다.\r\n${error}`
-            }))
-        });                  
+    const login = () => {     
+        //sid있을 경우 메인으로 이동, 없으면 경고 팝업, 에러시 에러 팝업
+        // axios.post(`http://localhost:3005/api/users/${email}/${password}/`, {
+        //     headers: {
+        //         "Accept": "application/json",
+        //         "Content-Type": "application/json",
+        //     },
+        //     withCredentials: true
+        // }).then((res) => {}).catch((err) => console.log(err));        
     }    
 
     const emailChanged = (e) => {
@@ -74,7 +58,7 @@ export default function Login(props) {
             <div className={styles.login_container}>
                 <div className={styles.box}>
                     <div className={styles.item_container}>
-                        <img src={logo} alt="로고" className={styles.logo}></img>                     
+                        <img alt="로고" className={styles.logo}></img>                     
                     </div>
                     <div className={styles.item_container}>
                         <span className={styles.sub_title}>
@@ -121,4 +105,4 @@ export default function Login(props) {
             </div>            
         </div>            
     );    
-}
+};
