@@ -1,6 +1,6 @@
 import initialPaypal from "../../stores/register/paypal";
 import { UPDATE_EMAIL, UPDATE_PASSWORD, VALIDATE_EMAIL, VALIDATE_PASSWORD, ASSIGN_PAYPAL, NEW_PAYPAL, REFRESH_PAYPAL } from "../../actions/register/paypal";
-import Validator from "../../data/Validator";
+import Validator from "../../utils/Validator";
 
 const paypal = (state = initialPaypal, action) => {
     switch (action.type) {

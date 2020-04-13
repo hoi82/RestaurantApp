@@ -1,12 +1,36 @@
-import { applyMiddleware, createStore } from "redux"
+import { applyMiddleware, createStore, compose } from "redux"
 import app from "../reducers";
+import { isServer, isDevelopment } from "../config/env";
+import { createMemoryHistory, createBrowserHistory } from "history";
+import { routerMiddleware } from "connected-react-router";
 
-export const configureStore = (initialstate = null) => {
-    const middlewares = [];
-    const middleware = applyMiddleware(...middlewares);
-    const store =  initialstate == null 
-        ? createStore(app, middleware)
-        : createStore(app, initialstate, middleware);
+export const configureStore = ({ initialState, url }) => {
+    const history = isServer ? createMemoryHistory({
+        initialEntries: [url || "/"],
+    })
+    : createBrowserHistory();
+    const middlewares = [routerMiddleware(history)];
+    const composeEnhancers = (isDevelopment && !isServer && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+    compose;
+    const enhancers =  composeEnhancers(
+        applyMiddleware(...middlewares)
+    );
+    const store = createStore(app(history),
+        initialState || {},
+        enhancers
+    );    
 
-    return store;
+    if (module.hot) {
+        module.hot.accept("../reducers/", () => {
+            try {
+                const nextReducer = require("../reducers").default;
+
+                store.replaceReducer(nextReducer(history));
+            } catch (error) {
+                console.log(`🥵 Reducer hot reloading error`);
+            }
+        })
+    }
+
+    return { store, history };
 } 

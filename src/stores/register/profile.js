@@ -1,4 +1,4 @@
-import { ErrorMessages } from "../../data/ErrorMessages";
+import { ErrorMessages } from "../../types/ErrorMessages";
 
 const initialProfile = {
     email: "",    

@@ -1,6 +1,6 @@
 import initialProfile from "../../stores/register/profile";
 import { UPDATE_EMAIL, UPDATE_PASSWORD, UPDATE_NAME, UPDATE_CONTACT, UPDATE_ADDRESS, VALIDATE_EMAIL, VALIDATE_PASSWORD, VALIDATE_NAME, VALIDATE_CONTACT, VALIDATE_ADDRESS, REFRESH_PROFILE } from "../../actions/register/profile";
-import Validator from "../../data/Validator";
+import Validator from "../../utils/Validator";
 
 const profile = (state = initialProfile, action) => {    
     switch (action.type) {        

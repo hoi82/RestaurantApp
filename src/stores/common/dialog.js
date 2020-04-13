@@ -1,4 +1,4 @@
-import { DialogMode } from "../../data/Variables";
+import { DialogMode } from "../../types/Variables";
 
 const initDialog = {
     show: false,

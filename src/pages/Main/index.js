@@ -1,8 +1,8 @@
 import React from "react";
 import loadable from "@loadable/component";
 
-const Login = loadable(() => import("./Login"));
+const Main = loadable(() => import("./Main"));
 
 export default (props) => (
-    <Login {...props}/>
+    <Main {...props}/>
 );

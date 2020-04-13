@@ -1,5 +1,5 @@
-import { ErrorMessages } from "../../data/ErrorMessages";
-import { Payments } from "../../data/Variables";
+import { ErrorMessages } from "../../types/ErrorMessages";
+import { Payments } from "../../types/Variables";
 
 const initialCreditCard = {
     id: 0,

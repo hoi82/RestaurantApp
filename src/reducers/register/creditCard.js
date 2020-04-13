@@ -1,6 +1,6 @@
 import initialCreditCard from "../../stores/register/creditCard";
 import { UPDATE_NUMBER, UPDATE_EXPIRE, UPDATE_CVC, UPDATE_CASHHOLDER, VALIDATE_NUMBER, VALIDATE_EXPIRE, VALIDATE_CVC, REFRESH_CREDIT_CARD, VALIDATE_CASHHOLDER, ASSIGN_CREDIT_CARD, NEW_CREDIT_CARD } from "../../actions/register/creditCard";
-import Validator from "../../data/Validator";
+import Validator from "../../utils/Validator";
 
 const creditCard = (state = initialCreditCard, action) => {    
     switch (action.type) {
