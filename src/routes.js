@@ -26,5 +26,9 @@ export default addExact([
     {
         path: endpoint.register,
         component: Register
-    },    
+    },  
+    {
+        path:endpoint.home,
+        component: Main
+    }  
 ]);

@@ -41,7 +41,7 @@ export default function PaymentSelect(props) {
         <div className={styles.select}>
             <PaymentSelectItem value="card" icon={card} header="신용카드" onCreate={handleCreateCredit}/>
             <PaymentSelectItem value="paypal" icon={paypal} header="Paypal" onCreate={handleCreatePaypal}/>
-            <PaymentSelectItem value="fintech" icon={fintech} header="전자결제" />
+            <PaymentSelectItem value="fintech" icon={fintech} header="전자결제"/>
             <button value="list" className={styles.back_btn} onClick={handleBack}>
                 <span className={styles.btn_text}>돌아가기</span>
             </button>                

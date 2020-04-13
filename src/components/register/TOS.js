@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from "./TOS.module.scss";
 
-export default function TOS(props) {    
-    console.log("tos rendering");
+export default function TOS(props) {            
     return (
         <div className={styles.tos}>        
             <div className={styles.header_box}>
@@ -11,7 +10,7 @@ export default function TOS(props) {
             </div>
             <div className={styles.content_box}>
                 <span className={styles.content}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero ex, tristique id lobortis at, eleifend quis diam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut nec pharetra urna. Donec non metus nec risus condimentum interdum et eu ex. Sed ut dapibus nisl, a congue eros. Aenean at sollicitudin tortor, et cursus ligula. Aliquam porta viverra velit sit amet interdum. Aliquam non lacus non sapien rhoncus consequat. Proin tempor facilisis purus, sit amet gravida erat malesuada eget.
+                {`Lorem ipsum dolor sit amet, consectetur adipiscing elit. In libero ex, tristique id lobortis at, eleifend quis diam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut nec pharetra urna. Donec non metus nec risus condimentum interdum et eu ex. Sed ut dapibus nisl, a congue eros. Aenean at sollicitudin tortor, et cursus ligula. Aliquam porta viverra velit sit amet interdum. Aliquam non lacus non sapien rhoncus consequat. Proin tempor facilisis purus, sit amet gravida erat malesuada eget.
 
                 Suspendisse ac consectetur nisi, eu lobortis ante. Donec interdum nunc eu viverra malesuada. Nullam quis mattis mauris. Nunc elementum vel eros sed ultricies. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla facilisi. Vestibulum tempor augue quis tellus luctus, non pulvinar turpis placerat. Curabitur tincidunt neque porttitor ligula viverra posuere. Integer risus nibh, feugiat in placerat non, pulvinar non dui.
 
@@ -29,7 +28,7 @@ export default function TOS(props) {
 
                 Pellentesque elementum lectus vitae nibh varius sodales. Maecenas vehicula sapien in vehicula finibus. Phasellus tincidunt bibendum metus a egestas. Nam malesuada, risus quis blandit pretium, diam ipsum porttitor nunc, a gravida massa lectus in lorem. Nulla volutpat arcu nec metus auctor, a mollis nibh commodo. Cras lorem nisl, mollis et sollicitudin et, aliquam nec risus. Maecenas ultricies velit in nibh dapibus vehicula ac sit amet enim. Nullam rhoncus convallis dolor, in elementum arcu. Quisque imperdiet hendrerit nunc nec vehicula. Nullam nec auctor mi. Sed mollis massa sapien, non lobortis nunc viverra in. Aliquam interdum aliquam est quis ultrices. Nam et eleifend ligula.
 
-                Fusce tristique vehicula tempor. Aliquam convallis ultricies consequat. Mauris vel est vel sem fermentum gravida. Curabitur nec urna neque. Maecenas gravida, nulla et scelerisque luctus, augue diam scelerisque ante, vel ultricies libero purus et massa. In elit elit, interdum ut sagittis id, posuere id dolor. Nunc tortor velit, luctus sed turpis ut, egestas tempor odio. Ut suscipit, nisl ac feugiat feugiat, mauris mi tempor turpis, quis venenatis augue ex eu sem.
+                Fusce tristique vehicula tempor. Aliquam convallis ultricies consequat. Mauris vel est vel sem fermentum gravida. Curabitur nec urna neque. Maecenas gravida, nulla et scelerisque luctus, augue diam scelerisque ante, vel ultricies libero purus et massa. In elit elit, interdum ut sagittis id, posuere id dolor. Nunc tortor velit, luctus sed turpis ut, egestas tempor odio. Ut suscipit, nisl ac feugiat feugiat, mauris mi tempor turpis, quis venenatis augue ex eu sem.`}
                 </span>
             </div>
             <div className={styles.button_box}>

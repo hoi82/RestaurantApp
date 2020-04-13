@@ -23,9 +23,4 @@ export default function App(props) {
             <Dialog/>
         </div>        
     );    
-}
-
-if (module.hot) {
-    console.log("hot");
-    module.hot.accept();
-}
+};

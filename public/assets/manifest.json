@@ -15,8 +15,6 @@
   "./dist/PaypalContainer.js": "/assets/PaypalContainer.js",
   "./dist/Profile.css": "/assets/Profile.css",
   "./dist/Profile.js": "/assets/Profile.js",
-  "./dist/TOS.css": "/assets/TOS.css",
-  "./dist/TOS.js": "/assets/TOS.js",
   "./dist/components-login-Login.css": "/assets/components-login-Login.css",
   "./dist/components-login-Login.js": "/assets/components-login-Login.js",
   "./dist/components-main-Main.js": "/assets/components-main-Main.js",

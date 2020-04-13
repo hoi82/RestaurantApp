@@ -6,6 +6,7 @@ import styles from "./Register.module.scss";
 import { useDispatch, useSelector } from 'react-redux';
 import { showDialog } from '../../actions/common/dialog';
 import loadable from '@loadable/component';
+import TOS from "./TOS";
 
 //NOTE: Nav에 함수를 던져주고 이 함수에서 Content의 Prop를 바꿔야함
 //props는 실패. React Component에는 property가 추가되지 않음.(not extensible objet error).ref를 이용해서 그런듯.
@@ -17,16 +18,14 @@ import loadable from '@loadable/component';
 //최종: 그냥 상위페이지에서 state로 관리하는걸로 변경 -> 어차피 새로고쳐도 url path 기준으로 render되기 때문에.
 //여기에 Store를 구현하면 App 실행시 한번만 호출되기 때문에 컴포넌트가 랜더링 될때마다 호출되로록 변경
 
-const TOS = loadable(()=> import("./TOS"));
-
 export default function Register(props) {     
     const [tosAgree, setTOSAgree] = useState(false);    
     const dispatch = useDispatch();
     const profile = useSelector((store) => store.register.profile);
-    const payments = useSelector((store) => store.register.payments);    
+    const payments = useSelector((store) => store.register.payments);        
 
-    const renderContent = () => {
-        return tosAgree ?     
+    const renderContent = () => {                    
+        return tosAgree ? 
         <React.Fragment>
             <Nav onRegister={handleRegister}></Nav>
             <Content></Content>                                                                        
@@ -35,7 +34,7 @@ export default function Register(props) {
         <TOS onConfirm={tosConfirm}/>;
     }
 
-    const handleRegister = () => {  
+    const handleRegister = () => {          
         let valid = profile.getValid();
         if (valid) {
             fetch("http://localhost:3005/api/users",{
@@ -92,16 +91,14 @@ export default function Register(props) {
         else {
             props.history.goBack();            
         }
-    }
-
-    console.log("register render");
+    }    
     
     return (        
         <div className={styles.register}>   
             <div className={styles.panel}/> 
             <div className={styles.container}>
-                { renderContent() }     
+                { renderContent() }                
             </div>                                            
         </div>        
-    );
+    );    
 }

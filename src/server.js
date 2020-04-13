@@ -3,7 +3,6 @@ import { joinPath } from "./utils/paths";
 import { isDevelopment, isProduction } from "./config/env";
 import { ChunkExtractor } from "@loadable/server";
 import serveFavicon from "serve-favicon";
-import url from "url";
 import App from "./components/App";
 import { port } from "./config/url";
 import { StaticRouter } from "react-router-dom";
@@ -26,7 +25,7 @@ const getExtractor = () => {
 const loadComponents = (branch) => {
     return Promise.all(
         branch.map(({route}) => {
-            if (route.component.load) {
+            if (route.component.load) {                                
                 return route.component.load();
             }
             return Promise.resolve();
@@ -68,8 +67,8 @@ if(isDevelopment) {
     const compiler = webpack(webpackClientConfig);
 
     app.use(webpackDevMiddleware(compiler, {
-        logLevel: "silent",
-        stats: "minimal",
+        // logLevel: "silent",
+        stats: "minimal",        
         publicPath: webpackClientConfig.output.publicPath,
         hot: true,
         serverSideRender: true,
@@ -88,33 +87,14 @@ app.get("*", async (req, res) => {
     //NOTE: 앱 안에 route를 넣어놓으면 리로드시 url 강제 이동됨.
     //서버 안에서 주소에 맞는 모듈을 찾아서 넣어주기
     const store = configureStore();
-    const branch = matchRoutes(routes, req.path);    
-
-    //branch(/register)
-    // [
-    //     {
-    //       route: { path: '/register', component: [Object], exact: true },
-    //       match: { path: '/register', url: '/register', isExact: true, params: {} }
-    //     }
-    //   ]
+    const branch = matchRoutes(routes, req.path);        
     
-    const loadedComponents = await loadComponents(branch);
-
-    //loadedComponent(/register)
-    //[ { default: [Function: Register] } ]    
+    const loadedComponents = await loadComponents(branch);    
 
     const branchWithLoadedComponents = getBranchWithLoadedComponent(
         branch,
         loadedComponents
-    );    
-
-    //branchwithLoadedComponent(/login)
-    // [
-    //     {
-    //       route: { path: '/login', component: [Function: Login], exact: true },
-    //       match: { path: '/login', url: '/login', isExact: true, params: {} }
-    //     }
-    //   ]
+    );        
 
     const loadedBranchData = getLoadedBranchData(
         branchWithLoadedComponents,
@@ -135,17 +115,16 @@ app.get("*", async (req, res) => {
         );
 
         const jsx = extractor.collectChunks(app);
-        const content = renderToString(jsx);
-        
+        const content = renderToString(jsx);        
         const scriptTags = extractor.getScriptTags();
         const styleTags = extractor.getStyleTags();
-        const linkTags = extractor.getLinkTags();
+        const linkTags = extractor.getLinkTags();                   
         const htmlString = getHtmlString(linkTags, styleTags, content, scriptTags);    
-        console.log("htmlstring");
+        console.log(htmlString);
         res.send(htmlString);
     }).catch(err => {
         console.log(`😱 Rendering Error: ${err}`);
-    });        
+    });     
 });
 
 const server = app.listen(port, () => {

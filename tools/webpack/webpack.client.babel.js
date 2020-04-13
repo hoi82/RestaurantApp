@@ -9,7 +9,7 @@ import { getDevTool } from "../../src/config/devtool";
 const hmrScript = `webpack-hot-middleware/client?reload=true`;
 
 const getEntry = () => {
-    return isDevelopment ? [hmrScript, "./src/client.js"] : ["./src/client.js"]
+    return isDevelopment ? ["react-hot-loader/patch", hmrScript, "./src/client.js"] : ["./src/client.js"]
 };
 
 module.exports = webpackEnv => {
@@ -37,7 +37,7 @@ module.exports = webpackEnv => {
         optimization: {
             splitChunks: {
                 name: "vendors",
-                chunks: "all"
+                chunks: "initial"
             }
         }        
     }
