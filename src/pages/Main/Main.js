@@ -1,35 +1,20 @@
 import React from "react";
-import { useState } from "react";
-import Axios from "axios";
-import { Redirect } from "react-router";
+import NavPanel from "../../components/NavPanel";
+import global from "../../theme/global.scss";
+import Nav from "./Nav";
+import styles from "./Main.module.scss";
+import { renderRoutes } from "react-router-config";
+import { endpoint } from "../../config/url";
 
-export default function Main(props) {
-    const [sid, setSid] = useState(null);    
-    
-    if (sid == null) {   
-        Axios.get("http://localhost:3005/api/users/auth", {
-            headers: {                
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            withCredentials: true                
-        }).then((res) => {}).catch((err) => console.log(err));            
-    } 
-    else { 
-        //세션 다르면 기록하는 부분
-        Axios.get("http://localhost:3005/api/users/auth", {
-            headers: {                
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            withCredentials: true
-        }).then((res) => {}).catch((err) => console.log(err));        
-    }        
+export default function Main(props) {             
     return (        
-            sid != null ? <React.Fragment>
-                <div>
-                    <div/>                                     
-                </div>
-            </React.Fragment> : <Redirect to="/login"/>
+        <React.Fragment>            
+            <div className={styles.content}>
+                { props.location.pathname == endpoint.home ? <div/> : renderRoutes(props.route.routes) }                 
+            </div>    
+            <NavPanel width={global.main_nav_width} padding="0">
+                <Nav/>
+            </NavPanel>                    
+        </React.Fragment>
     );    
 }

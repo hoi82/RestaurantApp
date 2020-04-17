@@ -1,7 +1,7 @@
 import React from 'react';
-import ProfileInput from '../../../components/InputWithHeader/ProfileInput';
+import ProfileInput from './ProfileInput';
 import { useDispatch } from "react-redux";
-import { updateEmail, validateEmail } from '../../../actions/register/profile';
+import { updateEmail, validateEmail } from '../../actions/register/profile';
 
 export default function EmailInput(props) {      
     const dispatch = useDispatch();

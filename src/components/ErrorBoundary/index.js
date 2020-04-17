@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ErrorDisplay extends Component {
+export default class ErrorDisplay extends Component {
     constructor(props) {
         super(props);
 
@@ -29,5 +29,3 @@ class ErrorDisplay extends Component {
         );
     }
 }
-
-export default index;

@@ -35,9 +35,9 @@ export const getClientModule = () => {
                     },
                     "sass-loader"
                 ]
-            },
+            },            
             {
-                test: /\.(png|jpg|svg)/,
+                test: /\.(png|jpg|svg)$/,
                 use: [
                     {
                         loader: "file-loader",                        
@@ -92,13 +92,13 @@ export const getServerModule = () => {
                 ]
             },
             {
-                test: /\.(png|jpg|svg)/,
+                test: /\.(png|jpg|svg)$/,
                 use: [
                     {
                         loader: "file-loader",                        
                     }
                 ]
-            },
+            },            
             {
                 test: /\.ttf/,
                 use: [

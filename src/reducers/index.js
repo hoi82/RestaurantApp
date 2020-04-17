@@ -6,9 +6,11 @@ import paypal from "./register/paypal";
 import regNavi from "./register/registerNavigation";
 import dialog from "./common/dialog";
 import { connectRouter } from "connected-react-router";
+import { auth } from "./auth";
 
 const app = (history) => combineReducers(
     {   
+        auth: auth,
         shared: combineReducers({
             dialog: dialog
         }),   

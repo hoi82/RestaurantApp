@@ -11,6 +11,7 @@ import routes from "./routes";
 const root = document.getElementById("root");
 
 const initialState = window.__INITIAL_STATE__;
+
 const { store, history } = configureStore({ initialstate: {} });
 
 const render = (routes) => {

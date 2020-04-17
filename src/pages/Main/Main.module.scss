@@ -1,0 +1,10 @@
+@import "../../theme/global.scss";
+
+.content {
+    position: absolute;
+    left: $main-nav_width;
+    top: 0;
+    width: calc(100% - #{$main-nav_width});
+    height: 100%;
+    background-color: $grade1-bg-color;
+}

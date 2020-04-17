@@ -1,7 +1,7 @@
 import React from 'react';
-import ProfileInput from '../../../components/InputWithHeader/ProfileInput';
+import ProfileInput from './ProfileInput';
 import { useDispatch } from 'react-redux';
-import { updatePassword, validatePassword } from '../../../actions/register/profile';
+import { updatePassword, validatePassword } from '../../actions/register/profile';
 
 export default function PasswordInput(props) {       
     const dispatch = useDispatch(); 

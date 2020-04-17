@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import Nav from "../../components/NavPanel/Nav";
 import Content from "./Content";
 import { DialogMode } from "../../types/Variables";
 import styles from "./Register.module.scss";
+import global from "../../theme/global.scss";
 import { useDispatch, useSelector } from 'react-redux';
 import { showDialog } from '../../actions/common/dialog';
 import TOS from "./TOS/TOS";
 import Axios from 'axios';
+import NavPanel from "../../components/NavPanel";
+import Nav from "./Nav";
 
 //NOTE: Nav에 함수를 던져주고 이 함수에서 Content의 Prop를 바꿔야함
 //props는 실패. React Component에는 property가 추가되지 않음.(not extensible objet error).ref를 이용해서 그런듯.
@@ -26,9 +28,11 @@ export default function Register(props) {
 
     const renderContent = () => {                    
         return tosAgree ? 
-        <React.Fragment>
-            <Nav onRegister={handleRegister}></Nav>
-            <Content></Content>                                                                        
+        <React.Fragment>       
+            <NavPanel width={global.register_nav_width} padding="0" hideShadow={true} positionRelative={true}>
+                <Nav/>
+            </NavPanel>                 
+            <Content></Content>            
         </React.Fragment>                                        
         :
         <TOS onConfirm={tosConfirm}/>;

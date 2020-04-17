@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CreditCardInput from './CreditCardInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { navigatePayment } from '../../../../../actions/register/registerNavigation';

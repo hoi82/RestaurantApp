@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from "./Profile.module.scss";
-import EmailInput from './EmailInput';
-import PasswordInput from './PasswordInput';
-import NameInput from './NameInput';
-import ContactInput from './ContactInput';
-import AddressInput from './AddressInput';
+import EmailInput from '../../../components/InputWithHeader/EmailInput';
+import PasswordInput from '../../../components/InputWithHeader/PasswordInput';
+import NameInput from '../../../components/InputWithHeader/NameInput';
+import ContactInput from '../../../components/InputWithHeader/ContactInput';
+import AddressInput from '../../../components/InputWithHeader/AddressInput';
 import { useSelector } from 'react-redux';
 
 export default function Profile() {

@@ -1,41 +1,18 @@
-@import "../Global";
+@import "../../theme/global.scss";
 
-button > * {
-    pointer-events: none;
-}
+.nav_container {
+    position: relative;   
+    width: 100%;
+    height: 100%;
+    padding: 24px 32px;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: stretch;
 
-
-.nav {
-    position: relative;
-    width: 280px;
-    height: 100%;    
-
-    button {
-        width: 100%;
-    }
-
-    div {
-        box-sizing: border-box;
-    }
-
-    .nav_container {
-        position: absolute;
-        left: 0;
-        top: 0;        
-        width: 100%;
-        height: 100%;
-        padding: 24px 32px;
-        box-sizing: border-box;
-        display: flex;
-        flex-flow: column;
-        justify-content: flex-start;
-        align-items: stretch;
-    }
-
-    .nav_panel {
-        @extend .nav_container;
-        background-color: $second-bg-color;
-        transform: translateX(0);
+    button > * {
+        pointer-events: none;
     }
 
     button {
@@ -45,12 +22,12 @@ button > * {
         box-sizing: border-box;
         outline: none;
     }   
-
+    
     .large_btn_text {
         display: inline-block;            
         font-size: $h1-size;
     }
-
+    
     .medium_btn_text {
         display: block;
         font-size: 24px;  
@@ -70,19 +47,19 @@ button > * {
             font-weight: 600;
             margin-left: 8px;
             margin-bottom: 8px;
-
+    
             &:first-child {
                 margin-top: 24px;
             }
         }             
-
+    
         .item_btn {            
             padding: 0;
             padding-left: 8px;
             margin-bottom: 16px;
             background: rgba(225, 225, 230, 0);            
             text-align: left;            
-
+    
             &:hover {
                 background-color: $third-bg-color;
             }        
@@ -94,7 +71,7 @@ button > * {
         
         .selected {
             background-color: $tertiary-bg-color;
-
+    
             &:hover {
                 background-color: $tertiary-bg-color;
             }
@@ -103,7 +80,8 @@ button > * {
     
     .register_box {      
         
-        .register_btn {                        
+        .register_btn {   
+            width: 100%;                     
             padding: 0;                        
             margin-bottom: 16px;
             color: $highlight-highlight-color;
@@ -118,7 +96,7 @@ button > * {
                 background-color: $highlight-active-color;
             }
         }    
-
+    
         .link_btn {
             height: auto;
             padding: 0;

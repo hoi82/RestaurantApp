@@ -3,6 +3,11 @@ $primary-bg-color : rgba(255,255,255,1);
 $second-bg-color : rgba(240,240,245,1);
 $third-bg-color : rgba(225,225,230,1);
 $tertiary-bg-color : rgba(210,210,215,1);
+$grade1-bg-color : rgba(255,255,255,1);
+$grade2-bg-color : rgba(245,245,250,1);
+$grade3-bg-color : rgba(235,235,240,1);
+$grade4-bg-color : rgba(225,225,230,1);
+$grade5-bg-color : rgba(215,215,220,1);
 $nav-bg-color : rgba(240,240,245,1);
 $content-color : rgba(25,27,29,1);
 $textbox-border-hover-color : rgba(31,33,39,1);
@@ -40,6 +45,17 @@ $h3-size : 16px;
 $h4-size : 13px;
 $content-size : 13px;
 
+$log-in-nav-width: 400px;
+$register-nav-width: 280px;
+$main-nav_width: 320px;
+
 @mixin global_transition {
     transition: 0.2s all ease;
+}
+
+:export {
+    nav_bg_color: $nav-bg-color;
+    log_in_nav_width: $log-in-nav-width;
+    register_nav_width: $register-nav-width;
+    main_nav_width: $main-nav_width;
 }

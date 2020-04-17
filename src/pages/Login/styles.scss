@@ -1,4 +1,4 @@
-@import "../Global.scss";
+@import "../../theme/global.scss";
 
 .login {
     position: relative;
@@ -11,20 +11,7 @@
         height: 80px;
         align-self: flex-end;
         content: url("../../image/login.svg");
-    }
-    
-    .login_container {
-        position: absolute;
-        left: 0;
-        top: 0;        
-        background-color: $nav-bg-color;
-        width: 410px;
-        height: 100%;    
-        padding: 40px;
-        box-sizing: border-box;
-        min-height: 620px;
-        box-shadow: 2px 0px 10px 0 rgba(0,0,0,0.5);
-    }
+    }    
 
     .box {        
         display: flex;

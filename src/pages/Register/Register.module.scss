@@ -1,4 +1,7 @@
-@import "../Global";
+@import "../../theme/global.scss";
+
+$width: 1024px;
+$height: 768px;
 
 div {    
     margin: 0;
@@ -10,8 +13,8 @@ div {
         
         .container, .panel {
             position: absolute;
-            left: calc(50% - 512px);
-            top: calc(50% - 384px);
+            left: calc(50% - (#{$width} / 2));
+            top: calc(50% - (#{$height} / 2));
             width: 1024px;
             height: 768px;     
             overflow: hidden;

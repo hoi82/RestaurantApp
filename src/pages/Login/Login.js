@@ -1,44 +1,24 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import styles from "./styles.scss";
-import { showDialog } from '../../actions/common/dialog';
-import { DialogMode } from '../../types/Variables';
+import global from "../../theme/global.scss";
 import { useDispatch } from 'react-redux';
-import Axios from "axios";
+import { LogIn } from '../../actions/auth';
+import NavPanel from "../../components/NavPanel"
+import { endpoint } from '../../config/url';
 
 export default function Login(props) {    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
-    const dispatch = useDispatch();
+    const dispatch = useDispatch();    
 
     const sendInfoByEmail = () => {
-        //DB에 일치하는 주소가 있으면 보내고
-        //없으면 다이얼로그        
-        // let sent = true;
-        // if (sent) {            
-        //     dispatch(showDialog({
-        //         mode: DialogMode.SUCCESS,
-        //         content: "입력하신 이메일 주소로 비밀번호를 전송했습니다."
-        //     }));
-        // }
-        // else {            
-        //     dispatch(showDialog({
-        //         mode: DialogMode.ALERT,
-        //         content: "가입되지 않은 이메일 주소입니다. \r\n이메일 주소를 확인해주세요."                
-        //     }));
-        // }        
-    }
+           
+    }    
 
-    const login = () => {     
-        //sid있을 경우 메인으로 이동, 없으면 경고 팝업, 에러시 에러 팝업
-        // axios.post(`http://localhost:3005/api/users/${email}/${password}/`, {
-        //     headers: {
-        //         "Accept": "application/json",
-        //         "Content-Type": "application/json",
-        //     },
-        //     withCredentials: true
-        // }).then((res) => {}).catch((err) => console.log(err));        
+    const handleLogIn = () => {             
+        dispatch(LogIn(email, password));              
     }    
 
     const emailChanged = (e) => {
@@ -55,7 +35,7 @@ export default function Login(props) {
     
     return (        
         <div className={styles.login}>
-            <div className={styles.login_container}>
+            <NavPanel width={global.log_in_nav_width}>
                 <div className={styles.box}>
                     <div className={styles.item_container}>
                         <img alt="로고" className={styles.logo}></img>                     
@@ -89,12 +69,12 @@ export default function Login(props) {
                         </button>
                     </div>
                     <div className={styles.item_container}>
-                        <button className={styles.login_btn} onClick={login}>
+                        <button className={styles.login_btn} onClick={handleLogIn}>
                             <span>로그인</span>
                         </button>
                         <div>
                             <span className={styles.sub_title}>아직 가입하지 않으셨나요?</span>
-                            <Link to={"/register"}>
+                            <Link to={endpoint.register}>
                                 <button className={styles.register_btn}>                                
                                     <span className={styles.link_text}>가입하기</span>
                                 </button>
@@ -102,7 +82,7 @@ export default function Login(props) {
                         </div>
                     </div>
                 </div>                
-            </div>            
+            </NavPanel>         
         </div>            
     );    
 };

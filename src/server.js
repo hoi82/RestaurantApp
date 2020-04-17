@@ -21,19 +21,17 @@ const getExtractor = () => {
     return extractor;
 };
 
-const loadBranchData = (store, path) => {
-    const branch = matchRoutes(routes, path);
-    const promises = branch.map(({route, match}) => {
-        if (route.loadData) {
-            return Promise.all(
+const loadBranchData = (store, path) => {      
+    const branch = matchRoutes(routes, path);         
+    const promises = branch.map(({route, match}) => {                
+        if (route.loadData) {                        
+            return Promise.all(                
                 route.loadData({ params: match.params, getState: store.getState })
                 .map((item) => store.dispatch(item))
             );
-        }
-
+        }        
         return Promise.resolve(null);
-    });
-
+    });    
     return Promise.all(promises);
 };
 
@@ -67,15 +65,11 @@ app.use(express.static(joinPath(isProduction ? "dist" : "", "public")));
 
 app.use(serveFavicon(joinPath(isProduction ? "dist" : "", "public/favicon.ico")));
 
-app.get("*", async (req, res) => {
-    //NOTE: 앱 안에 route를 넣어놓으면 리로드시 url 강제 이동됨.
-    //서버 안에서 주소에 맞는 모듈을 찾아서 넣어주기
-    const {store} = configureStore({url: req.url});              
-    // console.log(renderRoutes(routes));
-    loadBranchData(store, req.path).then(async () => {
+app.get("*", async (req, res) => {    
+    const {store} = configureStore({url: req.url});                        
+    loadBranchData(store, req.path).then(async () => {        
         const extractor = getExtractor();
-        const context = {};            
-        
+        const context = {};                    
         const app = (
             <ChunkExtractorManager extractor={extractor}>
                 <Provider store={store}>
@@ -84,15 +78,12 @@ app.get("*", async (req, res) => {
                     </StaticRouter>        
                 </Provider>            
             </ChunkExtractorManager>
-        );     
-        // console.log("aaaa");   
-        const content = renderToString(app);                
-        // console.log(app);
+        );             
+        const content = renderToString(app);                        
         const scriptTags = extractor.getScriptTags();
         const styleTags = extractor.getStyleTags();
         const linkTags = extractor.getLinkTags();                   
-        const htmlString = getHtmlString(linkTags, styleTags, content, scriptTags);    
-        // console.log(htmlString);
+        const htmlString = getHtmlString(linkTags, styleTags, content, scriptTags);            
         res.send(htmlString);
     }).catch(err => {
         console.log(`😱 Rendering Error: ${err}`);

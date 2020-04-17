@@ -3,14 +3,19 @@ import styles from "./styles.scss";
 import Dialog from "../components/Dialog";
 import { renderRoutes } from "react-router-config";
 import { hot } from "react-hot-loader";
+import { AuthContainer } from "./AuthContainer";
+import ErrorBoundary from "../components/ErrorBoundary";
 
-const App = ({ route }) => {
+const App = (props) => {       
     return (
-        <div className={styles.box}>
-            <img className={styles.bgimg}></img>            
-            {renderRoutes(route.routes)}
-            <Dialog/>
-        </div>            
+        <ErrorBoundary>
+            <div className={styles.box}>
+                <img className={styles.bgimg}></img>            
+                {renderRoutes(props.route.routes)}
+                <Dialog/>
+                <AuthContainer history={props.history}/>
+            </div>      
+        </ErrorBoundary>  
     );
 };
 

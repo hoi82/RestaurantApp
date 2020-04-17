@@ -1,7 +1,7 @@
 import React from 'react';
-import ProfileInput from '../../../components/InputWithHeader/ProfileInput';
+import ProfileInput from './ProfileInput';
 import { useDispatch } from 'react-redux';
-import { updateName, validateName } from '../../../actions/register/profile';
+import { updateName, validateName } from '../../actions/register/profile';
 
 export default function NameInput(props) {       
     const dispatch = useDispatch(); 

@@ -1,0 +1,109 @@
+@import "../../theme/global.scss";
+
+.nav {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+
+    .acco {
+        position: relative;
+        width: 100%;        
+        display: flex;
+        flex-flow: column;
+        justify-content: flex-start;
+
+        .acco_item {
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-flow: column;
+            align-items: stretch;
+            
+            .acco_header {                                            
+                display: inline-block;
+                font-size: $h3-size;
+                //NOTE:vertical-align은 line-height 기준으로 적용됨. 
+                //그래서 line-height를 height 대신 설정
+                line-height: 40px;
+                vertical-align: middle;   
+                background-color: $grade2-bg-color;  
+                font-weight: 600;          
+                
+                &:hover {
+                    background-color: $grade4-bg-color
+                }   
+            }
+
+            .acco_button {   
+                font-size: $h4-size;             
+                background-color: $grade3-bg-color;
+
+                &:hover {
+                    background-color: $grade4-bg-color;
+                }
+
+                &:active {
+                    background-color: $grade5-bg-color;
+                }
+            }
+
+            .acco_header, .acco_button {
+                width: 100%;
+                height: 40px;                
+                text-align: left;
+                user-select: none;
+                cursor: pointer;
+                box-sizing: border-box;
+                @include global_transition;                             
+            }
+            
+            .acco_item {
+                width: auto;
+                height: 100%;                
+            }
+
+            .acco_content {
+                display: flex;
+                flex-flow: column;
+                justify-content: flex-start;
+                height: 100%;
+                max-height: 0;
+                @include global_transition;
+                overflow: hidden;                
+            }
+
+            .acco_idc {
+                width: 24px;
+                height: 24px;   
+            }            
+        }               
+    }        
+
+    .sub_acco {
+        @extend .acco;
+    }    
+
+    .acco_idc:checked + .acco_content {
+        max-height: 500px;
+    } 
+
+    .acco_item > .acco_header {
+        padding-left: 32px;
+    }   
+    
+    .acco_content > a > .acco_button {
+        padding-left: 40px;
+    }
+
+    .sub_acco > .acco_item > .acco_header {
+        font-size: $h4-size;        
+        padding-left: 64px;
+    }
+
+    .sub_acco > .acco_item > .acco_content > a > .acco_button {
+        padding-left: 72px;
+    }
+}

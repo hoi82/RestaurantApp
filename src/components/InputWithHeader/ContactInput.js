@@ -1,7 +1,7 @@
 import React from 'react';
-import ProfileInput from '../../../components/InputWithHeader/ProfileInput';
+import ProfileInput from './ProfileInput';
 import { useDispatch } from 'react-redux';
-import { updateContact, validateContact } from '../../../actions/register/profile';
+import { updateContact, validateContact } from '../../actions/register/profile';
 
 export default function ContactInput(props) {        
     const dispatch = useDispatch();
