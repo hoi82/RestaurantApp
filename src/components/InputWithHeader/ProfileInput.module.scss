@@ -1,10 +1,8 @@
 @import "../../theme/global.scss";
+@import "../../theme/utils.scss";
 
-.profileInput {
-    display: flex;
-    flex-flow: column-reverse;        
-    justify-content: flex-start;    
-    align-items: flex-start;
+.profileInput {    
+    @include reverse_column_flex(flex-start, flex-start);
     margin-bottom: 16px;    
 
     &:first-child {
@@ -12,10 +10,7 @@
     }
 
     .header_box {
-        display: flex;            
-        justify-content: flex-start;                            
-        flex-flow: row;
-        align-items: center;            
+        @include row_flex(flex-start, center);        
         margin-bottom: 8px;
     }
     
@@ -37,24 +32,7 @@
     }
 
     .input {
-        min-width: 400px;
-        height: 48px;
-        border: 1px solid $textbox-border-color;
-        border-radius: 3px;
-        box-sizing: border-box;
-        color: $content-color;
-        background-color: $textbox-bg-color;
-        padding-left: 8px;
-        font-size: $h2-size;
-        @include global_transition;         
-
-        &:hover {
-            border-color: $textbox-border-hover-color;
-        }
-
-        &:focus {
-            border-color: $textbox-border-active-color;
-        }
+        @include content_input;
     }    
 
     .input:focus ~ .header_box .error_text {

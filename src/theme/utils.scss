@@ -1,0 +1,125 @@
+@import "./global.scss";
+
+@mixin global_transition {
+    transition: 0.2s all ease;
+}
+
+@mixin set_size($width: auto, $height: auto) {
+    width: $width;
+    height: $height;
+}
+
+@mixin set_size_full {
+    @include set_size(100%, 100%);
+}
+
+@mixin row_flex($axis: flex-start, $cross: stretch) {
+    display: flex;
+    flex-direction: row;
+    justify-content: $axis;
+    align-items: $cross;
+}
+
+@mixin single_centered_flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin column_flex($axis: flex-start, $cross: stretch) {
+    display: flex;
+    flex-direction: column;
+    justify-content: $axis;
+    align-items: $cross;
+}
+
+@mixin reverse_column_flex($axis: flex-start, $cross: stretch) {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: $axis;
+    align-items: $cross;
+}
+
+@mixin relative($width: auto, $height: auto) {
+    position: relative;
+    width: $width;
+    height: $height;
+}
+
+@mixin relative_full {
+    position: relative;
+    @include set_size_full;
+}
+
+@mixin absolute($top: auto, $right: auto, $bottom: auto, $left: auto) {
+    position: absolute;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;    
+}
+
+@mixin absolute_full_stretch {
+    position: absolute;
+    left: 0;
+    top: 0;
+    @include set_size_full;
+    margin: 0;
+}
+
+@mixin fixed_full_stretch {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+@mixin content_input($min_width: 400px) {
+    @include set_size($height: 48px);
+    @include global_transition;
+
+    min-width: $min_width;        
+    border: 1px solid $textbox-border-color;
+    border-radius: 3px;        
+    color: $content-color;
+    background-color: $textbox-bg-color;
+    padding-left: 8px;
+    font-size: $h2-size;       
+
+    &:hover {
+        border-color: $textbox-border-hover-color;
+    }
+
+    &:focus {
+        border-color: $textbox-border-active-color;
+    }
+}
+
+@mixin large_button {    
+    @include set_size($height: 48px);
+    border-radius: 5px;
+    padding: 0;
+    margin-bottom: 13px;
+    background-color: $highlight-color;
+    color: $highlight-highlight-color;
+    font-size: 24px;
+    font-weight: 700;
+    @include global_transition;
+    
+    &:hover {
+        background-color: $highlight-hover-color;
+    }
+
+    &:active {
+        background-color: $highlight-active-color;
+    }
+}
+
+@mixin small_title {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 600;
+    color: $title-color;    
+}

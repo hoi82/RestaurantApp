@@ -1,4 +1,5 @@
 @import "../theme/global.scss";
+@import "../theme/utils.scss";
 
 @font-face {
     font-family: "Nanumgothic";
@@ -43,6 +44,10 @@ span {
     user-select: none;
 }
 
+div, button {
+    box-sizing: border-box;
+}
+
 .bgimg {
     object-fit: cover;
     content: url("../image/wall.jpg");
@@ -54,10 +59,5 @@ span {
 }
 
 .bgimg, .box {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
+    @include absolute_full_stretch;
 }  

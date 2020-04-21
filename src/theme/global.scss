@@ -49,10 +49,6 @@ $log-in-nav-width: 400px;
 $register-nav-width: 280px;
 $main-nav_width: 320px;
 
-@mixin global_transition {
-    transition: 0.2s all ease;
-}
-
 :export {
     nav_bg_color: $nav-bg-color;
     log_in_nav_width: $log-in-nav-width;

@@ -1,137 +1,111 @@
 @import "../../theme/global.scss";
+@import "../../theme/utils.scss";
 
-div {
+.dialog {
+    @include fixed_full_stretch;
+
+    .overlay {            
+        @include fixed_full_stretch;
+        background-color: rgba($color: #000000, $alpha: 0.6);
+    }
+}
+
+.container {
+    @include relative_full;     
     
+    @include single_centered_flex;
 
-    .dialog {
-        position: fixed;
-        left: 0;
-        top: 0; 
-        right: 0;
-        bottom: 0;        
-        // width: 100%;    
-        // height: 100%;       
-
-        .overlay {
-            @extend .dialog;
-            position: fixed;    
-            right: 0;
-            bottom: 0;
-            background-color: rgba($color: #000000, $alpha: 0.6);
-        }
+    .box {
+        @include relative;
+        @include column_flex;        
+        background-color: $bg-color;            
+        overflow: hidden;
+        border: none;            
+        border-radius: 10px;
+        box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.5);        
     }
 
-    .container {
-        width: 100%;    
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;        
+    .logo {        
+        @include absolute($right: 16px, $top: 16px);
+        @include set_size(80px, 80px);        
+        opacity: 0.2;
+    }
 
-        .box {                        
-            position: relative;
-            width: auto;
-            height: auto;
-            display: flex;
-            flex-flow: column;
-            background-color: $bg-color;            
-            overflow: hidden;
-            border: none;            
-            border-radius: 10px;
-            box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.5);
-            box-sizing: border-box;
-        }
+    .logo_alert {
+        @extend .logo;
+        content: url("../../image//alert.svg");
+    }
 
-        .logo {
-            position: absolute;            
-            right: 16px;
-            top: 16px;
-            width: 80px;
-            height: 80px;
-            opacity: 0.2;
-        }
+    .logo_yesorno {
+        @extend .logo;
+        content: url("../../image/true.svg");
+    }
 
-        .logo_alert {
-            @extend .logo;
-            content: url("../../image//alert.svg");
-        }
+    .logo_confirm {
+        @extend .logo;
+        content: url("../../image/success.svg");
+    }
 
-        .logo_yesorno {
-            @extend .logo;
-            content: url("../../image/true.svg");
-        }
+    .content_box {
+        @include single_centered_flex;
+        font-size: 14px;
+        font-weight: 600;
+        color: $content-color;                                    
+        padding: 24px;            
+        white-space: pre;            
+        overflow: hidden;     
+        box-sizing: border-box;       
+    }
 
-        .logo_confirm {
-            @extend .logo;
-            content: url("../../image/success.svg");
-        }
+    .button_box {                         
+        @include relative_full;        
+        align-self: baseline;      
 
-        .content_box {
+        button {                            
+            @include set_size(100%, 32px); 
+            min-width: 200px;            
+            padding: 0;                                
             font-size: 14px;
-            font-weight: 600;
-            color: $content-color;                                    
-            padding: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            white-space: pre;            
-            overflow: hidden;     
-            box-sizing: border-box;       
+            font-weight: 700;                
+            @include global_transition;
+            color: $highlight-highlight-color;
         }
 
-        .button_box {                 
-            position: relative;
-            width: 100%;            
-            height: 100%;            
-            align-self: baseline;      
-
-            button {                
-                width: 100%;
-                height: 100%;     
-                min-width: 200px;
-                height: 32px;
-                padding: 0;                                
-                font-size: 14px;
-                font-weight: 700;                
-                @include global_transition;
-                color: $highlight-highlight-color;
+        .alert_btn {                
+            background-color: $alert-color;
+            
+            &:hover {
+                background-color: $alert-hover-color;
             }
 
-            .alert_btn {                
-                background-color: $alert-color;
-                
-                &:hover {
-                    background-color: $alert-hover-color;
-                }
+            &:active {
+                background-color: $alert-active-color;
+            }
+        }
 
-                &:active {
-                    background-color: $alert-active-color;
-                }
+        .success_btn {                
+            background-color: $success-color;
+
+            &:hover {
+                background-color: $success-hover-color;
             }
 
-            .success_btn {                
-                background-color: $success-color;
+            &:active {
+                background-color: $success-active-color;
+            }
+        }
 
-                &:hover {
-                    background-color: $success-hover-color;
-                }
+        .confirm_btn {
+            background-color: $confirm-color;
 
-                &:active {
-                    background-color: $success-active-color;
-                }
+            &:hover {
+                background-color: $confirm-hover-color;
             }
 
-            .confirm_btn {
-                background-color: $confirm-color;
-
-                &:hover {
-                    background-color: $confirm-hover-color;
-                }
-
-                &:active {
-                    background-color: $confirm-active-color;
-                }
+            &:active {
+                background-color: $confirm-active-color;
             }
         }
     }
 }
+

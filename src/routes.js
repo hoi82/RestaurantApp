@@ -1,6 +1,7 @@
 import { endpoint } from "./config/url";
 import App from "./app";
 import { asyncMain, asyncLogin, asyncRegister, asyncSearchByName, asyncSearchByCategory } from "./pages";
+import { asyncSearchByLocation } from "./pages/Main/Restaurant/Search";
 
 export default [
     {
@@ -12,21 +13,30 @@ export default [
                 routes: [
                     {
                         path: endpoint.searchRestaurantByName,
-                        component: asyncSearchByName
+                        component: asyncSearchByName,
+                        exact: true
                     },   
                     {
                         path: endpoint.searchRestaurantByCategory,
-                        component: asyncSearchByCategory
+                        component: asyncSearchByCategory,
+                        exact: true
+                    },
+                    {
+                        path: endpoint.searchRestaurantByLocation,
+                        component: asyncSearchByLocation,
+                        exact: true
                     }                 
                 ]
             },
             {
                 path: endpoint.login,                
-                component: asyncLogin
+                component: asyncLogin,
+                exact: true
             },
             {
                 path: endpoint.register,                
-                component: asyncRegister
+                component: asyncRegister,
+                exact: true
             }
         ]
     }

@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { LogIn } from '../../actions/auth';
 import NavPanel from "../../components/NavPanel"
 import { endpoint } from '../../config/url';
+import StyledCheckBox from '../../components/StyledCheckBox';
 
 export default function Login(props) {    
     const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ export default function Login(props) {
     const remeberChanged = (e) => {
         setRemember(e.target.value);
     }    
-    
+    //TODO: 스타일 정리 여기서부터
     return (        
         <div className={styles.login}>
             <NavPanel width={global.log_in_nav_width}>
@@ -52,18 +53,8 @@ export default function Login(props) {
                         </span>
                         <input type="password" className={styles.text_box} onChange={passwordChanged} value={password} autoComplete="off"/>
                     </div>
-                    <div className={styles.item_container}>                        
-                        <div className={styles.cbx_container}>
-                            <input className={styles.ipx} id="cbx" type="checkbox" onChange={remeberChanged}/>
-                            <label className={styles.cbx} htmlFor="cbx">
-                                <span>
-                                    <svg width="12px" height="10px" viewBox="0 0 12 10">
-                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>                                            
-                                    </svg>
-                                </span>
-                                <span className={styles.cbx_Text}>이메일 저장</span>
-                            </label>                                
-                        </div>
+                    <div className={styles.item_container}>                                                
+                        <StyledCheckBox onChange={remeberChanged} title={"이메일 저장"}/>
                         <button className={styles.link_btn} onClick={sendInfoByEmail}> 
                             <span className={styles.link_text}>이메일 / 비밀번호 찾기</span>
                         </button>

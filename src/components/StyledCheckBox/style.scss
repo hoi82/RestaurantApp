@@ -1,0 +1,116 @@
+@import "../../theme/global.scss";
+@import "../../theme/utils.scss";
+
+//NOTE: Checkbox styling
+//1. 체크박스를 숨긴후
+//2. 뒤쪽 Label과 합쳐 기본 Display를 설정하고
+//(라벨을 쓰는 이유: For 속성으로 체크박스와 묶어줌)
+//For 속성: label의 for에 입력된 id와 같은 id를 가진 element가 있으면 연결시켜줌
+//3. 체크했을때의 Display 설정
+//최종 구조 : (first-child:before - 이펙트 담당) - (first-child - 체크 박스) - (svg - 체크 이미지)
+
+.cbx_container {
+    height: 24px;
+    margin-bottom: 12px;
+
+    .ipx {
+        display: none;
+    }
+    
+    .cbx {
+        margin: auto;
+        user-select: none;
+        cursor: pointer;                  
+                    
+        span {
+            display: inline-block;
+            vertical-align: middle;
+            transform: translate3d(0,0,0);
+            box-sizing: border-box;
+            margin-top: 6px;  
+    
+            //Pseudo class로 표현한 체크박스                 
+            &:first-child {
+                position: relative;
+                width: 20px;
+                height: 20px;
+                border-radius: 3px;
+                transform: scale(1);
+                vertical-align: middle;
+                background-color: $bg-color;
+                border: 1px solid $textbox-border-color;                    
+                @include global_transition;                   
+    
+                svg {
+                    position: absolute;
+                    left: 3px;
+                    top: 4px;                        
+                    fill: none;
+                    stroke: $highlight-highlight-color;
+                    stroke-width: 2;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-dasharray: 16px;
+                    stroke-dashoffset: 16px;
+                    transition: all 0.3s ease;
+                    transition-delay: 0.1s;
+                    transform: translate3d(0,0,0);
+                }
+    
+                //Pseudo class로 만든 체크변경시 이펙트
+                &:before {
+                    content: '';
+                    width: 100%;
+                    height: 100%;
+                    background: $highlight-color;
+                    display: block;
+                    transform: scale(0);
+                    opacity: 1;
+                    border-radius: 50%;
+                }
+            }
+    
+            //Span의 Content
+            &:last-child {
+                padding-left: 8px;
+            }            
+        }            
+
+        .cbx_Text {            
+            font-size: 13px;
+            line-height: 16px;
+            font-weight: 600;
+            color: $title-color;
+            margin-bottom: 0;
+        }
+    
+        &:hover span:first-child {
+            border-color: $highlight-color;
+        }
+    }
+    
+    .ipx:checked + .cbx {
+        span {
+            &:first-child {
+                background: $highlight-color;
+                border-color: $highlight-color;
+                animation: wave 0.4s ease;
+                svg {
+                    stroke-dashoffset: 0;
+                }
+                &:before {
+                    transform: scale(3.5);
+                    opacity: 0;
+                    transition: all 0.6s ease;
+                }
+            }
+        }
+    }        
+      
+    @keyframes wave {
+        50% {
+            transform: scale(0.9);
+        }
+    }
+}
+

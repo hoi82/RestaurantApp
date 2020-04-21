@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from "./styles.scss";
 import DropdownInput from '../../../../components/InputWithHeader/DropdownInput';
+import dummy from "../../../../data/nameDummy";
 
 export default (props) => {    
-    const restaurants = ["a", "aa", "aaa", "aaaa"];
+    const restaurants = dummy(40);    
 
-    const itemRenderer = (item, index, clickEvent) => (
-        <button key={index} onClick={clickEvent} className={styles.dropdown_item}>{item}</button>
-    );
-    //TODO: Dropdown 스타일 잡는것부터 할것.
+    const nameSelector = (value) => new Promise((resolve, reject) => {
+       setTimeout(() => {
+            const filtered = restaurants.filter((item) => item.indexOf(value) > -1);
+            resolve(filtered);
+            reject(new Error("item is empty"));
+       }, 200);        
+    });
+        
     return (
         <div className={styles.container}>
-            <span className={styles.title}>Search By Name</span>
-            <span className={styles.description}>Input the name what you want.</span>
-            <DropdownInput items={restaurants} itemRenderer={itemRenderer} inputStyle={styles.input} panelStyle={styles.dropdown}/>
-            <button className={styles.search_btn}>
-                <span className={styles.btn_title}>Search</span>
-            </button>
+            <span className={styles.title}>이름으로 검색</span>
+            <span className={styles.description}>찾고 싶은 이름을 넣어주세요</span>
+            <div className={styles.name_search_box}>
+                <DropdownInput itemSelector={nameSelector} itemClass={styles.dropdown_item} itemSelectedClass={styles.dropdown_item_selected} 
+                inputClass={styles.input} panelClass={styles.dropdown}/>
+                <button className={styles.search_btn}>
+                    <span className={styles.search_btn_title}>찾아보기</span>
+                </button>
+            </div>            
         </div>
     );
 }
