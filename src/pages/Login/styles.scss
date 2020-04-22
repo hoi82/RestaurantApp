@@ -27,13 +27,7 @@
         .sub_title {
             @include small_title;
             margin-bottom: 16px;            
-        }        
-
-        .link_text {
-            font-size: 13px;
-            line-height: 16px;
-            font-weight: 700;
-        }
+        }                
 
         .text_box {            
             @include content_input(200px);   
@@ -41,25 +35,18 @@
         }
 
         .login_btn {            
-            @include large_button;
-            width: 100%;
+            @include large_button;            
         }
 
         .link_btn {
-            margin-bottom: 24px;
-            color: $highlight-color;
-            text-decoration-color: $highlight-color;
-            background: none;
-            padding: 0;
-
-            &:hover {
-                text-decoration: underline;    
-            }
+            margin-bottom: 24px;            
+            @include link_btn;
         }        
 
         .register_btn {
             @extend .link_btn;
             margin-left: 8px;
+            margin-top: 2px;
         }               
     }    
 }

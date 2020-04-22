@@ -33,7 +33,7 @@ export default function Login(props) {
     const remeberChanged = (e) => {
         setRemember(e.target.value);
     }    
-    //TODO: 스타일 정리 여기서부터
+    
     return (        
         <div className={styles.login}>
             <NavPanel width={global.log_in_nav_width}>
@@ -56,7 +56,7 @@ export default function Login(props) {
                     <div className={styles.item_container}>                                                
                         <StyledCheckBox onChange={remeberChanged} title={"이메일 저장"}/>
                         <button className={styles.link_btn} onClick={sendInfoByEmail}> 
-                            <span className={styles.link_text}>이메일 / 비밀번호 찾기</span>
+                            <span>이메일 / 비밀번호 찾기</span>
                         </button>
                     </div>
                     <div className={styles.item_container}>
@@ -67,7 +67,7 @@ export default function Login(props) {
                             <span className={styles.sub_title}>아직 가입하지 않으셨나요?</span>
                             <Link to={endpoint.register}>
                                 <button className={styles.register_btn}>                                
-                                    <span className={styles.link_text}>가입하기</span>
+                                    <span>가입하기</span>
                                 </button>
                             </Link>                            
                         </div>

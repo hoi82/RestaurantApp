@@ -97,8 +97,31 @@
     }
 }
 
-@mixin large_button {    
-    @include set_size($height: 48px);
+@mixin content_medium_contrast_input {
+    width: 100%;
+    height: 40px;
+    font-size: $h3-size;
+    color: $contrast-color;
+    background: $contrast-textbox-bg-color;
+    border: 1px solid $contrast-textbox-border-color;
+    border-radius: 3px;            
+    @include global_transition; 
+}
+
+@mixin content_small_contrast_input {
+    width: 100%;
+    padding-left: 4px;
+    font-size: 16px;
+    height: 32px;
+    box-sizing: border-box;
+    border: 1px solid $contrast-textbox-border-color;
+    border-radius: 3px;        
+    color: $contrast-color;
+    background-color: $contrast-textbox-bg-color;    
+}
+
+@mixin large_button($width: 100%) {    
+    @include set_size($width, $height: 48px);
     border-radius: 5px;
     padding: 0;
     margin-bottom: 13px;
@@ -117,9 +140,71 @@
     }
 }
 
+@mixin medium_button($width: 100%) {
+    @include set_size($width, 40px);
+    border-radius: 3px;
+    background-color: $highlight-color;
+    @include global_transition;            
+
+    &:hover {
+        background-color: $highlight-hover-color;
+    }
+
+    &:active {
+        background-color: $highlight-active-color;
+    }
+}
+
 @mixin small_title {
     font-size: 13px;
     line-height: 16px;
     font-weight: 600;
     color: $title-color;    
+}
+
+@mixin link_btn {
+    color: $highlight-color;
+    text-decoration-color: $highlight-color;
+    background: none;
+    padding: 0;
+
+    &:hover {
+        text-decoration: underline;    
+    }
+
+    span {
+        font-size: 13px;
+        line-height: 16px;
+        font-weight: 700;
+    }
+}
+
+@mixin big_content_title {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 80px;
+    vertical-align: middle;
+}
+
+@mixin big_content_body {
+    font-size: 24px;
+    line-height: 80px;
+    vertical-align: middle; 
+}
+
+@mixin content_small_btn {
+    width: 124px;
+    height: 40px;
+    background-color: $highlight-color;
+    border-radius: 3px;
+    padding: 0;        
+    @include global_transition;
+
+    &:hover {
+        background-color: $highlight-hover-color;
+    }
+
+    &:active {
+        background-color: $highlight-active-color;
+    }    
 }

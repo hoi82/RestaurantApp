@@ -2,15 +2,9 @@
 @import "../../theme/utils.scss";
 
 .nav_container {
-    position: relative;   
-    width: 100%;
-    height: 100%;
-    padding: 24px 32px;
-    box-sizing: border-box;
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-start;
-    align-items: stretch;
+    @include relative_full;    
+    @include column_flex;
+    padding: 24px 32px;    
 
     button > * {
         pointer-events: none;
@@ -19,8 +13,7 @@
     button {
         height: 48px;
         border-radius: 5px;
-        border: none;
-        box-sizing: border-box;
+        border: none;        
         outline: none;
     }   
     
@@ -36,9 +29,7 @@
     }
     
     .item_box {
-        display: flex;
-        flex-flow: column;
-        justify-content: flex-start;       
+        @include column_flex;        
         flex-grow: 1;         
         
         .header {
@@ -62,19 +53,19 @@
             text-align: left;            
     
             &:hover {
-                background-color: $third-bg-color;
+                background-color: $grade3-bg-color;
             }        
             
             &:active {
-                background-color: $tertiary-bg-color;
+                background-color: $grade4-bg-color;
             }
         }  
         
         .selected {
-            background-color: $tertiary-bg-color;
+            background-color: $grade4-bg-color;
     
             &:hover {
-                background-color: $tertiary-bg-color;
+                background-color: $grade4-bg-color;
             }
         }
     }   
@@ -98,12 +89,10 @@
             }
         }    
     
-        .link_btn {
-            height: auto;
+        .link_btn {            
             padding: 0;
             background: none;
-            border: none;
-            box-sizing: border-box;
+            border: none;            
             height: 16px;
             margin-left: 6px;
             margin-top: 1px;
@@ -114,10 +103,7 @@
         }
     
         .button_box {
-            display: flex;
-            flex-flow: row;
-            justify-content: flex-start;
-            align-items: center;            
+            @include row_flex(flex-start, center);            
         }        
     
         .medium_sub_btn_text {

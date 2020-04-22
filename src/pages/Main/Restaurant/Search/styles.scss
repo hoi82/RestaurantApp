@@ -1,68 +1,42 @@
 @import "../../../../theme/global.scss";
 @import "../../../../theme/utils.scss";
 
-.container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-flow: column;
-    align-items: flex-start;
-    padding: 72px;
-    box-sizing: border-box;
-
-    // & > * {
-    //     margin-bottom: 40px;
-    // }
+.container {    
+    @include relative_full;
+    @include column_flex($cross: flex-start);    
+    padding: 72px;        
 
     .title {
-        font-size: 48px;
-        font-weight: 900;
-        line-height: 80px;
-        vertical-align: middle;
+        // font-size: 48px;
+        // font-weight: 900;
+        // line-height: 80px;
+        // vertical-align: middle;
+        @include big_content_title;
     }
 
     .description {
-        font-size: 24px;
-        line-height: 80px;
-        vertical-align: middle; 
+        @include big_content_body;
     }
 
-    .input {
-        width: 100%;
-        max-width: 320px;
-        height: 48px;
-        border: 1px solid $textbox-border-color;
-        border-radius: 3px;
-        box-sizing: border-box;
-        color: $content-color;
-        background-color: $textbox-bg-color;
-        padding-left: 8px;
-        font-size: $h2-size;
-        @include global_transition; 
+    .input {        
+        @include content_input;
     }
 
     .dropdown {
-        position: absolute;
-        top: 56px;
-        width: 100%;
-        height: auto;
+        @include absolute(56px);
+        @include set_size(100%);
+        @include column_flex;        
         overflow-x: hidden;
         overflow-y: auto;
         background-color: $grade1-bg-color;
         border-radius: 3px;
-        padding: 0px;
-        display: flex;
-        flex-flow: column;   
-        align-items: stretch;     
+        padding: 0px;             
         box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
     }
 
     .dropdown_item {
-        width: auto;
-        height: 40px;                
-        background-color: $grade2-bg-color;
-        box-sizing: border-box;
+        @include set_size($height: 40px);        
+        background-color: $grade2-bg-color;        
         text-align: left;
         margin: 0px 4px;
         padding-left: 8px;   
@@ -90,33 +64,15 @@
     }
 
     .name_search_box {
-        position: relative;
-        width: 100%;
-        max-width: 540px;
-        height: 80px;
-        display: flex;
-        flex-flow: row;
-        justify-content: flex-start;        
-        align-items: center;
+        @include relative(100%, 80px);
+        @include row_flex($cross: center);        
+        max-width: 540px;        
         padding: 0px 4px;
     }
 
     .search_btn {
-        width: 124px;
-        height: 40px;
-        background-color: $highlight-color;
-        border-radius: 3px;
-        padding: 0;
-        margin-left: 8px;
-        @include global_transition;
-
-        &:hover {
-            background-color: $highlight-hover-color;
-        }
-
-        &:active {
-            background-color: $highlight-active-color;
-        }
+        @include content_small_btn;
+        margin-left: 8px;        
     }
 
     .search_btn_title {

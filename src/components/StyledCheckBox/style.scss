@@ -76,11 +76,8 @@
             }            
         }            
 
-        .cbx_Text {            
-            font-size: 13px;
-            line-height: 16px;
-            font-weight: 600;
-            color: $title-color;
+        .cbx_Text {                        
+            @include small_title;
             margin-bottom: 0;
         }
     

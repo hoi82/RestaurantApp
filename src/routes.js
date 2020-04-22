@@ -1,6 +1,6 @@
 import { endpoint } from "./config/url";
 import App from "./app";
-import { asyncMain, asyncLogin, asyncRegister, asyncSearchByName, asyncSearchByCategory } from "./pages";
+import { asyncMain, asyncLogin, asyncRegister, asyncSearchByName, asyncSearchByCategory, NotFound } from "./pages";
 import { asyncSearchByLocation } from "./pages/Main/Restaurant/Search";
 
 export default [
@@ -37,6 +37,10 @@ export default [
                 path: endpoint.register,                
                 component: asyncRegister,
                 exact: true
+            },
+            {
+                path: endpoint.notFound,
+                component: NotFound,
             }
         ]
     }

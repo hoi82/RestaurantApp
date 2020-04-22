@@ -1,18 +1,14 @@
 @import "../../../../theme/global.scss";
+@import "../../../../theme/utils.scss";
 
-.list {
-    position: relative;
-    width: 100%;
-    height: 100%;    
-    box-sizing: border-box;         
+.list {      
+    @include relative_full;
 
     .item_container {
         @extend .list;        
-        display: flex;
-        padding: 16px;
-        flex-flow: column;
-        align-items: stretch;        
+        @include column_flex;                
         text-align: center;        
+        padding: 16px;
     }
 
     .empty_container {
@@ -21,11 +17,8 @@
     }
     
     .box_image {
-        position: absolute;
-        width: 160px;
-        height: 160px;
-        right: 64px;
-        bottom: 16px;
+        @include absolute($right: 64px, $bottom: 16px);
+        @include set_size(160px, 160px);        
         object-fit: cover;
         opacity: 0.5;
     }

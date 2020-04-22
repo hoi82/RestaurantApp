@@ -17,7 +17,7 @@ export default function Nav(props) {
     }
 
     const handleRegister = (e) => {
-        dispatch(refreshProfile());
+        // dispatch(refreshProfile());
         setSelected("profile");        
         props.onRegister();
     }     

@@ -1,4 +1,5 @@
 @import "../../theme/global.scss";
+@import "../../theme/utils.scss";
 
 $width: 1024px;
 $height: 768px;
@@ -6,30 +7,22 @@ $height: 768px;
 div {    
     margin: 0;
 
-    .register {
-        position: relative;
-        width: 100%;
-        height: 100%;   
+    .register {        
+        @include relative_full;
         
         .container, .panel {
-            position: absolute;
-            left: calc(50% - (#{$width} / 2));
-            top: calc(50% - (#{$height} / 2));
-            width: 1024px;
-            height: 768px;     
+            @include absolute($left: calc(50% - (#{$width} / 2)), $top: calc(50% - (#{$height} / 2)));
+            @include set_size($width, $height);              
             overflow: hidden;
             border-radius: 10px;
         }
 
-        .container {                        
-            display: flex;
-            flex-flow: row;
-            justify-content: flex-start;
-            align-items: stretch;
+        .container { 
+            @include row_flex;            
         }
 
         .panel {            
-            background-color: $tertiary-bg-color;            
+            background-color: $grade4-bg-color;            
         }
     }
 }

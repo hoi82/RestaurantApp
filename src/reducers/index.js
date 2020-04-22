@@ -7,6 +7,7 @@ import regNavi from "./register/registerNavigation";
 import dialog from "./common/dialog";
 import { connectRouter } from "connected-react-router";
 import { auth } from "./auth";
+import { status } from "./register/status";
 
 const app = (history) => combineReducers(
     {   
@@ -15,6 +16,7 @@ const app = (history) => combineReducers(
             dialog: dialog
         }),   
         register: combineReducers({
+            status: status,
             profile: profile,
             payments: payments,
             credit: creditCard,

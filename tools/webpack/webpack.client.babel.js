@@ -9,7 +9,7 @@ import { getDevTool } from "../../src/config/devtool";
 const hmrScript = `webpack-hot-middleware/client?reload=true`;
 
 const getEntry = () => {
-    return isDevelopment ? ["react-hot-loader/patch", hmrScript, "./src/client.js"] : ["./src/client.js"]
+    return isDevelopment ? ["react-hot-loader/patch", hmrScript, "@babel/polyfill", "./src/client.js"] : ["./src/client.js"]
 };
 
 module.exports = webpackEnv => {

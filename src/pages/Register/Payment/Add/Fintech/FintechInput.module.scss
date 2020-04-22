@@ -1,25 +1,19 @@
 @import "../../../../../theme/global.scss";
+@import "../../../../../theme/utils.scss";
 
-.container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-flow: column;
+.container {    
+    @include relative_full;
+    @include column_flex;
 
-    .close_icon {
-        width: 100%;
-        height: 100%;
+    .close_icon {        
+        @include set_size_full;
         object-fit: cover;        
     }
 
     .close_btn {
-        position: absolute;
-        right: 24px;
-        top: 24px;
-        background: none;
-        width: 16px;
-        height: 16px;
+        @include absolute($right: 24px, $top: 24px);
+        @include set_size(16px, 16px);        
+        background: none;        
         padding: 0;
     }
 }

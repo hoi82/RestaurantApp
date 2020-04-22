@@ -4,35 +4,21 @@
 $grid_size : 72px;
 
 .profile {
-    position: relative;
-    width: 100%;
-    height: $grid_size;
-    display: flex;
-    flex-direction: row;
-    justify-content: stretch;
-    background-color: $primary-bg-color;
-
-    & > div {
-        position: relative;
-        box-sizing: border-box;
-    }
+    @include relative(100%, $grid_size);
+    @include row_flex(stretch);    
+    background-color: $grade1-bg-color;    
 
     .profile_pic {
-        width: $grid_size;
-        height: $grid_size;
+        @include set_size($grid_size, $grid_size);        
     }
 
     .container {
         @extend .profile;
-        width: calc(100% - #{$grid_size});
-        width: 100%;
+        @include set_size(100%);        
 
         .nameplate {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            @include set_size(100%, 100%);
+            @include column_flex(center);            
             padding: 8px;
 
             span {
@@ -54,26 +40,22 @@ $grid_size : 72px;
         }
     
         .toolbox {
-            
-            height: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
+            @include row_flex($cross: center);
+            @include set_size($height: 100%);            
             padding: 8px;
 
-            .tool_button {
-                width: calc(#{$grid_size} * 0.5);
-                height: calc(#{$grid_size} * 0.5);    
+            .tool_button {                
+                @include set_size(calc(#{$grid_size} * 0.5), calc(#{$grid_size} * 0.5));   
                 border-radius: 3px;
                 
                 @include global_transition;
 
                 &:hover {
-                    background-color: $second-bg-color;
+                    background-color: $grade2-bg-color;
                 }
 
                 &:active {
-                    background-color: $tertiary-bg-color;
+                    background-color: $grade3-bg-color;
                 }
 
                 .setting_Icon {

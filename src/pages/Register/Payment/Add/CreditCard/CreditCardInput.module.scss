@@ -1,27 +1,14 @@
 @import "../../../../../theme/global.scss";
 @import "../../../../../theme/utils.scss";
 
-.container {
-    position: relative;
-    width: 100%;
-    height: 100%;    
-    display: flex;
-    flex-flow: column;
-    justify-content: stretch;
-    align-items: stretch;
-    padding: 24px 32px;
-    box-sizing: border-box;    
+.container {    
+    @include relative_full;
+    @include column_flex(stretch, stretch);    
+    padding: 24px 32px;       
 
-    input {
-        width: 100%;
-        height: 40px;
-        font-size: $h3-size;
-        color: $contrast-color;
-        background: $contrast-textbox-bg-color;
-        border: 1px solid $contrast-textbox-border-color;
-        border-radius: 3px;        
-        margin: 4px 0px;  
-        @include global_transition;            
+    input {         
+        @include content_medium_contrast_input;
+        margin: 4px 0px;          
     }
 
     .normal_input {
@@ -57,20 +44,15 @@
         opacity: 0;
     }    
 
-    .logo {        
-        width: 240px;
-        height: 240px;        
+    .logo {  
+        @include set_size(240px, 240px);              
         object-fit: cover;    
         flex-grow: 1;    
     }
 
     .num_box {
-        height: 96px;
-        position: relative;
-        display: flex;
-        flex-flow: column;
-        justify-content: flex-start;
-        align-items: flex-start;
+        @include relative($height: 96px);
+        @include column_flex(flex-start, flex-start);        
         margin-top: 24px;
 
         .num_input {            
@@ -79,18 +61,13 @@
     }
 
     .etc_box {
-        width: 100%;
-        display: flex;
-        flex-flow: row;
-        justify-content: space-between;
-        align-content: stretch;        
+        @include set_size(100%);                       
+        @include row_flex(space-between);
+        align-content: stretch; 
 
         .expire_box, .cvc_box {
-            width: 50%;
-            height: 96px;
-            display: flex;
-            flex-flow: column;
-            justify-content: flex-start;
+            @include set_size(50%, 96px);
+            @include column_flex(flex-start);            
             align-content: center;
         }
 
@@ -118,40 +95,25 @@
         margin-top: 16px;
     }
 
-    .close_icon {
-        width: 100%;
-        height: 100%;                
+    .close_icon {        
+        @include set_size(100%, 100%);            
         object-fit: cover;
     }
 
     .close_btn {
-        position: absolute;
-        right: 24px;
-        top: 24px;
-        background: none;
-        width: 16px;
-        height: 16px;
+        @include absolute($right: 24px, $top: 24px);
+        @include set_size(16px, 16px);        
+        background: none;        
         padding: 0;
     }
 
     .add_btn {
-        height: 40px;
-        border-radius: 3px;
-        background-color: $highlight-color;
-        @include global_transition;
+        @include medium_button;
 
         .add_btn_text {
             font-size: $h2-size;
             color: $highlight-highlight-color;
             font-weight: 500;
-        }        
-
-        &:hover {
-            background-color: $highlight-hover-color;
-        }
-
-        &:active {
-            background-color: $highlight-active-color;
-        }
+        }                
     }
 }

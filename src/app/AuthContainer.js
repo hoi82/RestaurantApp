@@ -23,6 +23,9 @@ export const AuthContainer = (props) => {
                 //         }   
                 //     }
                 // });
+
+                //TODO: Sesstion Check 결과 리듀서에서 저장할때 islogin 바뀔때만 새 오브젝트로, 아닐 경우에는 스테이트만 변경
+                // dispatch(SessionCheck());
             }         
         }
 
