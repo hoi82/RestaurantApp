@@ -76,11 +76,11 @@
     left: 0;
 }
 
-@mixin content_input($min_width: 400px) {
+@mixin content_input($width: 100%) {
     @include set_size($height: 48px);
     @include global_transition;
 
-    min-width: $min_width;        
+    width: $width; 
     border: 1px solid $textbox-border-color;
     border-radius: 3px;        
     color: $content-color;
@@ -180,14 +180,14 @@
 }
 
 @mixin big_content_title {
-    font-size: 48px;
+    font-size: 36px;
     font-weight: 900;
     line-height: 80px;
     vertical-align: middle;
 }
 
 @mixin big_content_body {
-    font-size: 24px;
+    font-size: 18px;
     line-height: 80px;
     vertical-align: middle; 
 }

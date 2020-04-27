@@ -8,6 +8,7 @@ import dialog from "./common/dialog";
 import { connectRouter } from "connected-react-router";
 import { auth } from "./auth";
 import { status } from "./register/status";
+import { main } from "./main";
 
 const app = (history) => combineReducers(
     {   
@@ -23,6 +24,7 @@ const app = (history) => combineReducers(
             paypal: paypal,
             navigation: regNavi
         }),
+        main: main,
         router: connectRouter(history)
     }
 )

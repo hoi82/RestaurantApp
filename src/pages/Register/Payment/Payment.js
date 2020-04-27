@@ -6,8 +6,8 @@ import loadable from '@loadable/component';
 const PaymentList = loadable(() => import("./List/PaymentList"));
 const PaymentItem = loadable(() => import("./PaymentItem"));
 const PaymentSelect = loadable(() => import("./Select/PaymentSelect"));
-const CreditCardContainer = loadable(() => import("./Add/CreditCard/CreditCardContainer"));
-const PaypalContainer = loadable(() => import("./Add/Paypal/PaypalContainer"));
+const CreditCard = loadable(() => import("./Add/CreditCard"));
+const Paypal = loadable(() => import("./Add/Paypal"));
 const FintechInput = loadable(() => import("./Add/Fintech/FintechInput"));
 
 export default function Payment(props) {
@@ -18,13 +18,13 @@ export default function Payment(props) {
             case "select":
                 return <PaymentSelect onCreate={props.onCreate}/>;
             case "card":
-                return <CreditCardContainer edit={false}/>;  
+                return <CreditCard edit={false}/>;  
             case "card_edit":
-                return <CreditCardContainer edit={true}/>;          
+                return <CreditCard edit={true}/>;          
             case "paypal":
-                return <PaypalContainer edit={false}/>;
+                return <Paypal edit={false}/>;
             case "paypal_edit":
-                return <PaypalContainer edit={true}/>;
+                return <Paypal edit={true}/>;
             case "fintech":
                 return <FintechInput/>;            
             default:

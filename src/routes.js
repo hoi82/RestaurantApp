@@ -2,6 +2,7 @@ import { endpoint } from "./config/url";
 import App from "./app";
 import { asyncMain, asyncLogin, asyncRegister, asyncSearchByName, asyncSearchByCategory, NotFound } from "./pages";
 import { asyncSearchByLocation } from "./pages/Main/Restaurant/Search";
+import { GetAllCategories } from "./actions/main";
 
 export default [
     {
@@ -19,7 +20,8 @@ export default [
                     {
                         path: endpoint.searchRestaurantByCategory,
                         component: asyncSearchByCategory,
-                        exact: true
+                        exact: true,
+                        loadData: () => [ GetAllCategories() ]
                     },
                     {
                         path: endpoint.searchRestaurantByLocation,

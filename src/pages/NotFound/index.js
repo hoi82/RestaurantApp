@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from "./style.scss";
 
-export default (props) => { 
-    console.log(props);   
+export default (props) => {      
     if (props.staticContext)
     {
         props.staticContext.status = "404";        

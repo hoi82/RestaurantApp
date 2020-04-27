@@ -4,7 +4,7 @@ export const CLOSE_DIALOG = "CLOSD_DIALOG";
 export const showDialog = (props) => {    
     return {
         type: SHOW_DIALOG,
-        paylord: props
+        payload: props
     }
 }
 

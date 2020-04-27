@@ -12,6 +12,12 @@
     .container {        
         @include column_flex(flex-start, flex-start);        
         padding: 24px 32px 0px 32px;
+
+        & > div {
+            margin-top: 24px;
+            margin-bottom: 16px;            
+            max-width: 400px;
+        }
     }
 
     .panel, .container {

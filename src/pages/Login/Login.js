@@ -7,12 +7,14 @@ import { LogIn } from '../../actions/auth';
 import NavPanel from "../../components/NavPanel"
 import { endpoint } from '../../config/url';
 import StyledCheckBox from '../../components/StyledCheckBox';
+import EmailInput from '../../components/InputWithHeader/EmailInput';
+import PasswordInput from '../../components/InputWithHeader/PasswordInput';
 
-export default function Login(props) {    
+export default function Login(props) {       
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
-    const dispatch = useDispatch();    
+    const dispatch = useDispatch();   
 
     const sendInfoByEmail = () => {
            
@@ -42,17 +44,11 @@ export default function Login(props) {
                         <img alt="로고" className={styles.logo}></img>                     
                     </div>
                     <div className={styles.item_container}>
-                        <span className={styles.sub_title}>
-                            이메일
-                        </span>
-                        <input type="email" className={styles.text_box} onChange={emailChanged} value={email} autoComplete="off"/>
+                        <EmailInput value={email} onChange={emailChanged}/>
                     </div>
                     <div className={styles.item_container}>
-                        <span className={styles.sub_title}>
-                            비밀번호
-                        </span>
-                        <input type="password" className={styles.text_box} onChange={passwordChanged} value={password} autoComplete="off"/>
-                    </div>
+                        <PasswordInput value={password} onChange={passwordChanged}/>
+                    </div>                                                            
                     <div className={styles.item_container}>                                                
                         <StyledCheckBox onChange={remeberChanged} title={"이메일 저장"}/>
                         <button className={styles.link_btn} onClick={sendInfoByEmail}> 

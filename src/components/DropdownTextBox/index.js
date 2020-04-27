@@ -1,50 +1,58 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import styles from "./style.scss";
 
-const Item = (props) => {
+const Item = (props) => {            
     return (
         <button className={props.className} onClick={props.onClick}>{props.item}</button>
     );
 };
 
 export default (props) => {
+    //TODO: 드랍다운 표시 안될때 아이템과 패널이 아예 랜더링 안되도록 변경할것    
     const [boxOpen, setBoxOpen] = useState(false);    
-    const [displayedItems, setDisplayedItems] = useState([]);
-    const [items, setItems] = useState([]);
-    const [value, setValue] = useState(props.value || "");
-    const [selected, setSelected] = useState({index: -1});               
+    const [displayedItems, setDisplayedItems] = useState([]);    
+    const [selected, setSelected] = useState({index: -1});        
 
     useEffect(() => {                      
         //컴포넌트 하나만 렌더링 하고싶다 ㅠㅠ 그러나 안되는것
-        setDisplayedItems(getRenderingItems(items));
-    },[selected]);  
-    
-    useEffect(() => {
-        setSelected({ index: -1 });
-        props.itemSelector(value).then((items) => {
-            setItems(items);
-        });
-    }, [value]);
+        setDisplayedItems(getRenderingItems(props.items));        
+    },[selected]);      
 
     useEffect(() => {
-        setDisplayedItems(getRenderingItems(items));
-    }, [items]);
+        setDisplayedItems(getRenderingItems(props.items));
+    }, [props.items]);
 
     useEffect(() => {
         if (!boxOpen)
             setSelected({ index: -1 });            
-    }, [boxOpen])
+    }, [boxOpen]);
 
-    const handleChange = (e) => {                
-        setValue(e.target.value);              
+    const renderContents = () => {
+        if (boxOpen && displayedItems.length > 0) {
+            return <div id="panel" style={{display: boxOpen ? null : "none"}} className={styles.item_panel}>                  
+                <div className={styles.inner_panel}>
+                    {displayedItems}
+                </div> 
+            </div>
+        }
+        else {
+            return null;
+        }
+    }
+
+    const handleChange = (e) => {
+        props.onChange(e.target.value);            
         if (!boxOpen) {
             setBoxOpen(true);
         }                      
     }    
 
-    const getRenderingItems = (items) => {
+    const getRenderingItems = (items) => { 
+        if (!items || !items.map) return [];
+
         return items.map((item, i) => {
-            return <Item className={selected.index == i ? props.itemClass.concat(" ", props.itemSelectedClass) : props.itemClass} 
-            key={i} item={item} selected={selected} onClick={handleItemClick}/>
+            return <Item className={selected.index == i ? styles.item.concat(" ", styles.item_selected) : styles.item} 
+            key={i} item={item} onClick={handleItemClick}/>
         });
     }
 
@@ -52,7 +60,7 @@ export default (props) => {
         //NOTE:span, ul, li등등 text가 content로 올때 text를 얻어내는 방법
         //e.currentTarget.textContent        
         setBoxOpen(false);
-        setValue(e.currentTarget.textContent);
+        props.onChange(e.currentTarget.textContent);
     }
 
     const handleBlur = (e) => {        
@@ -62,7 +70,7 @@ export default (props) => {
     }    
 
     const handleNavigation = (e) => {                   
-        if (e.key == "ArrowDown") {                                 
+        if (e.key == "ArrowDown") {             
             setSelected(prev => {
                 if (prev.index < displayedItems.length - 1) {
                     return { index: prev.index + 1 };
@@ -88,7 +96,7 @@ export default (props) => {
         else if (e.key == "Enter") {            
             if (e.target.id == "input") {
                 if (selected.index > -1) {
-                    setValue(displayedItems[selected.index].props.item);                    
+                    props.onChange(displayedItems[selected.index].props.item);                    
                     setBoxOpen(false);
                 }
             }
@@ -100,11 +108,9 @@ export default (props) => {
     }
 
     return (
-        <div onBlur={handleBlur} style={{position: "relative"}} onKeyDown={handleNavigation}>
-            <input id="input" type="text" className={props.inputClass} value={value} onChange={handleChange} onClick={handleInputClick} width={props.width}/>
-            <div id="panel" style={{display: boxOpen ? null : "none"}} className={props.panelClass}>
-                {displayedItems}
-            </div>            
+        <div onBlur={handleBlur} className={styles.dropdown} onKeyDown={handleNavigation}>
+            <input id="input" type="text" className={styles.input} value={props.value} onChange={handleChange} onClick={handleInputClick} width={props.width}/>            
+            {renderContents()}                                   
         </div>
     );
 };

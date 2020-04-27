@@ -6,11 +6,11 @@ import Formatter from '../../../../../utils/Formatter';
 import { updateNumber, updateExpire, updateCVC, updateCashHolder, validateNumber, validateExpire, validateCVC, validateCashHolder, refreshCredit } from '../../../../../actions/register/creditCard';
 import { updatePayment, createPayment } from '../../../../../actions/register/payments';
 
-export default function CreditCardContainer({edit = false}) {        
+export default ({edit = false}) => {
     const credit = useSelector((store) => store.register.credit);    
     const dispatch = useDispatch();      
     
-    const handleChange = (e) => {                  
+    const handleChange = (e) => {
         switch (e.target.name) {
             case "number":                                
                 e.target.value = Formatter.formatCardNumber(e.target.value);

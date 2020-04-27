@@ -1,23 +1,11 @@
 import React from 'react';
-import ProfileInput from './ProfileInput';
-import { useDispatch } from 'react-redux';
-import { updateContact, validateContact } from '../../actions/register/profile';
+import InputUI from './InputUI';
+import Validator from '../../utils/Validator';
 
 export default function ContactInput(props) {        
-    const dispatch = useDispatch();
-
-    const handleChange = (e) => {                
-        let value = e.target.value.trim();
-        dispatch(updateContact(value));
-    }
-
-    const handleBlur = (e) => {        
-        dispatch(validateContact());
-    }
-    
     return (
         <React.Fragment>
-            <ProfileInput header="연락처" type="text" value={props.contact} error={props.error} onInput={handleChange} onBlur={handleBlur}/>
+            <InputUI header="연락처" type="text" value={props.value} validator={Validator.validateContact} onChange={props.onChange} forceUpdate={props.forceUpdate}/>
         </React.Fragment>
     );    
 }

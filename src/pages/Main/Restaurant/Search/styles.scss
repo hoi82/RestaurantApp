@@ -6,11 +6,7 @@
     @include column_flex($cross: flex-start);    
     padding: 72px;        
 
-    .title {
-        // font-size: 48px;
-        // font-weight: 900;
-        // line-height: 80px;
-        // vertical-align: middle;
+    .title {        
         @include big_content_title;
     }
 
@@ -18,56 +14,10 @@
         @include big_content_body;
     }
 
-    .input {        
-        @include content_input;
-    }
-
-    .dropdown {
-        @include absolute(56px);
-        @include set_size(100%);
-        @include column_flex;        
-        overflow-x: hidden;
-        overflow-y: auto;
-        background-color: $grade1-bg-color;
-        border-radius: 3px;
-        padding: 0px;             
-        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-    }
-
-    .dropdown_item {
-        @include set_size($height: 40px);        
-        background-color: $grade2-bg-color;        
-        text-align: left;
-        margin: 0px 4px;
-        padding-left: 8px;   
-        font-size: $h3-size;         
-        
-        &:hover {
-            background-color: $grade3-bg-color;
-        }
-
-        &:first-child {
-            margin-top: 4px;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
-        }
-
-        &:last-child {
-            margin-bottom: 4px;
-            border-bottom-left-radius: 3px;
-            border-bottom-right-radius: 3px;
-        }
-    }
-
-    .dropdown_item_selected {
-        background-color: $grade3-bg-color;
-    }
-
     .name_search_box {
         @include relative(100%, 80px);
-        @include row_flex($cross: center);        
-        max-width: 540px;        
-        padding: 0px 4px;
+        @include row_flex(stretch, center);        
+        max-width: 540px;                
     }
 
     .search_btn {

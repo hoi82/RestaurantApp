@@ -1,4 +1,4 @@
-import { REGISTER_FETCHING, REGISTER_FETCHED, REGISTER_FAILED } from "../../actions/register/status";
+import { REGISTER_FETCHING, REGISTER_FETCHED, REGISTER_FAILED, RESET_REGISTER_STATUS } from "../../actions/register/status";
 
 export const initialStatus = {
     status: "",
@@ -6,7 +6,7 @@ export const initialStatus = {
 }
 
 export const status = (state = initialStatus, action) => {    
-    const { type, paylord } = action;            
+    const { type, payload } = action;            
     switch (type) {        
         case REGISTER_FETCHING:
             return {
@@ -14,24 +14,26 @@ export const status = (state = initialStatus, action) => {
             }
         case REGISTER_FETCHED:
             {
-                if (paylord.result) {
+                if (payload.result) {
                     return {
                         status: REGISTER_FETCHED,
-                        info: paylord
+                        info: payload
                     };
                 }
                 else {
                     return {
                         status: REGISTER_FAILED,
-                        info: paylord
+                        info: payload
                     };
                 }
             }
         case REGISTER_FAILED:                        
             return {
                 status: REGISTER_FAILED,
-                info: paylord
-            };    
+                info: payload
+            };   
+        case RESET_REGISTER_STATUS:            
+            return initialStatus;
         default:
             return state;
     }

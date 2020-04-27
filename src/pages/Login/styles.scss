@@ -15,9 +15,8 @@
         @include column_flex;
 
         .item_container {
-            @extend .box;    
-            align-items: flex-start;         
-            height: 104px;                    
+            @extend .box; 
+            @include set_size(100%, 104px);                               
          }
 
         .item_container:first-child {
@@ -41,6 +40,7 @@
         .link_btn {
             margin-bottom: 24px;            
             @include link_btn;
+            align-self: flex-start;            
         }        
 
         .register_btn {

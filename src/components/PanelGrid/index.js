@@ -6,7 +6,7 @@ const Item = (props) => {
         <button className={styles.item}>
             <div className={styles.item_panel}>
                 <img className={styles.thumbnail} src={`data:image/png;base64,${props.item.thumbnail ? props.item.thumbnail : noImage}`}/>
-                <span className={styles.title}>{props.item.title}</span>
+                <span className={styles.title}>{props.item.name}</span>
             </div>            
         </button>
     )
@@ -19,7 +19,7 @@ export default (props) => {
         setDisplayedItems(getRenderingItems(props.items));
     }, [props.items]);
 
-    const getRenderingItems = (items) => {
+    const getRenderingItems = (items) => {        
         return items.map((item, i) => {
             return <Item key={i} item={item}/>
         })

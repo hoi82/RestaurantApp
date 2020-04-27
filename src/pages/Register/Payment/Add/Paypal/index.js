@@ -5,7 +5,7 @@ import { updateEmail, updatePassword, validateEmail, validatePassword, refreshPa
 import { updatePayment, createPayment } from '../../../../../actions/register/payments';
 import { navigatePayment } from '../../../../../actions/register/registerNavigation';
 
-function PaypalContainer(props) {
+export default (props) => {
     const paypal = useSelector((store) => store.register.paypal);          
     const dispatch = useDispatch();
 
@@ -80,5 +80,3 @@ function PaypalContainer(props) {
         <PaypalInput edit={props.edit} email={paypal.email} emailError={paypal.emailError} password={paypal.password} passwordError={paypal.passwordError} functions={functions}/>
     );
 }
-
-export default PaypalContainer;

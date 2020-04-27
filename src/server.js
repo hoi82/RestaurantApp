@@ -23,11 +23,13 @@ const getExtractor = () => {
 
 const loadBranchData = (store, path) => {      
     const branch = matchRoutes(routes, path);         
-    const promises = branch.map(({route, match}) => {                
+    const promises = branch.map(({route, match}) => {        
         if (route.loadData) {                        
             return Promise.all(                
                 route.loadData({ params: match.params, getState: store.getState })
-                .map((item) => store.dispatch(item))
+                .map((item) => {                    
+                    return store.dispatch(item);
+                })
             );
         }        
         return Promise.resolve(null);
@@ -55,7 +57,7 @@ if(isDevelopment) {
     app.use(instance);
     
     instance.waitUntilValid(() => {
-        console.log(`listening at ${port}`);
+        console.log(`😎 server is running on ${port} port.`);
     });
 
     app.use(webpackHotMiddleware(compiler));
@@ -65,7 +67,7 @@ app.use(express.static(joinPath(isProduction ? "dist" : "", "public")));
 
 app.use(serveFavicon(joinPath(isProduction ? "dist" : "", "public/favicon.ico")));
 
-app.get("*", async (req, res) => {    
+app.get("*", async (req, res) => {            
     const {store} = configureStore({url: req.url});                        
     loadBranchData(store, req.path).then(async () => {        
         const extractor = getExtractor();
@@ -91,5 +93,5 @@ app.get("*", async (req, res) => {
 });
 
 const server = app.listen(port, () => {
-    console.log(`😎 server is running on ${port} port.`);
+    // console.log(`😎 server is running on ${port} port.`);
 })
