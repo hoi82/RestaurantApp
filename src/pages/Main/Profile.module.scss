@@ -42,21 +42,14 @@ $grid_size : 72px;
         .toolbox {
             @include row_flex($cross: center);
             @include set_size($height: 100%);            
-            padding: 8px;
+            padding: 16px;
 
-            .tool_button {                
-                @include set_size(calc(#{$grid_size} * 0.5), calc(#{$grid_size} * 0.5));   
-                border-radius: 3px;
-                
-                @include global_transition;
+            .tool_button {                                
+                @include tool_btn(calc(#{$grid_size} * 0.5), calc(#{$grid_size} * 0.5));                   
 
-                &:hover {
-                    background-color: $grade2-bg-color;
-                }
-
-                &:active {
-                    background-color: $grade3-bg-color;
-                }
+                &:last-child {
+                    margin-left: 8px;
+                }                
 
                 .setting_Icon {
                     content: url("../../image/settings.svg");
@@ -64,6 +57,10 @@ $grid_size : 72px;
 
                 .logout_Icon {
                     content: url("../../image/logout.svg");
+                }
+
+                .setting_Icon, .logout_Icon {
+                    @include set_size(28px, 28px);
                 }
             }            
         }

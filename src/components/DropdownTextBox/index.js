@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import styles from "./style.scss";
 
-const Item = (props) => {            
+const Item = ({className, onClick, item}) => {            
     return (
-        <button className={props.className} onClick={props.onClick}>{props.item}</button>
+        <button className={className} onClick={onClick}>{item.name ? item.name : item}</button>
     );
 };
 
-export default (props) => {
-    //TODO: 드랍다운 표시 안될때 아이템과 패널이 아예 랜더링 안되도록 변경할것    
+export default ({items, onChange, value, width}) => {   
+    //TODO: 두개가 있을 경우 하나가 열려있는 상태에서 다른걸 클릭하면 원래 열려있던게 닫히지 않음. 
+    //blur에서 relatedTarget에 다른 dropbox일때도 추가함(name으로 판별했는데 좀더 안전한 방법으로 해야할듯).
     const [boxOpen, setBoxOpen] = useState(false);    
     const [displayedItems, setDisplayedItems] = useState([]);    
     const [selected, setSelected] = useState({index: -1});        
 
     useEffect(() => {                      
         //컴포넌트 하나만 렌더링 하고싶다 ㅠㅠ 그러나 안되는것
-        setDisplayedItems(getRenderingItems(props.items));        
+        setDisplayedItems(getRenderingItems(items));        
     },[selected]);      
 
     useEffect(() => {
-        setDisplayedItems(getRenderingItems(props.items));
-    }, [props.items]);
+        setDisplayedItems(getRenderingItems(items));
+    }, [items]);
 
     useEffect(() => {
         if (!boxOpen)
@@ -29,7 +30,7 @@ export default (props) => {
 
     const renderContents = () => {
         if (boxOpen && displayedItems.length > 0) {
-            return <div id="panel" style={{display: boxOpen ? null : "none"}} className={styles.item_panel}>                  
+            return <div style={{display: boxOpen ? null : "none"}} className={styles.item_panel}>                  
                 <div className={styles.inner_panel}>
                     {displayedItems}
                 </div> 
@@ -41,7 +42,7 @@ export default (props) => {
     }
 
     const handleChange = (e) => {
-        props.onChange(e.target.value);            
+        onChange(e.target.value);            
         if (!boxOpen) {
             setBoxOpen(true);
         }                      
@@ -60,11 +61,11 @@ export default (props) => {
         //NOTE:span, ul, li등등 text가 content로 올때 text를 얻어내는 방법
         //e.currentTarget.textContent        
         setBoxOpen(false);
-        props.onChange(e.currentTarget.textContent);
+        onChange(e.currentTarget.textContent);
     }
 
-    const handleBlur = (e) => {        
-        if (e.relatedTarget == null) {
+    const handleBlur = (e) => {               
+        if (e.relatedTarget == null || e.relatedTarget.name == "input") {
             setBoxOpen(false);
         }        
     }    
@@ -93,23 +94,23 @@ export default (props) => {
         else if (e.key == "Escape") {
             setBoxOpen(false);
         }
-        else if (e.key == "Enter") {            
-            if (e.target.id == "input") {
+        else if (e.key == "Enter") {
+            if (e.target.name == "input") {
                 if (selected.index > -1) {
-                    props.onChange(displayedItems[selected.index].props.item);                    
+                    onChange(displayedItems[selected.index].props.item);
                     setBoxOpen(false);
-                }
-            }
+                }   
+            }                     
         }        
     };
 
-    const handleInputClick = (e) => {
+    const handleInputClick = (e) => {        
         setBoxOpen(!boxOpen);
     }
 
     return (
         <div onBlur={handleBlur} className={styles.dropdown} onKeyDown={handleNavigation}>
-            <input id="input" type="text" className={styles.input} value={props.value} onChange={handleChange} onClick={handleInputClick} width={props.width}/>            
+            <input type="text" name="input" autoComplete="off" className={styles.input} value={value} onChange={handleChange} onClick={handleInputClick} width={width}/>            
             {renderContents()}                                   
         </div>
     );

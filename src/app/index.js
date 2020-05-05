@@ -6,13 +6,13 @@ import { hot } from "react-hot-loader";
 import { AppContainer } from "./AppContainer";
 import ErrorBoundary from "../components/ErrorBoundary";
 
-const App = (props) => {       
+const App = ({history, route}) => {       
     return (
         <ErrorBoundary>            
             <div className={styles.box}>
                 <img className={styles.bgimg}></img>            
-                <AppContainer history={props.history}>
-                    {renderRoutes(props.route.routes)}
+                <AppContainer history={history}>
+                    {renderRoutes(route.routes)}
                 </AppContainer>                
             </div>                  
             <Dialog/>            

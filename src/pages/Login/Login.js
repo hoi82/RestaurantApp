@@ -18,10 +18,10 @@ export default function Login(props) {
 
     const sendInfoByEmail = () => {
            
-    }    
+    }
 
     const handleLogIn = () => {             
-        dispatch(LogIn(email, password));              
+        dispatch(LogIn(email, password));
     }    
 
     const emailChanged = (e) => {

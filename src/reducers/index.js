@@ -8,7 +8,7 @@ import dialog from "./common/dialog";
 import { connectRouter } from "connected-react-router";
 import { auth } from "./auth";
 import { status } from "./register/status";
-import { main } from "./main";
+import main from "./main";
 
 const app = (history) => combineReducers(
     {   

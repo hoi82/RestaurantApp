@@ -11,25 +11,30 @@ export const ResetRegisterStatus = () => {
     }
 }
 
-export const FetchRegister = (registerInfo) => {            
+export const FetchRegister = (profile, payments) => {            
     return (dispatch) => {        
-        dispatch({ type: REGISTER_FETCHING });
-        return axios.post("http://localhost:3005/api/users", {
-            email: registerInfo.email,
-            password: registerInfo.password,
-            name: registerInfo.name,
-            contact: registerInfo.contact,
-            address: registerInfo.address,
-            payments: registerInfo.payments.list
-        }, {
-            headers: {                
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            }
-        }).then((res) => {
-            dispatch({ type: REGISTER_FETCHED, payload: res.data });
-        }).catch((err) => {                                                
-            dispatch({ type: REGISTER_FAILED, payload: err.message });
-        });
+        if (profile.getValid()) {
+            dispatch({ type: REGISTER_FETCHING });
+            return axios.post("http://localhost:3005/api/users", {
+                email: profile.email,
+                password: profile.password,
+                name: profile.name,
+                contact: profile.contact,
+                address: profile.address,
+                payments: payments.list
+            }, {
+                headers: {                
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+            }).then((res) => {
+                dispatch({ type: REGISTER_FETCHED, payload: res.data });
+            }).catch((err) => {                                                
+                dispatch({ type: REGISTER_FAILED, payload: err.message });
+            });
+        }      
+        else {
+            dispatch({ type: REGISTER_FAILED, payload: "개인 정보가 올바르지 않습니다. 개인 정보를 확인해주세요." });
+        }  
     };
 }

@@ -9,13 +9,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateEmail, updatePassword, updateName, updateContact, updateAddress } from '../../../actions/register/profile';
 import { REGISTER_FAILED } from '../../../actions/register/status';
 
-export default function Profile() {        
+export default function Profile() {       
     const profile = useSelector((store) => store.register.profile);
     const status = useSelector((store) => store.register.status);
     const [forceUpdate, setForceUpdate] = useState(false);
     const dispatch = useDispatch();
     
-    useEffect(() => {        
+    useEffect(() => {   
+        console.log(status);     
         if (status.status == REGISTER_FAILED)
             setForceUpdate(true);
     }, [status]);

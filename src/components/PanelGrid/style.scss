@@ -1,47 +1,124 @@
 @import "../../theme/global.scss";
 @import "../../theme/utils.scss";
 
-.panel {    
-    @include set_size_full;   
+.container {
+    @include relative_full;    
+    @include column_flex(stretch, stretch);
+}
+
+.header {
+    @include relative;
+    @include set_size(100%);
+    margin-bottom: 24px;
+    @include row_flex(flex-end, center);
+
+    .layout_btn {
+        @include tool_btn(36px, 36px);
+
+        &:last-child {
+            margin-left: 8px;
+        }
+        
+        .grid_icon {
+            content: url("../../image/grid.svg");
+        }
+
+        .list_icon {
+            content: url("../../image/list.svg");
+        }
+
+        .grid_icon, .list_icon {
+            object-fit: cover;
+            @include set_size(32px, 32px);
+        }
+    }
+}
+
+.panel {            
+    @include set_size_full;    
     border: 32px solid $grade2-bg-color;
     border-radius: 10px;
     background-color: $grade2-bg-color;    
-    overflow-y: auto;    
+    overflow-y: auto; 
+    flex-grow: 10;   
 
     .inner_panel {
+        @include set_size_full;             
         display: grid;
-        grid-template-columns: repeat(auto-fill, 124px);
-        grid-template-rows: repeat(auto-fill, 160px);
-        gap: 32px;
+        gap: 8px;
+    }
+}
+
+.navigator {
+    @include row_flex(center, flex-end);
+    @include relative(100%, 56px);
+
+    .selected {
+        background-color: $highlight-color;
+        color: $highlight-highlight-color;
+
+        &:hover {
+            background-color: $highlight-hover-color;
+        }
+
+        &:active {
+            background-color: $highlight-active-color;
+        }
     }
 
-    .item {          
-        @include set_size_full;
+    button {                
+        @include set_size(32px, 32px);
+        @include global_transition;
+        background-color: $grade2-bg-color;    
+        color: $title-color;    
         border-radius: 5px;
-        background-color: $grade3-bg-color;
+        padding: 0;
+        margin: 0px 4px;
 
-        .item_panel {            
-            @include relative_full;
-            @include column_flex(flex-start, center);                 
+        &:first-child {
+            margin-left: 0;
+        }
 
-            .thumbnail {                
-                @include set_size(100%);
-                margin: 4px;
-                border-radius: 3px;
-                background-color: $grade4-bg-color;
-                object-fit: cover;
-            }            
+        &:last-child {
+            margin-right: 0;
+        }
 
-            .title {
-                @include set_size(100%);
-                display: inline-block;                              
-                margin: 4px;
-                border-radius: 3px;
-                line-height: 32px;
-                font-size: $h3-size;
-                vertical-align: middle;                                
-                background-color: $grade4-bg-color;
-            }
-        }        
+        &:hover {
+            background-color: $grade4-bg-color;
+        }
+
+        &:active {
+            background-color: $grade5-bg-color;
+        }
+
+        span {
+            display: inline-block;
+            @include set_size(24px, 24px);
+            line-height: 24px;
+            margin: 4px;
+            font-size: $h3-size;                                    
+        }
+
+        img {
+            @include set_size(24px, 24px);
+            margin: 4px;            
+        }
+
+        .prev {
+            content: url("../../image/left-arrow.svg");
+        }
+
+        .next {
+            content: url("../../image/next.svg");            
+        }
+
+
+        .first {
+            content: url("../../image/back.svg");
+        }
+
+        .last {
+            content: url("../../image/skip.svg");
+        }
     }
 }

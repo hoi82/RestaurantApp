@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from "./style.scss";
 
-export default function InputUI(props) {
+export default function InputUI({forceUpdate, type, value, onChange, validator, header}) {
     const [error, setError] = useState("");
 
     useEffect(()=> {
-        if (props.forceUpdate) {
-            setError(props.validator(props.value));
+        if (forceUpdate) {
+            setError(validator(value));
         }        
-    }, [props.forceUpdate]);
+    }, [forceUpdate]);
 
     const renderInput = () => {        
         if (error != "") {
@@ -20,14 +20,14 @@ export default function InputUI(props) {
     }
 
     const handleBlur = (e) => {
-        setError(props.validator(e.target.value));
+        setError(validator(e.target.value));
     }
     
     return (            
         <div className={styles.profileInput}>                              
-            <input type={props.type} className={renderInput()} value={props.value} onChange={props.onChange} onBlur={handleBlur}/>
+            <input type={type} className={renderInput()} value={value} onChange={onChange} onBlur={handleBlur}/>
             <div className={styles.header_box}>
-                <span className={styles.header}>{props.header}</span>
+                <span className={styles.header}>{header}</span>
                 <span className={styles.error_text}>{error}</span>
             </div>  
         </div>

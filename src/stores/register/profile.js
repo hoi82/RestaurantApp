@@ -1,35 +1,26 @@
 import { ErrorMessages } from "../../types/ErrorMessages";
+import Validator from "../../utils/Validator";
 
 const initialProfile = {
-    email: "",    
-    emailError: ErrorMessages.CORRECT,
-    emailChanged: false,
-    password: "",    
-    passwordError: ErrorMessages.CORRECT,
-    passwordChanged: false,
-    name: "",    
-    nameError: ErrorMessages.CORRECT,
-    nameChanged: false,
-    contact: "",    
-    contactError: ErrorMessages.CORRECT,
-    contactChanged: false,
-    address: "",
-    addressError: ErrorMessages.CORRECT,
-    addressChanged: false,
+    email: "",        
+    password: "",        
+    name: "",        
+    contact: "",        
+    address: "",    
     getValid: function() {        
-        if (this.emailError != ErrorMessages.CORRECT)
+        if (Validator.validateEmail(this.email) != ErrorMessages.CORRECT)
             return false;
 
-        if (this.passwordError != ErrorMessages.CORRECT)
+        if (Validator.validatePassword(this.password) != ErrorMessages.CORRECT)
             return false;
 
-        if (this.nameError != ErrorMessages.CORRECT)
+        if (Validator.validateName(this.name) != ErrorMessages.CORRECT)
             return false;
 
-        if (this.contactError != ErrorMessages.CORRECT)
+        if (Validator.validateContact(this.contact) != ErrorMessages.CORRECT)
             return false;
 
-        if (this.addressError != ErrorMessages.CORRECT)
+        if (Validator.validateAddress(this.address) != ErrorMessages.CORRECT)
             return false;
 
         return true;

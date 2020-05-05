@@ -11,20 +11,23 @@
 
 .item_panel {
     @include absolute(56px);
-    @include set_size(100%, 300px);    
+    @include set_size(100%);  
+    max-height: 300px;  
     overflow-x: hidden;
     overflow-y: auto;
     background-color: $grade1-bg-color;
     border-radius: 3px;
     padding: 0px;             
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+    z-index: 3;
 
     .inner_panel {
         @include column_flex;
+        box-sizing: border-box;
     }
 
     .item {
-        @include set_size(100%, 40px);        
+        @include set_size(calc(100% - 8px), 40px);        
         background-color: $grade2-bg-color;        
         text-align: left;
         margin: 0px 4px;

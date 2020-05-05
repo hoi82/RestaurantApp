@@ -3,10 +3,7 @@ import { useDispatch } from 'react-redux';
 import styles from "./Profile.module.scss";
 
 export default (props) => {
-    const dispatch = useDispatch();
-    //TODO:Register 부분 location.state 이용해서 분기하는 방법 구현해볼것.
-    //같은 url link로 호출할시 AJAX 때문에 랜더는 호출되지만 전체 리로딩은 안되는듯.
-    //만약 퍼포먼스 이슈 생기면 예전처럼 갈것.
+    const dispatch = useDispatch();    
     return (
         <div className={styles.profile}>            
             <div className={styles.container}>

@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode=development --config ./oldwebpack.config.js",
-    "build": "webpack --mode=production",
-    "todo": "TODO: 필요없는 모듈 다 지워야됨 -> mini-css-extract, html-laoder, html-plugin, webpack-dev-server",
+    "build": "webpack --mode=production",    
     "dev": "nodemon index"
   },
   "devDependencies": {
@@ -30,9 +29,6 @@
     "extract-css-chunks-webpack-plugin": "^4.7.4",
     "file-loader": "^5.0.2",
     "friendly-errors-webpack-plugin": "^1.7.0",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react-hot-loader": "^4.12.20",
@@ -42,7 +38,6 @@
     "webpack-bundle-analyzer": "^3.6.1",
     "webpack-cli": "^3.3.10",
     "webpack-dev-middleware": "^3.7.2",
-    "webpack-dev-server": "^3.10.1",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-node-externals": "^1.7.2"

@@ -180,14 +180,14 @@
 }
 
 @mixin big_content_title {
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 900;
     line-height: 80px;
     vertical-align: middle;
 }
 
 @mixin big_content_body {
-    font-size: 18px;
+    font-size: $h3-size;
     line-height: 80px;
     vertical-align: middle; 
 }
@@ -207,4 +207,20 @@
     &:active {
         background-color: $highlight-active-color;
     }    
+}
+
+@mixin tool_btn($width: auto, $height: auto) {                
+    @include set_size($width, $height);   
+    border-radius: 3px;
+    padding: 0;
+    
+    @include global_transition;
+
+    &:hover {
+        background-color: $grade2-bg-color;
+    }
+
+    &:active {
+        background-color: $grade3-bg-color;
+    }          
 }

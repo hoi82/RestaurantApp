@@ -1,31 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import path from "path";
 import styles from "./styles.scss";
 import Dropdown from '../../../../components/DropdownTextBox';
 import { useSelector, useDispatch } from 'react-redux';
-import { GetNames } from '../../../../actions/main';
+import { GetNames, READY_TO_LOAD, NAME_FAILED, SearchByName } from '../../../../actions/main/search';
+import { endpoint } from '../../../../config/url';
 
-export default (props) => {    
-    const names = useSelector((store) => store.main.search.names);
+export default ({history}) => {    
+    const names = useSelector((store) => store.main.search.name.filter);   
+    const status = useSelector((store) => store.main.search.name.status);     
     const dispatch = useDispatch();
     const [name, setName] = useState("");
+
+    useEffect(() => {
+        if (status == READY_TO_LOAD || status == NAME_FAILED)
+            dispatch(GetNames(name));
+    }, []);
 
     const handleChange = (value) => {
         dispatch(GetNames(value));
         setName(value);        
     }
 
-    const handleSearch = (e) => {
-        console.log(name);
-    }
+    const handleSearch = (e) => {        
+        if (name != "") {
+            dispatch(SearchByName(name));
+            history.push(path.resolve(endpoint.resultRestaurantByName, name));
+        }        
+    }    
         
-    return ( 
+    return (         
         <div className={styles.container}>
-            <span className={styles.title}>이름으로 검색</span>
-            <span className={styles.description}>찾고 싶은 이름을 넣어주세요</span>
+            <span className={styles.title}>Search by Name</span>
+            <span className={styles.description}>Input the name what you want.</span>
             <div className={styles.name_search_box}>
                 <Dropdown value={name} onChange={handleChange} items={names}/>
                 <button className={styles.search_btn} onClick={handleSearch}>
-                    <span className={styles.search_btn_title}>찾아보기</span>
+                    <span className={styles.search_btn_title}>Search</span>
                 </button>
             </div>            
         </div>        

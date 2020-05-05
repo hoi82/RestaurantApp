@@ -56,30 +56,23 @@ export default (props) => {
                                 </button>
                             </Link>                                            
                     </div>
-                </div>
-                <div className={styles.acco_item}>
-                    <label htmlFor="cbFood" className={styles.acco_header} htmlFor="cbFood">
-                        Food
-                    </label>   
-                    <input className={styles.acco_idc} type="checkbox" id="cbFood" hidden/>
-                    <div className={styles.acco_content}>
-                        <button className={styles.acco_button}>
-                            Search
-                        </button>                        
-                    </div>
-                </div>
+                </div>                
                 <div className={styles.acco_item}>
                     <label className={styles.acco_header} htmlFor="cbReceipt">
                         Receipt
                     </label>
                     <input className={styles.acco_idc} type="checkbox" id="cbReceipt" hidden/>
                     <div className={styles.acco_content}>
-                        <button className={styles.acco_button}>
-                            Show
-                        </button>
-                        <button className={styles.acco_button}>
-                            Manage
-                        </button>
+                        <Link to={endpoint.home}>
+                            <button className={styles.acco_button}>
+                                Show
+                            </button>
+                        </Link>      
+                        <Link to={endpoint.home}>
+                            <button className={styles.acco_button}>
+                                Manage
+                            </button>
+                        </Link>                                          
                     </div>
                 </div>
             </div>            

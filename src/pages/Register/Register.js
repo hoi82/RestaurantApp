@@ -10,7 +10,7 @@ import NavPanel from "../../components/NavPanel";
 import Nav from "./Nav";
 import { FetchRegister, REGISTER_FETCHED, REGISTER_FAILED } from '../../actions/register/status';
 
-export default function Register(props) {     
+export default function Register({history, location}) {       
     const [tosAgree, setTOSAgree] = useState(false);    
     const dispatch = useDispatch();
     const profile = useSelector((store) => store.register.profile);
@@ -23,13 +23,14 @@ export default function Register(props) {
                 dispatch(showDialog({
                     mode: DialogMode.SUCCESS,
                     content: "가입을 축하드립니다. \r\n 닫기를 누르시면 로그인 화면으로 이동합니다.",
-                    onClose: () => props.history.replace("/login")
+                    onClose: () => history.replace("/login")
                 }));
                 break;
             case REGISTER_FAILED:
+                console.log(status.info);
                 dispatch(showDialog({
                     mode: DialogMode.ALERT,
-                    content: `에러가 발생했습니다.(${status.info})`
+                    content: `에러가 발생했습니다.(${status.info})`,                    
                 }))
                 break;
             default:
@@ -41,38 +42,16 @@ export default function Register(props) {
         return tosAgree ? 
         <React.Fragment>       
             <NavPanel width={global.register_nav_width} padding="0" hideShadow={true} positionRelative={true}>
-                <Nav onRegister={handleRegister}/>
+                <Nav history={history} location={location} onRegister={handleRegister}/>
             </NavPanel>                 
-            <Content></Content>            
+            <Content location={location}></Content>            
         </React.Fragment>                                        
         :
         <TOS onConfirm={tosConfirm}/>;
     }
 
-    const handleRegister = () => {          
-        let valid = profile.getValid();
-        if (valid) {
-            const info = {
-                email: profile.email,
-                password: profile.password,
-                name: profile.name,
-                contact: profile.contact,
-                address: profile.address,
-                payments: payments.list,
-            };
-            
-            dispatch(FetchRegister(info));
-        }
-        else {
-            let message = "개인 정보가 올바르지 않습니다. 개인 정보를 확인해주세요.";            
-            dispatch(showDialog({
-                mode: DialogMode.ALERT,
-                content: message,
-                onClose: () => {console.log("dialog closed")}
-            }));
-        }
-        //NOTE:수동으로 route하는 방법.   
-        // this.props.history.push("/");                
+    const handleRegister = () => {                  
+        dispatch(FetchRegister(profile, payments));                     
     }    
 
     const tosConfirm = (agreed) => {
@@ -80,7 +59,7 @@ export default function Register(props) {
             setTOSAgree(true);            
         }
         else {
-            props.history.goBack();            
+            history.goBack();            
         }
     }    
     
