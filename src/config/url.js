@@ -14,7 +14,7 @@ export const endpoint = {
     resultRestaurantByCategory: "/app/restaurants/category",
     resultRestaurantByLocation: "/app/restaurants/location",
     resultRestaurantByMenu: "/app/restaurants/menu/:menu",
-    restaurantDetail: "/app/restaurants/details/:id",
-    restaurantReservation: "/app/restaurants/reservation/:id",
+    restaurantDetail: "/app/restaurants/details",
+    restaurantReservation: "/app/restaurants/reservation",
     myReservations: "/app/my/reservation",
 }

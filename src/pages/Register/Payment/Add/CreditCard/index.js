@@ -1,96 +1,102 @@
-import React from 'react';
-import CreditCardInput from './CreditCardInput';
-import { useDispatch, useSelector } from 'react-redux';
-import { navigatePayment } from '../../../../../actions/register/registerNavigation';
-import Formatter from '../../../../../utils/Formatter';
-import { updateNumber, updateExpire, updateCVC, updateCashHolder, validateNumber, validateExpire, validateCVC, validateCashHolder, refreshCredit } from '../../../../../actions/register/creditCard';
+import React, { useState } from 'react';
+import styles from "./style.scss";
+import close from "../../../../../image/close.svg";
+import CreditNumberInput from '../../../../../components/InputWithHeader/CreditNumberInput';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateNumber, updateCVC, updateExpire, updateCashHolder } from '../../../../../actions/register/creditCard';
+import CVCInput from '../../../../../components/InputWithHeader/CVCInput';
+import ExpireInput from '../../../../../components/InputWithHeader/ExpireInput';
+import NameInput from '../../../../../components/InputWithHeader/NameInput';
 import { updatePayment, createPayment } from '../../../../../actions/register/payments';
+import { showDialog } from '../../../../../actions/common/dialog';
+import { DialogMode } from '../../../../../types/Variables';
 
-export default ({edit = false}) => {
-    const credit = useSelector((store) => store.register.credit);    
-    const dispatch = useDispatch();      
-    
-    const handleChange = (e) => {
-        switch (e.target.name) {
-            case "number":                                
-                e.target.value = Formatter.formatCardNumber(e.target.value);
-                dispatch(updateNumber(e.target.value));
-                break;            
-            case "expire":
-                e.target.value = Formatter.formatExpireDate(e.target.value);
-                dispatch(updateExpire(e.target.value));
-                break;
-            case "cvc":
-                dispatch(updateCVC(e.target.value));
-                break;
-            case "name":
-                dispatch(updateCashHolder(e.target.value));
-                break;
-            default:
-                break;
-        }
-    }            
-    
-    const handleBlur = (e) => {
-        switch (e.target.name) {
-            case "number":                                                
-                dispatch(validateNumber());
-                break;            
-            case "expire":                
-                dispatch(validateExpire());
-                break;
-            case "cvc":
-                dispatch(validateCVC());
-                break;
-            case "name":
-                dispatch(validateCashHolder());
-                break;
-            default:
-                break;
-        }
-    }        
-    
-    const handleEdit = () => {    
-        dispatch(refreshCredit()); 
-        
-        if (true) {
-            dispatch(updatePayment(credit));
-            dispatch(navigatePayment("list"));
-        }   
-        else {
+export default function CreditCardInput({edit = false, movePage, checkDuplicate}) {  
+    const credit = useSelector((store) => store.register.credit);
+    const [forceUpdate, setForceUpdate] = useState(false);
+    const dispatch = useDispatch(); 
 
-        }         
+    const backToList = () => {
+        movePage("list");
     }
 
-    const handleAdd = () => {
-        dispatch(refreshCredit());                        
+    const addEditAction = (action) => {
         if (credit.getValid()) {
-            dispatch(createPayment(credit));
-            dispatch(navigatePayment("list"));
-        } else {
-            
-        }        
+            if (checkDuplicate(credit)) {
+                dispatch(showDialog({
+                    mode: DialogMode.ALERT,
+                    content: "같은 카드 번호가 이미 존재합니다!",
+                }));
+            }
+            else {
+                dispatch(action(credit));
+                backToList();
+            }
+        }
+        else {
+            setForceUpdate(true);
+        }
+    };
+    
+    const handleEdit = () => {                            
+        addEditAction(updatePayment);
+    }
+
+    const handleAdd = () => {                        
+        addEditAction(createPayment);
     }
 
     const handleClose = (e) => {
         if (edit) {
-            dispatch(navigatePayment("list"));
+            backToList();
         }
         else {
-            dispatch(navigatePayment("select"));
+            movePage("select");
         }        
+    }  
+    
+    const handleNumberChange = (e) => {
+        dispatch(updateNumber(e.target.value));
+    }
+
+    const handleExpireChange = (e) => {
+        dispatch(updateExpire(e.target.value));
+    }
+
+    const handleCVCChange = (e) => {
+        dispatch(updateCVC(e.target.value));
+    }
+
+    const handleCashHolderChange = (e) => {
+        dispatch(updateCashHolder(e.target.value));
     }    
-
-    const functions = {
-        change: handleChange,   
-        blur: handleBlur,     
-        edit: handleEdit,
-        add: handleAdd,
-        close: handleClose
-    };
-
-    return (
-        <CreditCardInput edit={edit} number={credit.number} numberError={credit.numberError} expire={credit.expire} expireError={credit.expireError} 
-        cvc={credit.cvc} cvcError={credit.cvcError} cashHolder={credit.cashHolder} cashHolderError={credit.cashHolderError} functions={functions}/>
-    );
+        
+    return (        
+        <div className={styles.container}>
+            <div className={styles.inner_container}>
+                <div className={styles.num_box}>
+                    <CreditNumberInput value={credit.number} forceUpdate={forceUpdate} onChange={handleNumberChange}/>
+                </div>
+                <div className={styles.etc_box}>
+                    <div className={styles.expire_box}>                                        
+                        <ExpireInput value={credit.expire} forceUpdate={forceUpdate} onChange={handleExpireChange}/>
+                    </div>
+                    <div className={styles.cvc_box}>
+                        <CVCInput value={credit.cvc} forceUpdate={forceUpdate} onChange={handleCVCChange}/>                    
+                    </div>
+                </div>   
+                <div className={styles.name_box}>                
+                    <NameInput value={credit.cashHolder} forceUpdate={forceUpdate} onChange={handleCashHolderChange}/>
+                </div> 
+            </div>                        
+            <button className={styles.add_btn} onClick={edit ? handleEdit : handleAdd}>
+                <span>
+                    {edit ? "저장하기" : "추가하기"}                    
+                </span>
+            </button>
+            <button className={styles.close_btn} onClick={handleClose}>
+                <img src={close} className={styles.close_icon}/>
+            </button>                
+        </div>
+    );    
 }

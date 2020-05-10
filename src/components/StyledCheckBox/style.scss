@@ -10,8 +10,7 @@
 //최종 구조 : (first-child:before - 이펙트 담당) - (first-child - 체크 박스) - (svg - 체크 이미지)
 
 .cbx_container {
-    height: 24px;
-    margin-bottom: 12px;
+    height: 24px;    
 
     .ipx {
         display: none;
@@ -20,14 +19,15 @@
     .cbx {
         margin: auto;
         user-select: none;
-        cursor: pointer;                  
+        cursor: pointer; 
+        line-height: 24px;                 
                     
         span {
             display: inline-block;
             vertical-align: middle;
             transform: translate3d(0,0,0);
             box-sizing: border-box;
-            margin-top: 6px;  
+            margin-top: 6px;             
     
             //Pseudo class로 표현한 체크박스                 
             &:first-child {

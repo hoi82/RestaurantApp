@@ -12,6 +12,7 @@ import { FetchRegister, REGISTER_FETCHED, REGISTER_FAILED } from '../../actions/
 
 export default function Register({history, location}) {       
     const [tosAgree, setTOSAgree] = useState(false);    
+    const [pageName, setPageName] = useState("profile");
     const dispatch = useDispatch();
     const profile = useSelector((store) => store.register.profile);
     const payments = useSelector((store) => store.register.payments);
@@ -26,8 +27,8 @@ export default function Register({history, location}) {
                     onClose: () => history.replace("/login")
                 }));
                 break;
-            case REGISTER_FAILED:
-                console.log(status.info);
+            case REGISTER_FAILED:  
+                console.log(status.info);              
                 dispatch(showDialog({
                     mode: DialogMode.ALERT,
                     content: `에러가 발생했습니다.(${status.info})`,                    
@@ -42,9 +43,9 @@ export default function Register({history, location}) {
         return tosAgree ? 
         <React.Fragment>       
             <NavPanel width={global.register_nav_width} padding="0" hideShadow={true} positionRelative={true}>
-                <Nav history={history} location={location} onRegister={handleRegister}/>
+                <Nav movePage={movePage} pageName={pageName} onRegister={handleRegister}/>
             </NavPanel>                 
-            <Content location={location}></Content>            
+            <Content pageName={pageName}></Content>            
         </React.Fragment>                                        
         :
         <TOS onConfirm={tosConfirm}/>;
@@ -61,7 +62,11 @@ export default function Register({history, location}) {
         else {
             history.goBack();            
         }
-    }    
+    }  
+    
+    const movePage = (name) => {
+        setPageName(name);
+    }
     
     return (        
         <div className={styles.register}>   

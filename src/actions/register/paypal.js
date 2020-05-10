@@ -1,52 +1,31 @@
-export const UPDATE_EMAIL = "UPDATE_EMAIL";
-export const UPDATE_PASSWORD = "UPDATE_PASSWORD";
-export const VALIDATE_EMAIL = "VALIDATE_EMAIL";
-export const VALIDATE_PASSWORD = "VALIDATE_PASSWORD";
+export const UPDATE_PAYPAL_EMAIL = "UPDATE_PAYPAL_EMAIL";
+export const UPDATE_PAYPAL_PASSWORD = "UPDATE_PAYPAL_PASSWORD";
 export const ASSIGN_PAYPAL = "ASSIGN_PAYPAL";
 export const NEW_PAYPAL = "NEW_PAYPAL";
-export const REFRESH_PAYPAL = "REFRESH_PAYPAL";
 
 export const updateEmail = (value) => {
     return {
-        type: UPDATE_EMAIL,
-        value: value
+        type: UPDATE_PAYPAL_EMAIL,
+        payload: value
     }
 }
 
 export const updatePassword = (value) => {
     return {
-        type: UPDATE_PASSWORD,
-        value: value
-    }
-}
-
-export const validateEmail = () => {
-    return {
-        type: VALIDATE_EMAIL,        
-    }
-}
-
-export const validatePassword = () => {
-    return {
-        type: VALIDATE_PASSWORD,
+        type: UPDATE_PAYPAL_PASSWORD,
+        payload: value
     }
 }
 
 export const assignPaypal = (paypal) => {
     return {
         type: ASSIGN_PAYPAL,
-        value: paypal
+        payload: paypal
     }
 }
 
 export const newPaypal = () => {
     return {
         type: NEW_PAYPAL,
-    }
-}
-
-export const refreshPaypal = () => {
-    return {
-        type: REFRESH_PAYPAL,
     }
 }

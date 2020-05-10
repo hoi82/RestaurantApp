@@ -1,14 +1,14 @@
 import React from 'react';
 import styles from "./style.scss";
 
-export default (props) => {      
-    if (props.staticContext)
+export default ({staticContext, history}) => {      
+    if (staticContext)
     {
-        props.staticContext.status = "404";        
+        staticContext.status = "404";        
     }    
 
     const handleClick = (e) => {        
-        props.history.goBack();
+        history.goBack();
     }
 
     return (

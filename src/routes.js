@@ -5,6 +5,7 @@ import { asyncMain, asyncLogin, asyncRegister, asyncSearchByName, asyncSearchByC
 import { asyncSearchByLocation } from "./pages/Main/Restaurant/Search";
 import { GetAllCategories } from "./actions/main/search";
 import { asyncResultByName, asyncResultByCategory, asyncResultByLocation } from "./pages/Main/Restaurant/SearchResult";
+import { asyncDetails } from "./pages/Main/Restaurant/Details";
 
 export default [
     {
@@ -41,8 +42,13 @@ export default [
                         exact: true
                     },
                     {
-                        path: path.resolve(endpoint.resultRestaurantByLocation),
+                        path: endpoint.resultRestaurantByLocation,
                         component: asyncResultByLocation,
+                        exact: true
+                    },
+                    {
+                        path: path.resolve(endpoint.restaurantDetail, ":id"),
+                        component: asyncDetails,
                         exact: true
                     }
                 ]

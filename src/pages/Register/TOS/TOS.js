@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from "./TOS.module.scss";
 
-export default function TOS(props) {            
+export default function TOS({onConfirm}) {            
     return (
         <div className={styles.tos}>        
             <div className={styles.header_box}>
@@ -32,10 +32,10 @@ export default function TOS(props) {
                 </span>
             </div>
             <div className={styles.button_box}>
-                <button className={styles.decline_btn} onClick={(e) => props.onConfirm(false)}>
+                <button className={styles.decline_btn} onClick={(e) => onConfirm(false)}>
                     <span>음...다시 한번 생각해볼께요..</span>
                 </button>
-                <button className={styles.accept_btn} onClick={(e) => props.onConfirm(true)}>
+                <button className={styles.accept_btn} onClick={(e) => onConfirm(true)}>
                     <span>알겠습니다!</span>
                 </button>
             </div>                

@@ -1,82 +1,84 @@
-import React from 'react';
-import PaypalInput from './PaypalInput';
+import React, { useState } from 'react';
+import styles from "./style.scss";
+import close from "../../../../../image/close.svg";
+import EmailInput from "../../../../../components/InputWithHeader/EmailInput";
 import { useSelector, useDispatch } from 'react-redux';
-import { updateEmail, updatePassword, validateEmail, validatePassword, refreshPaypal } from '../../../../../actions/register/paypal';
+import { updateEmail, updatePassword } from "../../../../../actions/register/paypal";
+import ExternalPasswordInput from '../../../../../components/InputWithHeader/ExternalPasswordInput';
 import { updatePayment, createPayment } from '../../../../../actions/register/payments';
-import { navigatePayment } from '../../../../../actions/register/registerNavigation';
+import { DialogMode } from '../../../../../types/Variables';
+import { showDialog } from '../../../../../actions/common/dialog';
 
-export default (props) => {
-    const paypal = useSelector((store) => store.register.paypal);          
+export default function PaypalInput({edit=false, movePage, checkDuplicate}) {
+    const paypal = useSelector((store) => store.register.paypal);
+    const [forceUpdate, setForceUpdate] = useState(false);
     const dispatch = useDispatch();
 
-    const handleClose = (e) => {
-        if (props.edit) {
-            dispatch(navigatePayment("list"));
-        }
-        else {
-            dispatch(navigatePayment("select"));            
-        }        
+    const backToList = () => {
+        movePage("list");
     }
 
-    const handleChange = (e) => {        
-        switch (e.target.name) {
-            case "email":
-                dispatch(updateEmail(e.target.value));  
-                break;
-            case "password":
-                dispatch(updatePassword(e.target.value));
-                break;
-            default:
-                break;
-        }
-    }    
-
-    const handleBlur = (e) => {        
-        if (true) {
-            switch (e.target.name) {
-                case "email":
-                    dispatch(validateEmail());
-                    break;
-                case "password":                    
-                    dispatch(validatePassword());
-                    break;
-                default:
-                    break;
+    const addEditAction = (action) => {
+        if (paypal.getValid()) {
+            if (checkDuplicate(paypal)) {
+                dispatch(showDialog({
+                    mode: DialogMode.ALERT,
+                    content: "같은 이메일 주소가 이미 존재합니다!",
+                }));
+            }
+            else {
+                dispatch(action(paypal));
+                backToList();
             }
         }
-    }        
-
-    const handleEdit = () => {
-        dispatch(refreshPaypal());
-        if (paypal.getValid()) {
-            dispatch(updatePayment(paypal));
-            dispatch(navigatePayment("list"));
-        }   
         else {
-            
-        }     
+            setForceUpdate(true);
+        }
+    };
+
+    const handleEdit = () => {        
+        addEditAction(updatePayment);
     }
 
-    const handleAdd = () => {
-        dispatch(refreshPaypal());
-        if (paypal.getValid()) {
-            dispatch(createPayment(paypal));
-            dispatch(navigatePayment("list"));
+    const handleAdd = () => {        
+        addEditAction(createPayment);      
+    }
+
+    const handleClose = (e) => {
+        if (edit) {
+            backToList();
         }
         else {
-
+            movePage("select");
         }        
+    }  
+
+    const handleEmailChange = (e) => {
+        dispatch(updateEmail(e.target.value));
     }
 
-    const functions = {
-        change: handleChange,
-        blur: handleBlur,
-        add: handleAdd,
-        edit: handleEdit,
-        close: handleClose
+    const handlePasswordChange = (e) => {
+        dispatch(updatePassword(e.target.value));
     }
 
     return (
-        <PaypalInput edit={props.edit} email={paypal.email} emailError={paypal.emailError} password={paypal.password} passwordError={paypal.passwordError} functions={functions}/>
-    );
+        <div className={styles.container}>
+            <div className={styles.inner_container}>
+                <div className={styles.content_container}>                
+                    <EmailInput value={paypal.email} forceUpdate={forceUpdate} onChange={handleEmailChange}/>
+                </div>
+                <div className={styles.content_container}>                
+                    <ExternalPasswordInput value={paypal.password} forceUpdate={forceUpdate} onChange={handlePasswordChange}/>
+                </div>
+            </div>            
+            <button className={styles.add_btn} onClick={edit ? handleEdit : handleAdd}>
+                <span className={styles.add_btn_text}>
+                    {edit ? "저장하기" : "추가하기"}
+                </span>
+            </button>
+            <button className={styles.close_btn} onClick={handleClose}>
+                <img src={close} className={styles.close_icon}/>
+            </button>
+        </div>
+    );    
 }

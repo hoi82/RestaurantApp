@@ -12,6 +12,7 @@ import { configureStore } from "./utils/configureStore";
 import { Provider } from "react-redux";
 import { matchRoutes, renderRoutes } from "react-router-config";
 import routes from "./routes";
+import { AppContainer } from "react-hot-loader";
 
 const app = express();
 
@@ -68,18 +69,19 @@ app.use(express.static(joinPath(isProduction ? "dist" : "", "public")));
 app.use(serveFavicon(joinPath(isProduction ? "dist" : "", "public/favicon.ico")));
 
 app.get("*", async (req, res) => {            
-    const {store} = configureStore({url: req.url});  
-    console.log("requested");                      
+    const {store} = configureStore({url: req.url});                        
     loadBranchData(store, req.path).then(async () => {        
         const extractor = getExtractor();
         const context = {};                    
         const app = (
             <ChunkExtractorManager extractor={extractor}>
-                <Provider store={store}>
-                    <StaticRouter location={req.url} context={context}> 
-                        {renderRoutes(routes)}                    
-                    </StaticRouter>        
-                </Provider>            
+                <AppContainer>
+                    <Provider store={store}>
+                        <StaticRouter location={req.url} context={context}> 
+                            {renderRoutes(routes)}
+                        </StaticRouter>
+                    </Provider>
+                </AppContainer>    
             </ChunkExtractorManager>
         );             
         const content = renderToString(app);                        
@@ -93,6 +95,5 @@ app.get("*", async (req, res) => {
     });     
 });
 
-const server = app.listen(port, () => {
-    // console.log(`😎 server is running on ${port} port.`);
-})
+const server = app.listen(port, () => {    
+});

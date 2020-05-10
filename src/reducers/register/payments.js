@@ -1,34 +1,48 @@
 import initialPayments from "../../stores/register/payments";
 import { CREATE_PAYMENT, UPDATE_PAYMENT, DELETE_PAYMENT, SELECT_PAYMENT } from "../../actions/register/payments";
+import { Payments } from "../../types/Variables";
 
-const payments = (state = initialPayments, action) => {
-    let list = state.list.slice();
-    switch (action.type) {
+const payments = (state = initialPayments, action) => {    
+    const { type, payload } = action;
+    switch (type) {
         case CREATE_PAYMENT:
-            let create = Object.assign({}, action.value);
-            create.id = list.length;            
-            return {                
-                list: [...list, create],
-                selectedPayment: create
+            let create = Object.assign({}, payload);            
+            const createState = Object.assign({}, state);
+            create.id = createState.list.length;
+            createState.list.push(create);
+            switch (payload.kind) {
+                case Payments.CREDIT_CARD:
+                    createState.currentCreditCard = create;
+                    createState.currnetPaypal = null;
+                    break;
+                case Payments.PAYPAL:
+                    createState.currnetPaypal = create;
+                    createState.currentCreditCard = null;
+                default:
+                    break;
             }
-        case SELECT_PAYMENT:            
-            return {
-                list: state.list,
-                selectedPayment: state.list[action.index]
-            };
+            return createState;
+        case SELECT_PAYMENT:
+            let selectState = Object.assign({}, state);
+            switch (selectState.list[payload].kind) {
+                case Payments.CREDIT_CARD:
+                    selectState.currentCreditCard = selectState.list[payload];
+                    break;
+                case Payments.PAYPAL:
+                    selectState.currnetPaypal = selectState.list[payload];
+                default:
+                    break;
+            }            
+            return selectState;
         case UPDATE_PAYMENT:            
-            let update = Object.assign({}, action.value);
-            list[update.id] = update;
-            return {
-                list: list,
-                selectedPayment: update
-            }
-        case DELETE_PAYMENT:
-            let deleted = list.splice(action.index);
-            return {
-                list: list,
-                selectedPayment: deleted
-            }
+            let update = Object.assign({}, payload);
+            const updateState = Object.assign({}, state);
+            updateState.list[update.id] = update;
+            return updateState;
+        case DELETE_PAYMENT:        
+            const deleteState = Object.assign({}, state);
+            deleteState.list.splice(payload);
+            return deleteState;        
         default:            
             return state;            
     }

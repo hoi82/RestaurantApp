@@ -123,12 +123,12 @@
 @mixin large_button($width: 100%) {    
     @include set_size($width, $height: 48px);
     border-radius: 5px;
-    padding: 0;
-    margin-bottom: 13px;
+    padding: 0;    
     background-color: $highlight-color;
     color: $highlight-highlight-color;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: $h2-size;
+    line-height: 48px;
+    font-weight: 600;
     @include global_transition;
     
     &:hover {
@@ -137,6 +137,14 @@
 
     &:active {
         background-color: $highlight-active-color;
+    }
+
+    &:disabled {
+        background-color: $grade5-bg-color;
+    }
+
+    &:disabled:hover {
+        background-color: $grade5-bg-color;
     }
 }
 
@@ -152,6 +160,14 @@
 
     &:active {
         background-color: $highlight-active-color;
+    }
+
+    &:disabled {
+        background-color: $grade5-bg-color;
+    }
+
+    &:disabled:hover {
+        background-color: $grade5-bg-color;
     }
 }
 

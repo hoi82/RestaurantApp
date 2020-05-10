@@ -1,82 +1,61 @@
 import React from 'react';
 import styles from "./Payment.module.scss";
 import icon from "../../../image/addPaymentIcon.svg";
-import loadable from '@loadable/component';
+import { useDispatch } from 'react-redux';
+import { showDialog } from '../../../actions/common/dialog';
+import { DialogMode } from '../../../types/Variables';
 
-const PaymentList = loadable(() => import("./List/PaymentList"));
-const PaymentItem = loadable(() => import("./PaymentItem"));
-const PaymentSelect = loadable(() => import("./Select/PaymentSelect"));
-const CreditCard = loadable(() => import("./Add/CreditCard"));
-const Paypal = loadable(() => import("./Add/Paypal"));
-const FintechInput = loadable(() => import("./Add/Fintech/FintechInput"));
+export default function Payment({pageName, movePage, children}) {
+    const dispatch = useDispatch();    
 
-export default function Payment(props) {
-    const renderContent = (page) => {
+    const renderContentPanel = (page) => {         
+        let style = styles.content_bg_panel;        
         switch (page) {
             case "list":
-                return <PaymentList renderedList={renderPayments(props.payments)}/>;
+                return style.concat(" ", styles.panel_list);                
             case "select":
-                return <PaymentSelect onCreate={props.onCreate}/>;
+                return style.concat(" ", styles.panel_select);                
             case "card":
-                return <CreditCard edit={false}/>;  
+                return style.concat(" ", styles.panel_card);                
             case "card_edit":
-                return <CreditCard edit={true}/>;          
+                return style.concat(" ", styles.panel_card);                
             case "paypal":
-                return <Paypal edit={false}/>;
+                return style.concat(" ", styles.panel_paypal);                
             case "paypal_edit":
-                return <Paypal edit={true}/>;
+                return style.concat(" ", styles.panel_paypal);                
             case "fintech":
-                return <FintechInput/>;            
+                return style.concat(" ", styles.panel_card);                
             default:
-                return null;            
+                return style.concat(" ", styles.panel_list); 
         }
-    };
-
-    const renderContentPanel = (page) => {        
-        switch (page) {
-            case "list":
-                return styles.content_bg_panel + " " + styles.panel_list;                
-            case "select":
-                return styles.content_bg_panel + " " + styles.panel_select;                
-            case "card":
-                return styles.content_bg_panel + " " + styles.panel_card; 
-            case "card_edit":
-                return styles.content_bg_panel + " " + styles.panel_card;
-            case "paypal":
-                return styles.content_bg_panel + " " + styles.panel_paypal;
-            case "paypal_edit":
-                return styles.content_bg_panel + " " + styles.panel_paypal;
-            case "fintech":
-                return styles.content_bg_panel + " " + styles.panel_card;                
-            default:
-                return null;                
+    }   
+    
+    const handleSelect = () => {        
+        if (children.length > 3) {
+            dispatch(showDialog({
+                mode: DialogMode.ALERT,
+                coontent: "결재 정보는 최대 3개까지 가능합니다."
+            }))            
+        }        
+        else {            
+            movePage("select");
         }
-    }    
+    }     
 
-    const renderPayments = () => {                
-        return (
-            props.payments.map((item, i) => {
-                return <PaymentItem payment={item} key={i} onEdit={props.onEditItem} onRemove={props.onRemoveItem}/>
-            })            
-        ); 
-    }    
-          
     return (
         <div className={styles.payment}>
             <div className={styles.panel}/>
             <div className={styles.container}>
                 <span className={styles.header}>*결제 방법을 추가하려면 '추가하기'를 눌러주세요. (최대 3개까지 가능합니다.)</span>
-                <button className={styles.add_button} disabled={props.page == "list" ? false : true} onClick={props.onSelect}>
+                <button className={styles.add_button} disabled={pageName != "list"} onClick={handleSelect}>
                     <div className={styles.button_box}>
                         <img src={icon} alt="추가하기 아이콘" className={styles.icon}/>
                         <span className={styles.btn_text}>추가하기</span>
                     </div>                    
                 </button>
                 <div className={styles.content_container}>
-                    <div className={renderContentPanel(props.page)}/>
-                    <div className={styles.content_box}>
-                        {renderContent(props.page)}
-                    </div>
+                    <div className={renderContentPanel(pageName)}/>                    
+                    {children}
                 </div>                
             </div>                
         </div>

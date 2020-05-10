@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from "./style.scss";
 
-export default (props) => {
+export default ({message}) => {
     return (        
         <div className={styles.panel}>
             <div className={styles.title}>
@@ -9,7 +9,7 @@ export default (props) => {
                 <span>Error!</span>
             </div>
             <div className={styles.content}>
-                <p>{props.message}</p>                
+                <p>{message}</p>                
             </div>
         </div>                    
     );

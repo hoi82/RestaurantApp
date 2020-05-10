@@ -5,7 +5,7 @@ import PanelGrid from '../../../../components/PanelGrid';
 import { layout, GridItem, ListItem } from './Restaurant';
 import styles from "./style.scss";
 
-function Category({match}) {
+function Category({match, history}) {
     const restaurants = useSelector((store) => store.main.search.result);
     const dispatch = useDispatch();
 

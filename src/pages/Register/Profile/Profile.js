@@ -15,8 +15,7 @@ export default function Profile() {
     const [forceUpdate, setForceUpdate] = useState(false);
     const dispatch = useDispatch();
     
-    useEffect(() => {   
-        console.log(status);     
+    useEffect(() => {             
         if (status.status == REGISTER_FAILED)
             setForceUpdate(true);
     }, [status]);

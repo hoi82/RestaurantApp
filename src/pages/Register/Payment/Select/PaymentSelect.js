@@ -3,36 +3,30 @@ import styles from "./PaymentSelect.module.scss";
 import card from "../../../../image/credit-card.svg";
 import paypal from "../../../../image/paypal.svg";
 import fintech from "../../../../image/fintech.svg";
-import { useDispatch } from 'react-redux';
-import { navigatePayment } from '../../../../actions/register/registerNavigation';
 import { Payments } from '../../../../types/Variables';
 
-const Item = (props) => {    
+const Item = ({onCreate, icon, header}) => {    
     return (
-        <button className={styles.btn} onClick={props.onCreate}>
+        <button className={styles.btn} onClick={onCreate}>
             <div className={styles.button_box}>
-                <img src={props.icon} className={styles.logo}/>
-                <span className={styles.btn_text}>{props.header}</span>
+                <img src={icon} className={styles.logo}/>
+                <span className={styles.btn_text}>{header}</span>
             </div>
         </button>        
     )
 }
 
-export default function PaymentSelect(props) {     
-    const dispatch = useDispatch();
-    
-    const handleBack = () => {
-        dispatch(navigatePayment("list"));
+export default function PaymentSelect({movePage, onCreate}) {             
+    const handleBack = () => {                
+        movePage("list");
     }
 
     const handleCreateCredit = () => {
-        props.onCreate(Payments.CREDIT_CARD);
-        dispatch(navigatePayment("card"));
+        onCreate(Payments.CREDIT_CARD);             
     }
 
     const handleCreatePaypal = () => {
-        props.onCreate(Payments.PAYPAL);
-        dispatch(navigatePayment("paypal"));
+        onCreate(Payments.PAYPAL);                
     }    
 
     return (

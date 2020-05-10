@@ -5,15 +5,14 @@ import loadable from '@loadable/component';
 const Profile = loadable(() => import("./Profile/Profile"));
 const PaymentContainer = loadable(() => import("./Payment/PaymentContainer"));
 
-export default ({location}) => {                 
-    const renderContent = (state) => {        
-        const page = state ? state.mainpage : null;
+export default ({pageName}) => {                 
+    const renderContent = (page) => {                
         switch (page) {
             case "profile":
                 return <Profile/>;
                 break;
             case "payment":
-                return <PaymentContainer location={location}/>;
+                return <PaymentContainer location={location} history={history}/>;
                 break;        
             default:
                 return <Profile/>;
@@ -23,7 +22,7 @@ export default ({location}) => {
         
     return (
         <div className={styles.content}>                
-            {renderContent(location.state)}                
+            {renderContent(pageName)}                
         </div>                        
     );   
 }

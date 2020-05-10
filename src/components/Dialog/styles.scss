@@ -21,7 +21,7 @@
         background-color: $bg-color;            
         overflow: hidden;
         border: none;            
-        border-radius: 10px;
+        border-radius: 8px;
         box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.5);        
     }
 
@@ -48,6 +48,8 @@
 
     .content_box {
         @include single_centered_flex;
+        min-width: 400px;
+        min-height: 240px;
         font-size: 14px;
         font-weight: 600;
         color: $content-color;                                    
@@ -61,13 +63,12 @@
         @include relative_full;        
         align-self: baseline;      
 
-        button {                            
-            @include set_size(100%, 32px); 
-            min-width: 200px;            
-            padding: 0;                                
+        button {                                        
+            @include medium_button(calc(100% - 16px));             
+            margin: 8px;            
+            padding: 0;
             font-size: 14px;
-            font-weight: 700;                
-            @include global_transition;
+            font-weight: 700;                            
             color: $highlight-highlight-color;
         }
 

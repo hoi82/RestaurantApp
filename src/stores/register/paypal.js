@@ -1,20 +1,17 @@
 import { ErrorMessages } from "../../types/ErrorMessages";
 import { Payments } from "../../types/Variables";
+import Validator from "../../utils/Validator";
 
 const initialPaypal = {
     id: 0,
     kind: Payments.PAYPAL,
-    email: "",
-    emailChanged: false,
-    emailError: ErrorMessages.CORRECT,
-    password: "",
-    passwordChanged: false,
-    passwordError: ErrorMessages.CORRECT,
+    email: "",    
+    password: "",    
     getValid: function() {        
-        if (this.emailError != ErrorMessages.CORRECT)
+        if (Validator.validateEmail(this.email) != ErrorMessages.CORRECT)        
             return false;
 
-        if (this.passwordError != ErrorMessages.CORRECT)
+        if (Validator.validateExternalPassword(this.password) != ErrorMessages.CORRECT)
             return false;        
 
         return true;

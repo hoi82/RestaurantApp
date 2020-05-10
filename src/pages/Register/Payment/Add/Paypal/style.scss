@@ -1,0 +1,41 @@
+@import "../../../../../theme/global.scss";
+@import "../../../../../theme/utils.scss";
+
+.container {
+    @include relative_full;
+    @include column_flex(stretch, stretch);    
+    padding: 24px 32px;           
+
+    .inner_container {
+        @include column_flex(flex-start, stretch);
+        height: 100%;
+    }    
+
+    .content_container {
+        @include relative($height: 96px);
+        @include column_flex(flex-start, flex-start);          
+        margin-top: 24px;                      
+    }    
+
+    .close_icon {        
+        @include set_size(100%, 100%);              
+        object-fit: cover;
+    }
+
+    .close_btn {
+        @include absolute($right: 24px, $top: 24px);
+        @include set_size(16px, 16px);        
+        background: none;        
+        padding: 0;
+    }
+
+    .add_btn {
+        @include large_button;
+
+        .add_btn_text {
+            font-size: $h2-size;            
+            color: $highlight-highlight-color;
+            font-weight: 500;
+        }        
+    }
+}

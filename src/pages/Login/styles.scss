@@ -38,7 +38,7 @@
         }
 
         .link_btn {
-            margin-bottom: 24px;            
+            margin: 12px 0;
             @include link_btn;
             align-self: flex-start;            
         }        
@@ -47,6 +47,10 @@
             @extend .link_btn;
             margin-left: 8px;
             margin-top: 2px;
-        }               
+        } 
+        
+        .register_container {
+            margin-top: 16px;
+        }
     }    
 }

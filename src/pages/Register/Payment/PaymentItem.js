@@ -6,9 +6,9 @@ import paypal from "../../../image/paypal.svg";
 import fintech from "../../../image/fintech.svg";
 import unknown from "../../../image/test.svg";
 
-export default function PaymentItem(props) {        
+export default function PaymentItem({payment, onEdit, onRemove}) {        
     const renderLogo = () => {
-        switch (props.payment.kind) {
+        switch (payment.kind) {
             case Payments.CREDIT_CARD:
                 return <img src={card} alt="비자 카드 로고" className={styles.logo}/>;                
             case Payments.PAYPAL:
@@ -21,11 +21,11 @@ export default function PaymentItem(props) {
     }
 
     const renderInfo = () => {        
-        switch (props.payment.kind) {
+        switch (payment.kind) {
             case Payments.CREDIT_CARD:
-                return props.payment.number;                
+                return payment.number;                
             case Payments.PAYPAL:
-                return props.payment.email;                
+                return payment.email;                
             case Payments.FINTECH:
                 return payment.id;                
             default:
@@ -34,11 +34,11 @@ export default function PaymentItem(props) {
     }    
     
     const handleEdit = (e) => {        
-        props.onEdit(props.payment);        
+        onEdit(payment);        
     }
 
     const handleRemove = (e) => {        
-        props.onRemove(props.payment.id);        
+        onRemove(payment.id);        
     }
     
     return (

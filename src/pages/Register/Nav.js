@@ -5,11 +5,11 @@ import { endpoint } from "../../config/url";
 import { useDispatch } from 'react-redux';
 import { ResetRegisterStatus } from '../../actions/register/status';
 
-export default function Nav({onRegister, history, location}) {
+export default function Nav({pageName, movePage, onRegister}) {
     const dispatch = useDispatch();
 
     const handleClick = (e) => {
-        history.replace(endpoint.register, { mainpage: e.target.value });
+        movePage(e.target.value);
     }
 
     const handleRegister = (e) => {
@@ -24,11 +24,11 @@ export default function Nav({onRegister, history, location}) {
         <div className={styles.nav_container}>                
             <div className={styles.item_box}>                        
                 <span className={styles.header}>필수</span>                         
-                <button value="profile" className={location.state && location.state.mainpage == "profile" ? styles.item_btn + " " + styles.selected : styles.item_btn} onClick={handleClick}>                            
+                <button value="profile" className={pageName == "profile" ? styles.item_btn + " " + styles.selected : styles.item_btn} onClick={handleClick}>                            
                     <span className={styles.large_btn_text}>개인정보</span>
                 </button>                        
                 <span className={styles.header}>선택</span>                                            
-                <button value="payment" className={location.state && location.state.mainpage == "payment" ? styles.item_btn + " " + styles.selected : styles.item_btn} onClick={handleClick}>
+                <button value="payment" className={pageName == "payment" ? styles.item_btn + " " + styles.selected : styles.item_btn} onClick={handleClick}>
                     <span className={styles.large_btn_text}>결제정보</span>
                 </button>                                                                                     
             </div>

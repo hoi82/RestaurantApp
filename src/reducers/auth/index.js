@@ -1,47 +1,81 @@
-import { LOG_IN_VALIDATING, SESSION_VALIDATING, SESSION_FOUND, SESSION_LOST, LOG_IN_SUCCESS, LOG_IN_FAILED } from "../../actions/auth";
+import { AUTH_PROCESSING, LOG_IN_FAILED, LOG_IN_SUCCESS, SESSION_FOUND, SESSION_LOST, LOGIN_VALIDATING, SESSION_VALIDATING, AUTH_READY } from "../../actions/auth";
+
 
 export const initialAuth = {
-    state: "",
-    isLogIn: false,
+    state: "",    
     email: "",
-    lastAccess: "",   
+    lastAccess: new Date(0),
     error: "", 
 };
 
 export const auth = (state = initialAuth, action) => {    
     const {type, payload} = action;
     switch (type) {
-        case SESSION_VALIDATING:
-            {                                                  
+        case AUTH_PROCESSING:
+            {   
                 return {
-                    state: !!payload.session ? SESSION_FOUND : SESSION_LOST,
-                    isLogIn: !!payload.session,
-                    ...payload.session
-                }
-            }
-        case SESSION_LOST: 
-            {                                
-                return {
-                    state: SESSION_LOST,
-                    isLogIn: false,
-                    error: payload.message                    
-                }
-            }
-        case LOG_IN_VALIDATING:
-            {                
-                const result = {
-                    state: !payload.error ? LOG_IN_SUCCESS : LOG_IN_FAILED,
-                    isLogIn: !payload.error,
-                    ...payload,                    
-                };                
-                return result;
+                    state: AUTH_PROCESSING,
+                    email: state.email,
+                    lastAccess: state.lastAccess,
+                    error: "",
+                }             
             }    
-        case LOG_IN_FAILED: 
+        case LOGIN_VALIDATING: 
             {
-                return {
-                    state: LOG_IN_FAILED,
-                    isLogIn: false,
-                    error: payload.message
+                if (payload.error) {
+                    return {
+                        state: LOG_IN_FAILED,
+                        email: payload.email,
+                        lastAccess: new Date(0),
+                        error: payload.error
+                    }
+                }
+                else {
+                    if (payload.email) {
+                        return {
+                            state: LOG_IN_SUCCESS,
+                            email: payload.email,
+                            lastAccess: payload.lastAccess,
+                            error: ""
+                        }
+                    }    
+                    else {
+                        return {
+                            state: AUTH_READY,
+                            email: "",
+                            lastAccess: new Date(0),
+                            error: ""
+                        }
+                    }                
+                }
+            }
+        case SESSION_VALIDATING: 
+            {
+                if (payload.error) {
+                    return {
+                        state: SESSION_LOST,
+                        email: "",
+                        lastAccess: new Date(0),
+                        error: payload.error
+                    }
+                }
+                else {
+                    if (payload.session) {
+                        return {
+                            state: SESSION_FOUND,
+                            email: state.email,
+                            lastAccess: state.lastAccess,
+                            error: ""
+                        }
+                    }
+                    else {
+                        return {
+                            state: SESSION_LOST,
+                            email: "",
+                            lastAccess: new Date(0),
+                            error: ""
+                        }
+                    }
                 }
             }
         default:
