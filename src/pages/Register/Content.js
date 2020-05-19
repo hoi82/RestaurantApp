@@ -12,7 +12,7 @@ export default ({pageName}) => {
                 return <Profile/>;
                 break;
             case "payment":
-                return <PaymentContainer location={location} history={history}/>;
+                return <PaymentContainer/>;
                 break;        
             default:
                 return <Profile/>;

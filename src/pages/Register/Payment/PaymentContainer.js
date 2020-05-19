@@ -15,7 +15,7 @@ const CreditCard = loadable(() => import("./Add/CreditCard"));
 const Paypal = loadable(() => import("./Add/Paypal"));
 const FintechInput = loadable(() => import("./Add/Fintech/FintechInput"));
 
-export default function PaymentContainer({location, history}) {
+export default function PaymentContainer() {
     const payments = useSelector((store) => store.register.payments.list); 
     const [pageName, setPageName] = useState("list");   
     const dispatch = useDispatch();

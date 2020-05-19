@@ -5,8 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GetCountries, READY_TO_LOAD, GetStates, COUNTRY_FAILED, STATE_FAILED, SearchByLocation } from '../../../../actions/main/search';
 import ErrorPage from "../../../Error";
 import { endpoint } from '../../../../config/url';
+import { useHistory } from 'react-router';
 
-export default ({history}) => {    
+export default () => {    
     const countries = useSelector((store) => store.main.search.location.country.filter);
     const countryStatus = useSelector((store) => store.main.search.location.country.status);
     const states = useSelector((store) => store.main.search.location.states.filter);
@@ -16,6 +17,7 @@ export default ({history}) => {
     const [state, setState] = useState("");   
     const [displayedStates, setDisplayedStates] = useState([]);      
     const dispatch = useDispatch();
+    const history = useHistory();
 
     useEffect(() => {        
         dispatch(GetCountries(country));
@@ -38,9 +40,9 @@ export default ({history}) => {
         setMatchedCountry(countries.includes(value) ? value : "");        
     }    
 
-    const handleStateChange = (value) => {
-        setState(value);  
-        setDisplayedStates(states.filter((state) => state.name.toLowerCase().indexOf(value.toLowerCase()) > -1));      
+    const handleStateChange = (value) => {        
+        setState(value.name);  
+        setDisplayedStates(states.filter((state) => state.name.toLowerCase().indexOf(value.name.toLowerCase()) > -1));      
     }
 
     const handleSearch = (e) => {        

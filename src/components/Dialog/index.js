@@ -3,6 +3,9 @@ import { DialogMode } from "../../types/Variables";
 import styles from "./styles.scss";
 import { useSelector, useDispatch } from 'react-redux';
 import { closeDialog } from '../../actions/common/dialog';
+import alert from "../../image/alert.svg";
+import confirm from "../../image/true.svg";
+import success from "../../image/success.svg";
 
 export default function Dialog(props) {
     const dialog = useSelector((store) => store.shared.dialog);     
@@ -17,13 +20,13 @@ export default function Dialog(props) {
     const renderBg = () => {   
         switch (dialog.mode) {
             case DialogMode.ALERT:                
-                return <img className={styles.logo_alert}/>;
+                return <img className={styles.logo} src={alert}/>;
                 break;
             case DialogMode.CONFIRM:
-                return <img className={styles.logo_yesorno}/>;
+                return <img className={styles.logo} src={confirm}/>;
                 break;
             case DialogMode.SUCCESS:
-                return <img className={styles.logo_confirm}/>;
+                return <img className={styles.logo} src={success}/>;
                 break;
             default:
                 break;

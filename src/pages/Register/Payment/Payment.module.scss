@@ -28,7 +28,7 @@
     }
 
     .add_button {
-        @include medium_button(124px);        
+        @include content_small_button(124px);        
         padding: 0;            
         margin: 4px 0px;
     }

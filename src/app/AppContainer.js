@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { SessionCheck, SESSION_LOST, SESSION_FOUND, LOG_IN_SUCCESS } from '../actions/auth';
 import { endpoint } from "../config/url";
-import { Redirect } from 'react-router';
+import { Redirect, useHistory } from 'react-router';
 
-export const AppContainer = ({history, children}) => {
+export const AppContainer = ({children}) => {
     const auth = useSelector((store)=> store.auth);
+    const history = useHistory();
     const dispatch = useDispatch();      
 
     useEffect(() => {                        

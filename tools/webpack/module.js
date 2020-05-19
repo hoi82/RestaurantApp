@@ -1,5 +1,6 @@
 import { joinPath } from "../../src/utils/paths";
 import ExtractCssChunksWebpackPlugin from "extract-css-chunks-webpack-plugin";
+import { isDevelopment } from "../../src/config/env";
 
 export const getClientModule = () => {
     return {
@@ -29,7 +30,7 @@ export const getClientModule = () => {
                         options: {
                             importLoaders: 1,
                             modules: {
-                                localIdentName: "[hash:base64:5]"
+                                localIdentName: isDevelopment ? "[path]__[name]__[local]" : "[hash:base64]"
                             }       
                         }
                     },
@@ -84,7 +85,7 @@ export const getServerModule = () => {
                         options: {
                             importLoaders: 1,
                             modules: {
-                                localIdentName: "[hash:base64:5]"
+                                localIdentName: isDevelopment ? "[path]__[name]__[local]" : "[hash:base64]"
                             }       
                         }
                     },

@@ -8,8 +8,7 @@
     .title {
         @include row_flex(stretch, center);
         .image {
-            @include set_size(124px, 124px);
-            content: url("../../image/error.svg");
+            @include set_size(124px, 124px);            
         }
 
         span {

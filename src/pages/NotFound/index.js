@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from "./style.scss";
+import image from "../../image/404-error.svg";
 
 export default ({staticContext, history}) => {      
     if (staticContext)
@@ -14,7 +15,7 @@ export default ({staticContext, history}) => {
     return (
         <div className={styles.notFound}>
             <div className={styles.panel}>
-                <img className={styles.img}/>
+                <img className={styles.img} src={image}/>
                 <div className={styles.text_container}>
                     <span className={styles.title}>Oops!</span>                    
                     <span className={styles.message}>Page is not found!</span>

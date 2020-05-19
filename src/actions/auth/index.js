@@ -8,12 +8,13 @@ export const LOG_IN_FAILED = "LOG_IN_FAILED";
 export const SESSION_VALIDATING = "SESSION_VALIDATING";
 export const SESSION_FOUND = "SESSION_FOUND";
 export const SESSION_LOST = "SESSION_LOST";
+export const RESET_AUTH = "RESET_AUTH";
 
 const SESSION_URL = "http://localhost:3005/api/users/session/";
 const LOG_IN_URL = "http://localhost:3005/api/users/login/";
 const LOG_OUT_URL = "http://localhost:3005/api/users/logout/";
 
-export const SessionCheck = () => {
+export const SessionCheck = () => {    
     return (dispatch) => {    
         dispatch({type: AUTH_PROCESSING});            
         return axios.get(SESSION_URL, {
@@ -45,10 +46,10 @@ export const LogIn = (email, password) => {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
                 },
-                withCredentials: true,            
+                withCredentials: true,                            
         }).then((res) => {            
             dispatch({ type: LOGIN_VALIDATING, payload: res.data }); 
-        }).catch((err) => {            
+        }).catch((err) => {                      
             dispatch({ type: LOGIN_VALIDATING, payload: { email: email, error: err }});
         });                       
     }        
@@ -68,5 +69,11 @@ export const LogOut = () => {
         }).catch((err) => {
             dispatch({ type: LOGIN_VALIDATING, payload: { error: err }});
         });   
+    }
+}
+
+export const resetAuth = () => {
+    return {
+        type: RESET_AUTH
     }
 }

@@ -5,12 +5,14 @@ import Dropdown from '../../../../components/DropdownTextBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { GetNames, READY_TO_LOAD, NAME_FAILED, SearchByName } from '../../../../actions/main/search';
 import { endpoint } from '../../../../config/url';
+import { useHistory } from 'react-router';
 
-export default ({history}) => {    
+export default () => {    
     const names = useSelector((store) => store.main.search.name.filter);   
     const status = useSelector((store) => store.main.search.name.status);     
     const dispatch = useDispatch();
     const [name, setName] = useState("");
+    const history = useHistory();
 
     useEffect(() => {
         if (status == READY_TO_LOAD || status == NAME_FAILED)

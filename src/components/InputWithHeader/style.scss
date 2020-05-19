@@ -12,7 +12,7 @@
     
     .header {
         display: block;
-        font-size: $h4-size;  
+        font-size: $h5-size;  
         line-height: 16px;          
         font-weight: 600;
         margin-left: 7px;
@@ -50,23 +50,7 @@
 
         img {
             @include set_size_full;                       
-        }
-
-        .unknownlogo {
-            content: url("../../image/ccwarning.svg");
-        }
-
-        .visalogo {
-            content: url("../../image/visalogo.svg");
-        }
-
-        .masterlogo {
-            content: url("../../image/masterlogo.svg");
-        }
-
-        .jcblogo {
-            content: url("../../image/jcblogo.svg");
-        }
+        }        
     }
 
     .input_error_border {

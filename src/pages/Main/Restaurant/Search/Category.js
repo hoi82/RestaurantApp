@@ -6,8 +6,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GetAllCategories, READY_TO_LOAD, CATEGORY_LOADING, CATEGORY_LOADED, CATEGORY_FAILED, SearchByCategory } from '../../../../actions/main/search';
 import Error from '../../../Error';
 import Loading from '../../../Loading';
-import { endpoint } from '../../../../config/url';
+import { endpoint, IMAGE_URL } from '../../../../config/url';
 import noImage from "../../../../types/noImage";
+import { useHistory } from 'react-router';
 
 const GridItem = ({item, onClick}) => { 
     const handleClick = (e) => {
@@ -17,7 +18,7 @@ const GridItem = ({item, onClick}) => {
     return (
         <button className={styles.category_item_grid} onClick={handleClick}>
             <div className={styles.category_item_panel_grid}>
-                <img className={styles.category_thumbnail_grid} src={`data:image/png;base64,${item.thumbnail ? item.thumbnail : noImage}`}/>
+                <img className={styles.category_thumbnail_grid} src={item.thumbnail ? `${IMAGE_URL}/${item.thumbnail}` : `data:image/png;base64,${noImage}`}/>
                 <span className={styles.category_item_title_grid}>{item.name}</span>
             </div>            
         </button>        
@@ -32,7 +33,7 @@ const ListItem = ({item, onClick}) => {
     return (
         <button className={styles.category_item_list} onClick={handleClick}>
             <div className={styles.category_item_panel_list}>
-                <img className={styles.category_thumbnail_list} src={`data:image/png;base64,${item.thumbnail ? item.thumbnail : noImage}`}/>
+                <img className={styles.category_thumbnail_list} src={item.thumbnail ? `${IMAGE_URL}/${item.thumbnail}` : `data:image/png;base64,${noImage}`}/>
                 <div className={styles.category_title_panel_list}>
                     <span className={styles.category_title_list}>{item.name}</span>
                 </div>
@@ -41,9 +42,10 @@ const ListItem = ({item, onClick}) => {
     );
 }
 
-export default ({history}) => {
+export default () => {
     const categories = useSelector((store) => store.main.search.category.filter);
-    const status = useSelector((store) => store.main.search.category.status);    
+    const status = useSelector((store) => store.main.search.category.status);  
+    const history = useHistory();  
     
     const dispatch = useDispatch();    
     
@@ -75,7 +77,7 @@ export default ({history}) => {
                 return <div className={styles.container}>
                 <span className={styles.title}>Search By Category</span>
                 <span className={styles.description}>Select the category whay you want.</span>
-                <PanelGrid items={categories} itemRenderer={renderCategory}/>
+                <PanelGrid items={categories} itemRenderer={renderCategory} config={{showNavigator: false}}/>
             </div>;
             case CATEGORY_FAILED:
                 return <Error message="Failed on loading category list."/>

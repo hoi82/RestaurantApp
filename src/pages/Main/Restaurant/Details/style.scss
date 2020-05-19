@@ -1,0 +1,295 @@
+@import "../../../../theme/global.scss";
+@import "../../../../theme/utils.scss";
+
+.details {
+    @include relative_full;    
+    max-height: calc(100% - 56px);    
+    overflow-y: auto;
+
+    .container {
+        @include column_flex(flex-start, stretch);
+        padding: 72px;
+    }
+
+    .upper_container {
+        @include relative(100%);        
+        @include row_flex(flex-start, center);        
+
+        .thumbnail_panel {
+            @include relative(160px, 240px);
+            @include column_flex(flex-start, center);
+            
+            img {
+                @include relative(100%, calc(100% - 28px));
+                object-fit: cover;
+                background-color: $grade5-bg-color;
+                border-radius: 5px;
+                margin-bottom: 16px;
+            }
+
+            .rating {
+                font-size: $h5-size;
+                line-height: $h5-size;
+                color: $deep-title-color;
+                font-weight: 600;
+            }
+        }
+
+        .info_panel {
+            @include relative;
+            @include column_flex(center, flex-start);
+            margin-left: 36px;
+            
+            .info_inner_panel {
+                @include relative;             
+                @include row_flex(flex-start, center);
+                margin-bottom: 24px;                             
+
+                .name {                    
+                    font-size: $h1-size;                                        
+                    color: $deep-title-color;
+                    font-weight: 600;  
+                    margin-top: 4px;                  
+                }
+
+                button {
+                    @include relative(24px, 24px);
+                    border-radius: 3px;                    
+                    padding: 0;
+                    margin-left: 8px;
+
+                    img {
+                        @include relative_full;
+                        user-select: none;
+                    }
+                }
+
+                .address {
+                    margin-top: 4px;
+                    font-size: $h3-size;
+                    color: $title-color;                    
+                }
+            }                        
+
+            .hour_title {
+                font-size: $h2-size;
+                color: $title-color;
+                margin: 0 0 24px 0;                
+            }
+
+            .calentdar_container {
+                @include relative_full;
+
+                .calendar_panel {
+                    @include relative;
+                    display: flex;
+                    padding-top: 16px;
+
+                    & > div:first-child {
+                        @include column_flex(center, center);
+                        font-size: $h3-size;
+                        color: $deep-title-color;
+
+                        & > span {
+                            display: inline-block;
+                        }
+                    }
+
+                    & > div > div > span {
+                        font-size: $h4-size;
+                        color: $title-color;
+                    }
+                }
+            }            
+
+            .hour_content {
+                font-size: $h3-size;
+                color: $content-color;
+                font-weight: 900;
+            }
+        }
+    }
+
+    .new_review_btn {                
+        @include content_small_button(124px);                
+    }
+
+    .noitem_panel {
+        @include column_flex(center, center);
+        @include set_size(100%, 240px);
+        background-color: $grade2-bg-color;
+        border-radius: 10px;
+        margin-top: 24px;
+
+        & > div {
+            @include row_flex(center, center);
+
+            span {
+                display: block;
+                font-size: $h2-size;
+                color: $content-color;
+            }
+        }
+
+        img {
+            @include set_size(128px, 128px);
+            margin-right: 16px;
+        }        
+
+        button {
+            margin-top: 16px;
+        }
+    }
+
+    .lower_container {
+        @include relative(100%);
+        @include column_flex(flex-start, stretch);             
+        
+        .title {            
+            font-size: $h2-size;
+            color: $title-color;
+            font-weight: 600;                    
+        }
+
+        & > .title {
+            margin-top: 36px;    
+        }
+
+        .desc {
+            white-space: pre-wrap;
+            font-size: $h3-size;
+            line-height: $h1-size;
+            color: $content-color;
+            margin: 24px 0 0 0;
+        }
+
+        .review_title_panel {
+            @include row_flex(flex-start, center);
+            margin-top: 36px;
+
+            & > span {
+                margin-bottom: 0;
+                margin-right: 16px;
+            }            
+        }        
+    }
+
+    .navigator {
+        @include set_size($height: 56px);
+        position: fixed;
+        left: 320px;
+        right: 0;
+        bottom: 0;
+        padding: 0 16px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 16px;        
+        z-index: 2;    
+
+        & > button {
+            @include content_small_button;            
+            align-self: center;                    
+        }
+    }
+}
+
+.review {
+    @include row_flex(flex-start, flex-start);
+    @include relative;
+    border-radius: 10px;
+    background-color: $grade1-bg-color;
+    padding: 16px;    
+    
+    .user_panel {
+        @include relative(128px, 160px);
+        @include column_flex(center, center);        
+        align-self: center;
+        margin-right: 16px;
+
+        .profileImage {
+            @include set_size(96px, 96px);
+            overflow: hidden;
+            border-radius: 48px;
+            margin-bottom: 16px;
+        }
+
+        .userName {
+            font-size: $h5-size;
+            color: $deep-title-color;
+            font-weight: 600;
+        }
+    }
+
+    .content {
+        @include relative_full;
+
+        .info_panel {
+            @include relative(100%);
+            @include row_flex(flex-start, center);
+            margin-bottom: 16px;
+
+            .date {                
+                font-size: $h3-size;
+                color: $title-color;
+                margin-left: 16px;
+            }
+        }
+
+        .comment {
+            font-size: $h3-size;
+            color: $content-color;   
+            margin-bottom: 16px;   
+            
+            .non_display {
+                display: none;
+            }
+        }
+
+        .review_title {
+            display: block;
+            font-size: $h1-size;
+            color: $deep-title-color;
+            margin-bottom: 16px;
+        }        
+    }
+}
+
+.menu {
+    @include set_size(160px, 200px);
+    @include column_flex(stretch, center);
+    background-color: $grade2-bg-color;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 0;
+
+    & > img {
+        @include relative_full;
+        max-height: 128px;
+        object-fit: cover;
+    }
+
+    & > span {
+        font-size: $h4-size;
+        color: $content-color;   
+        padding-top: 8px;     
+    }    
+
+    & > span:first-of-type {        
+        font-size: $h2-size;
+        color: $deep-title-color;
+        font-weight: 600;        
+    }
+}
+
+.menu_panel {
+    @include relative(100%, 200px);
+    overflow-x: auto;
+    margin-top: 24px;
+}
+
+.menu_inner_panel {
+    @include relative(auto, 200px);
+    display: grid;
+    column-gap: 8px;
+    grid-template-columns: repeat(9, 160px);
+}

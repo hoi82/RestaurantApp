@@ -33,7 +33,7 @@ $grid_size : 72px;
             }
 
             .email {
-                font-size: $h4-size;
+                font-size: $h5-size;
                 font-weight: 300;
                 color: $content-color;
             }
@@ -49,17 +49,9 @@ $grid_size : 72px;
 
                 &:last-child {
                     margin-left: 8px;
-                }                
+                }                                
 
-                .setting_Icon {
-                    content: url("../../image/settings.svg");
-                }
-
-                .logout_Icon {
-                    content: url("../../image/logout.svg");
-                }
-
-                .setting_Icon, .logout_Icon {
+                .icon {
                     @include set_size(28px, 28px);
                 }
             }            

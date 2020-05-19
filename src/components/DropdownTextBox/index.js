@@ -1,38 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import styles from "./style.scss";
 
-const Item = ({className, onClick, item}) => {            
+const Item = ({className, onClick, item}) => {    
+    const handleClick = (e) => {
+        onClick(item);
+    };     
     return (
-        <button className={className} onClick={onClick}>{item.name ? item.name : item}</button>
+        <button className={className} onClick={handleClick}>{item.name ? item.name : item}</button>
     );
 };
 
 export default ({items, onChange, value, width}) => {   
     //TODO: 두개가 있을 경우 하나가 열려있는 상태에서 다른걸 클릭하면 원래 열려있던게 닫히지 않음. 
     //blur에서 relatedTarget에 다른 dropbox일때도 추가함(name으로 판별했는데 좀더 안전한 방법으로 해야할듯).
-    const [boxOpen, setBoxOpen] = useState(false);    
-    const [displayedItems, setDisplayedItems] = useState([]);    
-    const [selected, setSelected] = useState({index: -1});        
-
-    useEffect(() => {                      
-        //컴포넌트 하나만 렌더링 하고싶다 ㅠㅠ 그러나 안되는것
-        setDisplayedItems(getRenderingItems(items));        
-    },[selected]);      
-
-    useEffect(() => {
-        setDisplayedItems(getRenderingItems(items));
-    }, [items]);
+    const [boxOpen, setBoxOpen] = useState(false);         
+    const [selected, setSelected] = useState({index: -1});            
 
     useEffect(() => {
         if (!boxOpen)
             setSelected({ index: -1 });            
     }, [boxOpen]);
 
-    const renderContents = () => {
-        if (boxOpen && displayedItems.length > 0) {
+    const renderContents = () => {                
+        if (boxOpen && items.length > 0) {
             return <div style={{display: boxOpen ? null : "none"}} className={styles.item_panel}>                  
-                <div className={styles.inner_panel}>
-                    {displayedItems}
+                <div className={styles.inner_panel}>                    
+                    {getRenderingItems(items)}
                 </div> 
             </div>
         }
@@ -53,15 +46,15 @@ export default ({items, onChange, value, width}) => {
 
         return items.map((item, i) => {
             return <Item className={selected.index == i ? styles.item.concat(" ", styles.item_selected) : styles.item} 
-            key={i} item={item} onClick={handleItemClick}/>
+            key={i} item={item} onClick={handleItemClick}/>            
         });
     }
 
-    const handleItemClick = (e) => {
+    const handleItemClick = (item) => {
         //NOTE:span, ul, li등등 text가 content로 올때 text를 얻어내는 방법
         //e.currentTarget.textContent        
         setBoxOpen(false);
-        onChange(e.currentTarget.textContent);
+        onChange(item);
     }
 
     const handleBlur = (e) => {               
@@ -72,22 +65,22 @@ export default ({items, onChange, value, width}) => {
 
     const handleNavigation = (e) => {                   
         if (e.key == "ArrowDown") {             
-            setSelected(prev => {
-                if (prev.index < displayedItems.length - 1) {
+            setSelected(prev => {                
+                if (prev.index < items.length - 1) {
                     return { index: prev.index + 1 };
                 }
                 else {
                     return { index: 0 };
                 }
-            });                     
+            });                              
         }
         else if (e.key == "ArrowUp") {
             setSelected(prev => {
                 if (prev.index > 0) {
                     return { index: prev.index - 1 };
                 }
-                else {                    
-                    return { index: displayedItems.length - 1 };
+                else {                                        
+                    return { index: items.length - 1 };
                 }
             })
         }  
@@ -96,8 +89,8 @@ export default ({items, onChange, value, width}) => {
         }
         else if (e.key == "Enter") {
             if (e.target.name == "input") {
-                if (selected.index > -1) {
-                    onChange(displayedItems[selected.index].props.item);
+                if (selected.index > -1) {                    
+                    onChange(items[selected.index]);
                     setBoxOpen(false);
                 }   
             }                     

@@ -35,7 +35,7 @@ function Location({location}) {
             {/* <p className={styles.body}>{`We found ${result.length} restaurants!`}</p>
             <p className={styles.description}>{`Searched Name : ${props.match.params.name}`}</p> */}
             <div className={styles.grid_container}>
-                <PanelGrid items={restaurants.result} itemRenderer={renderRestaurant} showNavigator layout={layout}/>
+                <PanelGrid items={restaurants.result} itemRenderer={renderRestaurant} config={{showNavigator: true, fitContentSizeToPanel: true, layout: layout}}/>
             </div>   
         </div>
     );

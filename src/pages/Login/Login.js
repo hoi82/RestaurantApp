@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import styles from "./styles.scss";
 import global from "../../theme/global.scss";
 import { useDispatch, useSelector } from 'react-redux';
-import { LogIn, LOG_IN_SUCCESS, LOG_IN_FAILED } from '../../actions/auth';
+import { LogIn, LOG_IN_SUCCESS, LOG_IN_FAILED, resetAuth } from '../../actions/auth';
 import NavPanel from "../../components/NavPanel"
 import { endpoint } from '../../config/url';
 import StyledCheckBox from '../../components/StyledCheckBox';
@@ -11,8 +11,9 @@ import EmailInput from '../../components/InputWithHeader/EmailInput';
 import PasswordInput from '../../components/InputWithHeader/PasswordInput';
 import Validator from '../../utils/Validator';
 import { ErrorMessages } from '../../types/ErrorMessages';
-import { showDialog } from '../../actions/common/dialog';
+import { showDialog, closeDialog } from '../../actions/common/dialog';
 import { DialogMode } from '../../types/Variables';
+import logo from "../../image/login.svg";
 
 export default function Login({location}) { 
     const auth = useSelector((store) => store.auth);      
@@ -26,7 +27,7 @@ export default function Login({location}) {
     useEffect(() => {        
         if (auth.state == LOG_IN_SUCCESS) {
             if (location.state) {
-                
+                history.push(location.state.path);
             }
             history.push(endpoint.home);
         }
@@ -37,6 +38,13 @@ export default function Login({location}) {
             }))
         }
     }, [auth]);
+
+    useEffect(() => {            
+        return () => {            
+            if (auth.state == LOG_IN_FAILED)
+                dispatch(resetAuth());            
+        }
+    }, []);
 
     const sendInfoByEmail = () => {
            
@@ -60,13 +68,17 @@ export default function Login({location}) {
     const remeberChanged = (e) => {
         setRemember(e.target.checked);
     }    
+
+    const handleRegister = (e) => {
+        // dispatch(resetAuth());
+    }
     
     return (        
         <div className={styles.login}>
             <NavPanel width={global.log_in_nav_width}>
                 <div className={styles.box}>
                     <div className={styles.item_container}>
-                        <img alt="로고" className={styles.logo}></img>                     
+                        <img alt="로고" className={styles.logo} src={logo}></img>                     
                     </div>
                     <div className={styles.item_container}>
                         <EmailInput value={email} forceUpdate={forceUpdate} onChange={emailChanged}/>
@@ -86,7 +98,7 @@ export default function Login({location}) {
                         </button>
                         <div className={styles.register_container}>
                             <span className={styles.sub_title}>아직 가입하지 않으셨나요?</span>
-                            <Link to={{pathname: endpoint.register, state: {mainpage: "profile"}}}>
+                            <Link to={{pathname: endpoint.register}} onClick={handleRegister}>
                                 <button className={styles.register_btn}>                                
                                     <span>가입하기</span>
                                 </button>

@@ -10,8 +10,7 @@
         @include row_flex;
 
         .img {
-            @include set_size(240px, 240px);
-            content: url("../../image/404-error.svg");
+            @include set_size(240px, 240px);            
         }
 
         .text_container {

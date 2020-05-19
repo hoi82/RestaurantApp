@@ -6,7 +6,7 @@ import styles from "./Main.module.scss";
 import { renderRoutes } from "react-router-config";
 import { endpoint } from "../../config/url";
 import { useSelector, useDispatch } from "react-redux";
-import { SessionCheck, LOG_IN_FAILED, SESSION_LOST, LOG_IN_SUCCESS, SESSION_FOUND } from "../../actions/auth";
+import { SessionCheck, LOG_IN_FAILED, SESSION_LOST, SESSION_FOUND, AUTH_READY } from "../../actions/auth";
 import { Redirect } from "react-router";
 
 export default function Main({route, location}) {
@@ -15,7 +15,7 @@ export default function Main({route, location}) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (auth.state == LOG_IN_FAILED || auth.state == SESSION_LOST) {
+        if (auth.state == LOG_IN_FAILED || auth.state == SESSION_LOST || auth.state == AUTH_READY) {
             setIsLogin(false);
         }
         else if (auth.state == SESSION_FOUND) {

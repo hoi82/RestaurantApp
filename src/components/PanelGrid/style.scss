@@ -17,17 +17,9 @@
 
         &:last-child {
             margin-left: 8px;
-        }
-        
-        .grid_icon {
-            content: url("../../image/grid.svg");
-        }
+        }            
 
-        .list_icon {
-            content: url("../../image/list.svg");
-        }
-
-        .grid_icon, .list_icon {
+        .icon {
             object-fit: cover;
             @include set_size(32px, 32px);
         }
@@ -50,12 +42,13 @@
 }
 
 .navigator {
-    @include row_flex(center, flex-end);
+    @include row_flex(center, center);
     @include relative(100%, 56px);
 
     .selected {
         background-color: $highlight-color;
         color: $highlight-highlight-color;
+        @include set_size(36px, 36px);
 
         &:hover {
             background-color: $highlight-hover-color;
@@ -102,23 +95,6 @@
         img {
             @include set_size(24px, 24px);
             margin: 4px;            
-        }
-
-        .prev {
-            content: url("../../image/left-arrow.svg");
-        }
-
-        .next {
-            content: url("../../image/next.svg");            
-        }
-
-
-        .first {
-            content: url("../../image/back.svg");
-        }
-
-        .last {
-            content: url("../../image/skip.svg");
-        }
+        }        
     }
 }

@@ -171,6 +171,32 @@
     }
 }
 
+@mixin content_small_button($width: 100%) {
+    @include set_size($width, 40px);
+    border-radius: 3px;
+    background-color: $content-color;
+    @include global_transition;
+    font-size: $h4-size;
+    color: $highlight-highlight-color;
+    font-weight: 600;   
+    
+    & > * {
+        user-select: none;
+    }
+
+    &:hover {
+        background-color: rgb(45,47,49);
+    }
+
+    &:active {
+        background-color: rgb(35,37,39);
+    }
+
+    &:disabled {
+        background-color: rgb(105,107,109);
+    }
+}
+
 @mixin small_title {
     font-size: 13px;
     line-height: 16px;

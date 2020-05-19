@@ -69,7 +69,7 @@ app.use(express.static(joinPath(isProduction ? "dist" : "", "public")));
 app.use(serveFavicon(joinPath(isProduction ? "dist" : "", "public/favicon.ico")));
 
 app.get("*", async (req, res) => {            
-    const {store} = configureStore({url: req.url});                        
+    const {store} = configureStore({url: req.url});                          
     loadBranchData(store, req.path).then(async () => {        
         const extractor = getExtractor();
         const context = {};                    
@@ -83,8 +83,8 @@ app.get("*", async (req, res) => {
                     </Provider>
                 </AppContainer>    
             </ChunkExtractorManager>
-        );             
-        const content = renderToString(app);                        
+        );        
+        const content = renderToString(app);
         const scriptTags = extractor.getScriptTags();
         const styleTags = extractor.getStyleTags();
         const linkTags = extractor.getLinkTags();                   

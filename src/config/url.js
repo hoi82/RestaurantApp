@@ -18,3 +18,5 @@ export const endpoint = {
     restaurantReservation: "/app/restaurants/reservation",
     myReservations: "/app/my/reservation",
 }
+
+export const IMAGE_URL = "http://localhost:3005/static/images/";

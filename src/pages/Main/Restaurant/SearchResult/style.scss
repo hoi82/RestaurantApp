@@ -73,7 +73,7 @@
 
 .restaurant_list {
     @include row_flex(flex-start, center);
-    @include relative_full;
+    @include relative_full;            
     border-radius: 5px;
     background-color: $grade3-bg-color;
     padding: 0;

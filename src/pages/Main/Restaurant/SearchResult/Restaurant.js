@@ -3,30 +3,18 @@ import styles from "./style.scss";
 import { getFullAddress } from "../../../../utils/getStrings";
 import noImage from "../../../../types/noImage";
 import { useHistory } from 'react-router';
-import { endpoint } from '../../../../config/url';
+import { endpoint, IMAGE_URL } from '../../../../config/url';
 import path from "path";
 
-initItem = {
-    id: "",
-    name: "",
-    address: "",
-    picture: "",
-    businessHour: {
-        open: "",
-        close: "",
-    },    
-}
-
-export const GridItem = ({_id, name, address, picture}) => {    
-    const history = useHistory();
-    console.log(_id);
+export const GridItem = ({id, name, address, thumbnail}) => {    
+    const history = useHistory();    
     const handleDetails = (e) => {
-        history.push(path.resolve(endpoint.restaurantDetail, name));
+        history.push(path.resolve(endpoint.restaurantDetail, id));
     }
 
     return (        
         <button className={styles.restaurant_grid} onClick={handleDetails}>
-            <img className={styles.grid_thumb} src={`data:image/png;base64,${picture ? picture : noImage}`}/>            
+            <img className={styles.grid_thumb} src={thumbnail ? `${IMAGE_URL}/${thumbnail}` :  `data:image/png;base64,${noImage}`}/>
             <footer>
                 <div><p>{name}</p></div>            
                 <div><p>{address ? address.remains : ""}</p></div>                
@@ -35,11 +23,11 @@ export const GridItem = ({_id, name, address, picture}) => {
     )
 };
 
-export const ListItem = ({_id, name, address, picture, businessHour}) => {
+export const ListItem = ({id, name, address, picture, businessHour}) => {
     const history = useHistory();
 
     const handleDetails = (e) => {
-        history.push(path.resolve(endpoint.restaurantDetail, name));
+        history.push(path.resolve(endpoint.restaurantDetail, id));
     }
 
     return (

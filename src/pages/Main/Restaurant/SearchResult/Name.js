@@ -5,16 +5,14 @@ import PanelGrid from '../../../../components/PanelGrid';
 import { GridItem, ListItem, layout } from './Restaurant';
 import styles from "./style.scss";
 
-export default ({match}) => {       
-    //TODO:            
-    //1. Navigation 선택 가능하게 하고 아닐때는 스크롤 표시되게 할것    
+export default ({match}) => {               
     const restaurants = useSelector((store) => store.main.search.result);    
     const dispatch = useDispatch();    
     
     useEffect(() => {
         if (restaurants.status == READY_TO_LOAD || restaurants.status == RESULT_FAILED) {            
             dispatch(SearchByName(match.params.name));
-        }
+        }        
     }, []);
 
     const renderRestaurant = (item, key, layout) => {
@@ -32,9 +30,9 @@ export default ({match}) => {
         <div className={styles.container}>            
             <p className={styles.title}>Restaurants</p>
             {/* <p className={styles.body}>{`We found ${result.length} restaurants!`}</p>
-            <p className={styles.description}>{`Searched Name : ${props.match.params.name}`}</p> */}
+            <p className={styles.description}>{`Searched Name : ${props.match.params.name}`}</p> */}            
             <div className={styles.grid_container}>
-                <PanelGrid items={restaurants.result} itemRenderer={renderRestaurant} showNavigator layout={layout}/>
+                <PanelGrid items={restaurants.result} itemRenderer={renderRestaurant} config={{showNavigator: true, fitContentSizeToPanel: true, layout: layout}}/>
             </div>            
         </div>
     );

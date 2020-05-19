@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode=development --config ./oldwebpack.config.js",
-    "build": "webpack --mode=production",    
+    "build": "webpack --mode=production",
     "dev": "nodemon index"
   },
   "devDependencies": {
@@ -46,15 +46,19 @@
     "@hot-loader/react-dom": "^16.13.0",
     "@loadable/component": "^5.12.0",
     "@loadable/server": "^5.12.0",
+    "asset-require-hook": "^1.2.0",
     "axios": "^0.19.2",
     "connected-react-router": "^6.8.0",
     "core-js": "^3.6.4",
+    "datejs": "^1.0.0-rc3",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "history": "^4.10.1",
     "nodemon": "^2.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-html-parser": "^2.0.2",
+    "react-ratings-declarative": "^3.4.1",
     "react-redux": "^7.2.0",
     "react-router": "^5.1.2",
     "react-router-config": "^5.1.1",

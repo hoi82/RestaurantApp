@@ -9,14 +9,17 @@ import TOS from "./TOS/TOS";
 import NavPanel from "../../components/NavPanel";
 import Nav from "./Nav";
 import { FetchRegister, REGISTER_FETCHED, REGISTER_FAILED } from '../../actions/register/status';
+import { useHistory } from 'react-router';
+import { endpoint } from '../../config/url';
 
-export default function Register({history, location}) {       
+export default function Register() {       
     const [tosAgree, setTOSAgree] = useState(false);    
     const [pageName, setPageName] = useState("profile");
     const dispatch = useDispatch();
     const profile = useSelector((store) => store.register.profile);
     const payments = useSelector((store) => store.register.payments);
     const status = useSelector((store) => store.register.status);
+    const history = useHistory();
 
     useEffect(() => {
         switch (status.status) {
@@ -24,11 +27,10 @@ export default function Register({history, location}) {
                 dispatch(showDialog({
                     mode: DialogMode.SUCCESS,
                     content: "가입을 축하드립니다. \r\n 닫기를 누르시면 로그인 화면으로 이동합니다.",
-                    onClose: () => history.replace("/login")
+                    onClose: () => history.replace(endpoint.login)
                 }));
                 break;
-            case REGISTER_FAILED:  
-                console.log(status.info);              
+            case REGISTER_FAILED:                           
                 dispatch(showDialog({
                     mode: DialogMode.ALERT,
                     content: `에러가 발생했습니다.(${status.info})`,                    
