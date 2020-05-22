@@ -7,51 +7,45 @@ import favorite from "../../../../image/favorite.svg";
 import share from "../../../../image/share.svg";
 import gm from "../../../../image/gps.svg";
 import noImage from '../../../../types/noImage';
-import PanelGrid from '../../../../components/PanelGrid';
-import Review from './Review';
 import { showDialog } from "../../../../actions/common/dialog";
 import { fetchReviews, getFormattedTimeString, getDayName, isInTime } from './utils';
 import ReactHtmlParser from "react-html-parser";
-import Menu from './Menu';
 import { IMAGE_URL } from '../../../../config/url';
-import plan from "../../../../image/plan.svg";
+import Reviews from './Reviews';
+import Menus from './Menus';
+import { HashLink } from "react-router-hash-link";
+import { useParams } from 'react-router';
 
 function Details({match}) {   
     const details = useSelector((store) => store.main.details);    
     const [reviews, setReviews] = useState([]);
+    const param = useParams();    
 
     const dispatch = useDispatch(); 
     useEffect(() => {
-        dispatch(fetchRestaurant(match.params.id));
-        fetchReviews(match.params.id).then((data) => setReviews(data));        
+        dispatch(fetchRestaurant(param.id));
+        fetchReviews(param.id).then((data) => setReviews(data));        
     }, []);
 
     useEffect(() => {
         
-    }, [details]);    
-
-    const renderReview = (item, i) => {
-        return <Review key={i} index={i} review={item}/>
-    }
-
-    const renderMenus = (menus) => {
-        if (!menus || menus.length == 0)
-            return null;
-
-        if (menus.map) {
-            return menus.map((menu, i) => (
-                <Menu id={menu} key={i}/>
-            ))
-        }
-        else {
-            return null;
-        }
-    }
+    }, [details]);            
 
     const showGoogleMap = (e) => {
         dispatch(showDialog({
             content: "aaa"
         }))
+    };
+
+    const getRatingAvg = (arr = []) => {
+        if (!arr || arr.length == 0)
+            return "?";
+
+        const result = arr.reduce((acc, cur, i) => {
+            return acc + cur.rating;
+        }, 0);
+
+        return (result / arr.length).toFixed(1);
     }
 
     const renderOpens = (dates) => {
@@ -87,17 +81,17 @@ function Details({match}) {
                 <div className={styles.upper_container}>
                     <div className={styles.thumbnail_panel}>
                         <img src={details.thumbnail ? `${IMAGE_URL}/${details.thumbnail}` : `data:image/png;base64,${noImage}`}/>
-                        <span className={styles.rating}>8.8/10 in 1600 reviews</span>
+                        <span className={styles.rating}>{`${getRatingAvg(reviews)} / 10 in ${reviews.length} reviews`}</span>
                     </div>                
                     <div className={styles.info_panel}>
                         <div className={styles.info_inner_panel}>
-                            <span className={styles.name}>{details.name}</span>                            
-                            <button><img src={favorite}/></button>
-                            <button><img src={share}/></button>                        
+                            <span className={styles.name}>{details.name}</span>
+                            <img src={favorite}/>
+                            <img src={share}/>
                         </div>  
                         <div className={styles.info_inner_panel}>
                             <span className={styles.address}>{getFullAddress(details.address)}</span>
-                            <button onClick={showGoogleMap}><img src={gm}/></button>
+                            <img onClick={showGoogleMap} src={gm}/>
                         </div>
                         <p className={styles.hour_title}>Now <span className={styles.hour_content}>{isInTime(details.opens) ? "Opened" : "Closed"}</span></p>
                         {renderOpens(details.opens)}
@@ -105,42 +99,17 @@ function Details({match}) {
                     </div>
                 </div>
                 <div className={styles.lower_container}>
-                    <span className={styles.title}>Description</span>
+                    <span className={styles.desc_title}>Description</span>
                     <p className={styles.desc}>{ReactHtmlParser(details.description)}</p>
-                    <span className={styles.title}>Menus</span>                    
-                    { details.menus && details.menus.length > 0 ? <div className={styles.menu_panel}>
-                        <div className={styles.menu_inner_panel}>
-                            {renderMenus(details.menus)}
-                        </div>                        
-                    </div> 
-                    : <div className={styles.noitem_panel}>
-                        <div>
-                            <img src={plan}/>
-                            <span>Menus are not prepared. But we will meet them soon!</span>
-                        </div>                        
-                    </div> }                    
-                    <div className={styles.review_title_panel}>
-                        <span className={styles.title}>Reviews</span>
-                        {
-                            reviews.length > 0 ? <button className={styles.new_review_btn}>Write a Review</button> : null
-                        }                        
-                    </div>                                        
-                    { reviews.length > 0 ? <div style={{height: "auto", marginTop: "24px"}}>
-                        <PanelGrid config={{lockLayout: "List", showNavigator: true, layout: {list: {rows: 10}}}} items={reviews} itemRenderer={renderReview}/>
-                    </div>
-                    : <div className={styles.noitem_panel}>
-                        <div style={{display: "flex"}}>                            
-                            <span>No reviews are done. Be the first reviewer!</span>
-                        </div>                            
-                        <button className={styles.new_review_btn}>Write a Review</button>
-                    </div> }
+                    <Menus menus={details.menus}/>            
+                    <Reviews resid={param.id} thumbnail={details.thumbnail} id={"review"} reviews={reviews}/>
                 </div>
             </div>            
             <footer className={styles.navigator}>
-                <button>Contact</button>
-                <button>Reservation</button>
-                <button>Take Out</button>
-                <button>Reviews</button>
+                <button><span>Contact</span></button>
+                <button><span>Reservation</span></button>
+                <button><span>Take Out</span></button>
+                <HashLink smooth to={"#review"}><span>Reviews</span></HashLink>
             </footer>    
         </div>
     );

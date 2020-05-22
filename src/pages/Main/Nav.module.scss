@@ -32,8 +32,12 @@
             }
 
             .acco_button {   
-                font-size: $h4-size;             
+                font-size: $h4-size; 
+                line-height: 40px;
+                text-decoration: none;            
                 background-color: $grade3-bg-color;
+                color: $deep-title-color;
+                font-weight: 600;
 
                 &:hover {
                     background-color: $grade4-bg-color;
@@ -81,16 +85,16 @@
         padding-left: 32px;
     }   
     
-    .acco_content > a > .acco_button {
-        padding-left: 40px;
+    .acco_content > .acco_button {
+        padding-left: 48px;
     }
 
     .sub_acco > .acco_item > .acco_header {
         font-size: $h4-size;        
-        padding-left: 64px;
+        padding-left: 48px;
     }
 
-    .sub_acco > .acco_item > .acco_content > a > .acco_button {
-        padding-left: 72px;
+    .sub_acco > .acco_item > .acco_content > .acco_button {
+        padding-left: 64px;
     }
 }

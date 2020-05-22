@@ -6,6 +6,7 @@ import { GetCountries, READY_TO_LOAD, GetStates, COUNTRY_FAILED, STATE_FAILED, S
 import ErrorPage from "../../../Error";
 import { endpoint } from '../../../../config/url';
 import { useHistory } from 'react-router';
+import { ErrorMessages } from '../../../../types/ErrorMessages';
 
 export default () => {    
     const countries = useSelector((store) => store.main.search.location.country.filter);
@@ -15,7 +16,8 @@ export default () => {
     const [country, setCountry] = useState("");    
     const [matchedCountry, setMatchedCountry] = useState("");
     const [state, setState] = useState("");   
-    const [displayedStates, setDisplayedStates] = useState([]);      
+    const [displayedStates, setDisplayedStates] = useState([]);   
+    const [error, setError] = useState("");   
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -34,10 +36,10 @@ export default () => {
         setDisplayedStates(states);
     }, [states]);
 
-    const handleCountryChange = (value) => {          
+    const handleCountryChange = (value) => {                  
         setCountry(value);
         dispatch(GetCountries(value));
-        setMatchedCountry(countries.includes(value) ? value : "");        
+        setMatchedCountry(countries.includes(value) ? value : "");
     }    
 
     const handleStateChange = (value) => {        
@@ -45,15 +47,31 @@ export default () => {
         setDisplayedStates(states.filter((state) => state.name.toLowerCase().indexOf(value.name.toLowerCase()) > -1));      
     }
 
-    const handleSearch = (e) => {        
-        dispatch(SearchByLocation(country, state)); 
-        history.push(endpoint.resultRestaurantByLocation + `?country=${matchedCountry}&state=${state}`);            
+    const handleSearch = (e) => {   
+        if (country.trim() != "") {
+            dispatch(SearchByLocation(country, state)); 
+            history.push(endpoint.resultRestaurantByLocation + `?country=${matchedCountry}&state=${state}`);
+        }
+        else {
+            setError(ErrorMessages.EMPTY_TEXT);
+        }
+    }
+
+    const handleFocus = (e) => {
+        if (typeof e.target == "input") {
+            setError("");
+        }
+    }
+
+    const handleBlur = (e) => {        
+        setError(country.trim() == "" ? ErrorMessages.EMPTY_TEXT : "");        
     }
 
     const renderCountry = () => {        
-        return <div className={styles.location_search_box}>            
+        return <div className={styles.location_search_box} onFocus={handleFocus} onBlur={handleBlur}>            
             <span>Country</span>
             <DropdownTextBox value={country} onChange={handleCountryChange} items={countries}/>
+            <span className={styles.error_text}>{error}</span>
         </div> 
     }
 
@@ -73,15 +91,12 @@ export default () => {
             return <ErrorPage message="Failed on loading country list."/>;
         }
         else {
-            return <div className={styles.container}>
-                
+            return <div className={styles.container}>                
                 <span className={styles.title}>Search By Location</span>
                 <span className={styles.description}>Input the location whay you want.</span>   
                 {renderCountry()}
                 {renderSubRegion()}
-                <button className={styles.location_search_btn} onClick={handleSearch}>
-                    <span className={styles.search_btn_title}>Search</span>
-                </button>                
+                <button className={styles.location_search_btn} onClick={handleSearch}>Search</button>
             </div>;
         }
     }

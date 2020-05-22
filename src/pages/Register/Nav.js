@@ -38,10 +38,8 @@ export default function Nav({pageName, movePage, onRegister}) {
                 </button>
                 <div className={styles.button_box}>
                     <span className={styles.small_text}>계정이 있으신가요?</span>
-                    <Link to={endpoint.login} onClick={handleBacktoLogin}>
-                        <button className={styles.link_btn}>
-                            <div className={styles.link_text}>로그인</div>
-                        </button>
+                    <Link className={styles.link_btn} to={endpoint.login} onClick={handleBacktoLogin}>                        
+                        <div className={styles.link_text}>로그인</div>
                     </Link>                                
                 </div>   
             </div>

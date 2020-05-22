@@ -1,0 +1,33 @@
+@import "../../../../theme/global.scss";
+@import "../../../../theme/utils.scss";
+
+.menu {
+    @include set_size(160px, 200px);
+    @include column_flex(stretch, center);
+    background-color: $grade2-bg-color;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 0;    
+
+    & > img {
+        @include relative_full;
+        max-height: 128px;
+        object-fit: cover;
+    }
+
+    & > span {
+        font-size: $h4-size;
+        color: $content-color;   
+        padding-top: 8px;     
+    }   
+    
+    & > span:first-of-type {
+        padding-top: 12px;
+    }
+
+    & > span:first-of-type {        
+        font-size: $h2-size;
+        color: $deep-title-color;
+        font-weight: 600;        
+    }
+}

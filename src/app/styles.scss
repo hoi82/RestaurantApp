@@ -20,7 +20,11 @@
 }
 
 body {            
-    font-family: 'Apple SD Gothic Neo', 'Nanumgothic', Arial, Helvetica, sans-serif;    
+    font-family: 'Apple SD Gothic Neo', 'Nanumgothic', Arial, Helvetica, sans-serif;  
+    
+    button, input {
+        font-family: inherit;
+    }
 }
 
 input {

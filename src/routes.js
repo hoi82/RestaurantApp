@@ -6,6 +6,8 @@ import { asyncSearchByLocation } from "./pages/Main/Restaurant/Search";
 import { GetAllCategories } from "./actions/main/search";
 import { asyncResultByName, asyncResultByCategory, asyncResultByLocation } from "./pages/Main/Restaurant/SearchResult";
 import { asyncDetails } from "./pages/Main/Restaurant/Details";
+import { asyncMenu } from "./pages/Main/Restaurant/Menu";
+import { asyncNewReview } from "./pages/Main/Restaurant/Review";
 
 export default [
     {
@@ -49,6 +51,16 @@ export default [
                     {
                         path: path.resolve(endpoint.restaurantDetail, ":id"),
                         component: asyncDetails,
+                        exact: true
+                    },
+                    {
+                        path: path.resolve(endpoint.menuDetails, ":id"),
+                        component: asyncMenu,
+                        exact: true
+                    },
+                    {
+                        path: endpoint.newReview,
+                        component: asyncNewReview,
                         exact: true
                     }
                 ]

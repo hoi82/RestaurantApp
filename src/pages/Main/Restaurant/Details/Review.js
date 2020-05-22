@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import styles from "./style.scss";
+import styles from "./Review.module.scss";
 import { fetchUserName, ISODateToString } from './utils';
 import Ratings from "react-ratings-declarative";
+import ReactHtmlParser from "react-html-parser";
 
 function Review({review}) {
     const [userName, setUserName] = useState("");
@@ -21,18 +22,24 @@ function Review({review}) {
         setFold(true);
     };
 
-    const injectFold = (str="") => {
+    const injectFold = (str = "") => {
         if (!str) return null;                
-        const split = str.match(/.{1,500}/g);
+        const split = str.match(/.{1,300}/g);        
         if (split.length > 1) {
-            split[1] = <React.Fragment>
-                <span className={fold ? null : styles.non_display}>...</span>
-                <button className={fold ? null : styles.non_display} onClick={handleUnfold}>read more</button>
-                <span className={fold ? styles.non_display : null}>{split[1]}</span>
-                <button className={fold ? styles.non_display : null} onClick={handleFold}>read less</button>
-            </React.Fragment>
+            if (fold) {
+                return <React.Fragment>{ReactHtmlParser(injectCR(`${split[0]}...`))}<a className={fold ? null : styles.non_display} onClick={handleUnfold}>read more</a></React.Fragment>
+            }
+            else {
+                return <React.Fragment>{ReactHtmlParser(injectCR(str))}<a className={fold ? styles.non_display : null} onClick={handleFold}>read less</a></React.Fragment>
+            }
         }
-        return split;
+        else {
+            return str;
+        }
+    }
+
+    const injectCR = (str = "") => {
+        return str.replace(/[\r\n]/g, "<br>");
     }
     
     return (

@@ -15,15 +15,11 @@ export default (props) => {
                     </label>                    
                     <input className={styles.acco_idc} type="checkbox" id="cbRes" hidden/>
                     <div className={styles.acco_content}>
-                            <Link to="/">
-                                <button className={styles.acco_button}>
-                                    Top Related
-                                </button>
+                            <Link className={styles.acco_button} to="/">                                
+                                Top Related                                
                             </Link>                            
-                            <Link to="/">
-                                <button className={styles.acco_button}>
-                                    Hot!
-                                </button>
+                            <Link className={styles.acco_button} to="/">                                
+                                Hot!                                
                             </Link>                        
                         <div className={styles.sub_acco}>
                             <div className={styles.acco_item}>
@@ -32,28 +28,20 @@ export default (props) => {
                                 </label>                                
                                 <input className={styles.acco_idc} type="checkbox" id="cbSearch" hidden/>
                                 <div className={styles.acco_content}>
-                                        <Link to={endpoint.searchRestaurantByName}>
-                                            <button className={styles.acco_button}>
-                                                By Name
-                                            </button>
+                                        <Link className={styles.acco_button} to={endpoint.searchRestaurantByName}>                                            
+                                            By Name
                                         </Link>                                        
-                                        <Link to={endpoint.searchRestaurantByCategory}>
-                                            <button className={styles.acco_button}>
-                                                By Category
-                                            </button>
+                                        <Link className={styles.acco_button} to={endpoint.searchRestaurantByCategory}>                                            
+                                            By Category                                            
                                         </Link>                                        
-                                        <Link to={endpoint.searchRestaurantByLocation}>
-                                            <button className={styles.acco_button}>
-                                                By Location
-                                            </button>
+                                        <Link className={styles.acco_button} to={endpoint.searchRestaurantByLocation}>                                            
+                                            By Location                                            
                                         </Link>
                                 </div>
                             </div>
                         </div>
-                            <Link to="/">
-                                <button className={styles.acco_button}>
-                                    My Reservation
-                                </button>
+                            <Link className={styles.acco_button} to="/">                                
+                                My Reservation                                
                             </Link>                                            
                     </div>
                 </div>                
@@ -63,15 +51,11 @@ export default (props) => {
                     </label>
                     <input className={styles.acco_idc} type="checkbox" id="cbReceipt" hidden/>
                     <div className={styles.acco_content}>
-                        <Link to={endpoint.home}>
-                            <button className={styles.acco_button}>
-                                Show
-                            </button>
+                        <Link className={styles.acco_button} to={endpoint.home}>                            
+                            Show                            
                         </Link>      
-                        <Link to={endpoint.home}>
-                            <button className={styles.acco_button}>
-                                Manage
-                            </button>
+                        <Link className={styles.acco_button} to={endpoint.home}>                            
+                            Manage                            
                         </Link>                                          
                     </div>
                 </div>

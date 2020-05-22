@@ -33,7 +33,7 @@
     padding: 0;
     border-radius: 5px;
     background-color: $grade3-bg-color;
-    overflow: hidden;
+    overflow: hidden;    
 
     .grid_thumb {
         @include set_size(calc(100% - 16px), calc(100% - 16px));
@@ -77,7 +77,7 @@
     border-radius: 5px;
     background-color: $grade3-bg-color;
     padding: 0;
-    overflow: hidden;
+    overflow: hidden;    
 
     .thumb {
         @include set_size(auto, calc(100% - 16px));
@@ -114,17 +114,5 @@
                 }
             }
         }
-    }
-
-    .btn_panel {        
-        @include row_flex(center, center);        
-        margin: 0px 16px;
-        button {
-            @include medium_button;
-            @include set_size(124px, 40px);
-            font-size: $h3-size;
-            color: $highlight-highlight-color;
-            font-weight: 600;
-        }
-    }
+    }    
 }

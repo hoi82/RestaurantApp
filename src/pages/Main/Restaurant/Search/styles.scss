@@ -15,21 +15,26 @@
     }
 
     .name_search_box {
-        @include relative(100%, 80px);
+        @include relative(100%, auto);
         @include row_flex(stretch, center);        
         max-width: 540px;                
     }
 
     .search_btn {
-        @include content_small_button(124px);
+        @include content_medium_button(124px);
         margin-left: 8px;               
     }
 
     .location_search_btn {
-        @include content_small_button(124px);
+        @include content_medium_button(124px);
         margin-top: 32px;
         text-decoration: none;   
         text-align: center;             
+    }
+
+    .search_container {
+        @include column_flex(flex-start, flex-start);
+        @include set_size(100%, 80px);        
     }
 
     .search_btn_title {
@@ -40,17 +45,30 @@
         vertical-align: baseline;
     }
 
-    .location_search_box {
-        @include relative(100%, 112px);
-        @include column_flex(center, flex-start);
-        max-width: 540px;
+    .error_text {
+        @include input_error_text;
+        margin-left: 8px;
+        margin-top: 8px;
+    }
 
-        span {
-            @include small_title;
-            display: inline-block;
-            line-height: 16px;
+    .location_search_box {
+        @include relative(100%, auto);
+        @include column_flex(flex-start, flex-start);
+
+        max-width: 540px;                        
+
+        &:not(:first-of-type) {
             margin-top: 32px;
-            margin-bottom: 16px;
+        }
+
+        & > span:first-of-type {
+            @include input_header_text;            
+            margin-left: 8px;
+            margin-bottom: 8px;
+        }
+
+        &:first-of-type {
+            height: 96px;
         }
     }
 }
@@ -58,7 +76,7 @@
 .category_item_grid {          
     @include set_size_full;
     border-radius: 5px;
-    background-color: $grade3-bg-color;
+    background-color: $grade3-bg-color;    
 
     .category_item_panel_grid {
         @include relative_full;
@@ -91,7 +109,7 @@
     @include set_size(100%, 80px);
     border-radius: 5px;
     background-color: $grade3-bg-color;
-    padding: 0;
+    padding: 0;    
 
     .category_item_panel_list {
         @include relative_full;

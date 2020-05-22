@@ -98,10 +98,8 @@ export default function Login({location}) {
                         </button>
                         <div className={styles.register_container}>
                             <span className={styles.sub_title}>아직 가입하지 않으셨나요?</span>
-                            <Link to={{pathname: endpoint.register}} onClick={handleRegister}>
-                                <button className={styles.register_btn}>                                
-                                    <span>가입하기</span>
-                                </button>
+                            <Link className={styles.register_btn} to={{pathname: endpoint.register}} onClick={handleRegister}>                                        
+                                <span>가입하기</span>                                
                             </Link>                            
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from "./style.scss";
+import styles from "./Menu.module.scss";
 import { fetchMenu } from './utils';
 import { useHistory } from 'react-router';
 import { IMAGE_URL, endpoint } from '../../../../config/url';
@@ -16,7 +16,7 @@ function Menu({id}) {
     }, []);
 
     const handleMenuClick = (e) => {
-        // history.push(endpoint.)
+        history.push(`${endpoint.menuDetails}/${id}`, {menu});
     }
 
     return (

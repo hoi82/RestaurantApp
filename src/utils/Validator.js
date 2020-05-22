@@ -226,6 +226,15 @@ const Validator = {
         else {
             return ErrorMessages.CORRECT;
         }
+    },
+
+    validateText : (value) => {
+        if (value == "") {
+            return ErrorMessages.EMPTY_TEXT;
+        }
+        else {
+            return ErrorMessages.CORRECT;
+        }
     }
 }
 

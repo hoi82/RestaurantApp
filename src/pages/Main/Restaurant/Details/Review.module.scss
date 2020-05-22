@@ -1,0 +1,74 @@
+@import "../../../../theme/global.scss";
+@import "../../../../theme/utils.scss";
+
+.review {
+    @include row_flex(flex-start, flex-start);
+    @include relative;    
+    border-radius: 10px;
+    background-color: $grade1-bg-color;
+    padding: 16px;    
+    
+    .user_panel {
+        @include relative(128px, 160px);
+        @include column_flex(center, center);        
+        align-self: center;
+        margin-right: 16px;
+
+        .profileImage {
+            @include set_size(96px, 96px);
+            overflow: hidden;
+            border-radius: 48px;
+            margin-bottom: 16px;
+        }
+
+        .userName {
+            font-size: $h5-size;
+            color: $deep-title-color;
+            font-weight: 600;
+        }
+    }
+
+    .content {
+        @include relative_full;
+
+        .info_panel {
+            @include relative(100%);
+            @include row_flex(flex-start, center);            
+
+            .date {                
+                font-size: $h3-size;
+                color: $title-color;
+                margin-left: 16px;
+            }
+        }
+
+        .comment {
+            font-size: $h3-size;
+            color: $content-color;   
+            margin: 16px 0 4px 0;              
+            
+            a {
+                font-size: $h3-size;
+                color: $title-color;
+                font-weight: 900;
+                margin-left: 8px;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+            
+            .non_display {
+                display: none;
+            }
+        }
+
+        .review_title {
+            display: block;
+            font-size: $h1-size;
+            color: $deep-title-color;
+            margin-top: 16px;
+        }        
+    }
+}

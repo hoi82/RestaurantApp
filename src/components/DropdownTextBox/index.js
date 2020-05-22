@@ -10,7 +10,7 @@ const Item = ({className, onClick, item}) => {
     );
 };
 
-export default ({items, onChange, value, width}) => {   
+export default ({items, onChange, value, width, onBlur = null}) => {   
     //TODO: 두개가 있을 경우 하나가 열려있는 상태에서 다른걸 클릭하면 원래 열려있던게 닫히지 않음. 
     //blur에서 relatedTarget에 다른 dropbox일때도 추가함(name으로 판별했는데 좀더 안전한 방법으로 해야할듯).
     const [boxOpen, setBoxOpen] = useState(false);         
@@ -59,7 +59,7 @@ export default ({items, onChange, value, width}) => {
 
     const handleBlur = (e) => {               
         if (e.relatedTarget == null || e.relatedTarget.name == "input") {
-            setBoxOpen(false);
+            setBoxOpen(false);            
         }        
     }    
 
@@ -99,11 +99,16 @@ export default ({items, onChange, value, width}) => {
 
     const handleInputClick = (e) => {        
         setBoxOpen(!boxOpen);
+    }  
+    
+    const handleInputBlur = (e) => {
+        if (onBlur)
+            onBlur(e);
     }
 
     return (
         <div onBlur={handleBlur} className={styles.dropdown} onKeyDown={handleNavigation}>
-            <input type="text" name="input" autoComplete="off" className={styles.input} value={value} onChange={handleChange} onClick={handleInputClick} width={width}/>            
+            <input type="text" name="input" autoComplete="off" className={styles.input} value={value} onChange={handleChange} onClick={handleInputClick} onBlur={handleInputBlur} width={width}/>            
             {renderContents()}                                   
         </div>
     );

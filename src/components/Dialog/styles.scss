@@ -46,16 +46,11 @@
     }
 
     .button_box {                         
-        @include relative_full;        
-        align-self: baseline;      
-
-        button {                                        
-            @include medium_button(calc(100% - 16px));             
-            margin: 8px;            
-            padding: 0;
-            font-size: 14px;
-            font-weight: 700;                            
-            color: $highlight-highlight-color;
+        @include relative_full;         
+        align-self: baseline;   
+        
+        & > button {
+            @include content_medium_button;       
         }
 
         .alert_btn {                

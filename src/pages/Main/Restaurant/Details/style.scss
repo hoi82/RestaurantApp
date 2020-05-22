@@ -1,6 +1,12 @@
 @import "../../../../theme/global.scss";
 @import "../../../../theme/utils.scss";
 
+@mixin title {            
+    font-size: $h1-size;
+    color: $title-color;
+    font-weight: 600;                    
+}
+
 .details {
     @include relative_full;    
     max-height: calc(100% - 56px);    
@@ -46,22 +52,19 @@
                 margin-bottom: 24px;                             
 
                 .name {                    
-                    font-size: $h1-size;                                        
+                    font-size: $h0-size;                                        
                     color: $deep-title-color;
                     font-weight: 600;  
                     margin-top: 4px;                  
-                }
+                }                
 
-                button {
+                img {
                     @include relative(24px, 24px);
                     border-radius: 3px;                    
                     padding: 0;
                     margin-left: 8px;
-
-                    img {
-                        @include relative_full;
-                        user-select: none;
-                    }
+                    user-select: none;
+                    cursor: pointer;
                 }
 
                 .address {
@@ -108,51 +111,15 @@
                 font-weight: 900;
             }
         }
-    }
-
-    .new_review_btn {                
-        @include content_small_button(124px);                
-    }
-
-    .noitem_panel {
-        @include column_flex(center, center);
-        @include set_size(100%, 240px);
-        background-color: $grade2-bg-color;
-        border-radius: 10px;
-        margin-top: 24px;
-
-        & > div {
-            @include row_flex(center, center);
-
-            span {
-                display: block;
-                font-size: $h2-size;
-                color: $content-color;
-            }
-        }
-
-        img {
-            @include set_size(128px, 128px);
-            margin-right: 16px;
-        }        
-
-        button {
-            margin-top: 16px;
-        }
-    }
+    }        
 
     .lower_container {
         @include relative(100%);
-        @include column_flex(flex-start, stretch);             
+        @include column_flex(flex-start, stretch); 
         
-        .title {            
-            font-size: $h2-size;
-            color: $title-color;
-            font-weight: 600;                    
-        }
-
-        & > .title {
-            margin-top: 36px;    
+        .desc_title {
+            @include title;
+            margin-top: 36px;
         }
 
         .desc {
@@ -161,17 +128,7 @@
             line-height: $h1-size;
             color: $content-color;
             margin: 24px 0 0 0;
-        }
-
-        .review_title_panel {
-            @include row_flex(flex-start, center);
-            margin-top: 36px;
-
-            & > span {
-                margin-bottom: 0;
-                margin-right: 16px;
-            }            
-        }        
+        }             
     }
 
     .navigator {
@@ -186,110 +143,40 @@
         column-gap: 16px;        
         z-index: 2;    
 
-        & > button {
-            @include content_small_button;            
-            align-self: center;                    
-        }
-    }
-}
-
-.review {
-    @include row_flex(flex-start, flex-start);
-    @include relative;
-    border-radius: 10px;
-    background-color: $grade1-bg-color;
-    padding: 16px;    
-    
-    .user_panel {
-        @include relative(128px, 160px);
-        @include column_flex(center, center);        
-        align-self: center;
-        margin-right: 16px;
-
-        .profileImage {
-            @include set_size(96px, 96px);
-            overflow: hidden;
-            border-radius: 48px;
-            margin-bottom: 16px;
-        }
-
-        .userName {
-            font-size: $h5-size;
-            color: $deep-title-color;
-            font-weight: 600;
-        }
-    }
-
-    .content {
-        @include relative_full;
-
-        .info_panel {
-            @include relative(100%);
-            @include row_flex(flex-start, center);
-            margin-bottom: 16px;
-
-            .date {                
-                font-size: $h3-size;
-                color: $title-color;
-                margin-left: 16px;
-            }
-        }
-
-        .comment {
-            font-size: $h3-size;
-            color: $content-color;   
-            margin-bottom: 16px;   
-            
-            .non_display {
-                display: none;
-            }
-        }
-
-        .review_title {
-            display: block;
-            font-size: $h1-size;
-            color: $deep-title-color;
-            margin-bottom: 16px;
+        & > button, a {
+            @include content_medium_button; 
+            line-height: 40px;                      
+            text-align: center;
+            text-decoration: none;
+            align-self: center;
         }        
     }
 }
 
-.menu {
-    @include set_size(160px, 200px);
-    @include column_flex(stretch, center);
+@mixin noitem_panel {
+    @include column_flex(center, center);
+    @include set_size(100%, 240px);
     background-color: $grade2-bg-color;
     border-radius: 10px;
-    overflow: hidden;
-    padding: 0;
-
-    & > img {
-        @include relative_full;
-        max-height: 128px;
-        object-fit: cover;
-    }
-
-    & > span {
-        font-size: $h4-size;
-        color: $content-color;   
-        padding-top: 8px;     
-    }    
-
-    & > span:first-of-type {        
-        font-size: $h2-size;
-        color: $deep-title-color;
-        font-weight: 600;        
-    }
-}
-
-.menu_panel {
-    @include relative(100%, 200px);
-    overflow-x: auto;
     margin-top: 24px;
+
+    & > div {
+        @include row_flex(center, center);
+
+        span {
+            display: block;
+            font-size: $h2-size;
+            color: $content-color;
+        }
+    }
+
+    img {
+        @include set_size(128px, 128px);
+        margin-right: 16px;
+    }        
+
+    button {
+        margin-top: 16px;
+    }
 }
 
-.menu_inner_panel {
-    @include relative(auto, 200px);
-    display: grid;
-    column-gap: 8px;
-    grid-template-columns: repeat(9, 160px);
-}

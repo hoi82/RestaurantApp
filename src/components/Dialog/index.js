@@ -76,7 +76,9 @@ export default function Dialog(props) {
                             <div className={styles.button_box}>
                                 {dialog.buttons ? dialog.buttons : (
                                     <button className={styles.alert_btn} onClick={handleClose}>
-                                        닫기
+                                        <span>
+                                            닫기
+                                        </span>                                        
                                     </button>
                                 )}                                
                             </div>

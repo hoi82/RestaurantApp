@@ -50,7 +50,7 @@
             padding-left: 8px;
             margin-bottom: 16px;
             background: rgba(225, 225, 230, 0);            
-            text-align: left;            
+            text-align: left;                  
     
             &:hover {
                 background-color: $grade3-bg-color;
@@ -78,7 +78,7 @@
             margin-bottom: 16px;
             color: $highlight-highlight-color;
             background-color: $highlight-color;
-            @include global_transition;
+            @include global_transition;            
     
             &:hover {
                 background-color: $highlight-hover-color;                
@@ -96,7 +96,8 @@
             height: 16px;
             margin-left: 6px;
             margin-top: 1px;
-            color: $highlight-color;
+            color: $highlight-color;            
+
             &:hover {
                 text-decoration: underline;
             }

@@ -1,0 +1,32 @@
+@import "../../../../theme/global.scss";
+@import "../../../../theme/utils.scss";
+@import "./style.scss";
+
+.review_title_panel {
+    @include row_flex(flex-start, center);
+    margin-top: 36px;
+
+    .review_title {            
+        @include title;                          
+    }
+
+    & > span {
+        margin-bottom: 0;
+        margin-right: 16px;
+    }            
+}   
+
+.new_review_btn {                
+    @include content_medium_button(124px);  
+    line-height: 40px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.review_noitem_panel {
+    @include noitem_panel;
+
+    & > div {
+        margin-bottom: 24px;
+    }
+}

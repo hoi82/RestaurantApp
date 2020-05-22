@@ -1,0 +1,25 @@
+@import "../../../../theme/global.scss";
+@import "../../../../theme/utils.scss";
+@import "./style.scss";
+
+.menu_title {
+    @include title;
+    margin-top: 36px;
+}
+
+.menu_panel {
+    @include relative(100%, 200px);
+    overflow-x: auto;
+    margin-top: 24px;
+}
+
+.menu_inner_panel {
+    @include relative(auto, 200px);
+    display: grid;
+    column-gap: 8px;
+    grid-template-columns: repeat(9, 160px);
+}
+
+.menu_noitem_panel {
+    @include noitem_panel;
+}

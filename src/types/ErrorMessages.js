@@ -15,5 +15,6 @@ export const ErrorMessages = {
     EMPTY_EXPIRE_DATE: "유효 기간을 입력해 주세요.",
     INVALID_EXPIRE_DATE: "유효 기간이 올바르지 않습니다.",
     EMPTY_CVC: "보안 코드를 입력해 주세요.",
-    INVALID_CVC: "보안 코드가 올바르지 않습니다."    
+    INVALID_CVC: "보안 코드가 올바르지 않습니다.",
+    EMPTY_TEXT: "필수 입력 항목입니다."
 }
