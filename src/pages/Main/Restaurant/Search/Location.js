@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from "./styles.scss";
-import DropdownTextBox from '../../../../components/DropdownTextBox';
+import DropdownBox from '../../../../components/DropdownBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { GetCountries, READY_TO_LOAD, GetStates, COUNTRY_FAILED, STATE_FAILED, SearchByLocation } from '../../../../actions/main/search';
 import ErrorPage from "../../../Error";
@@ -44,7 +44,10 @@ export default () => {
 
     const handleStateChange = (value) => {        
         setState(value.name);  
-        setDisplayedStates(states.filter((state) => state.name.toLowerCase().indexOf(value.name.toLowerCase()) > -1));      
+        setDisplayedStates(states.filter((state) => {
+            const v = value.name ? value.name : "";
+            return state.name.toLowerCase().indexOf(v.toLowerCase()) > -1
+        }));
     }
 
     const handleSearch = (e) => {   
@@ -52,7 +55,7 @@ export default () => {
             dispatch(SearchByLocation(country, state)); 
             history.push(endpoint.resultRestaurantByLocation + `?country=${matchedCountry}&state=${state}`);
         }
-        else {
+        else {                        
             setError(ErrorMessages.EMPTY_TEXT);
         }
     }
@@ -63,14 +66,15 @@ export default () => {
         }
     }
 
-    const handleBlur = (e) => {        
-        setError(country.trim() == "" ? ErrorMessages.EMPTY_TEXT : "");        
+    const handleBlur = (e) => {          
+        //value가 안찾아짐 
+        // setError(e.target.value == "" ? ErrorMessages.EMPTY_TEXT : "");        
     }
 
     const renderCountry = () => {        
         return <div className={styles.location_search_box} onFocus={handleFocus} onBlur={handleBlur}>            
             <span>Country</span>
-            <DropdownTextBox value={country} onChange={handleCountryChange} items={countries}/>
+            <DropdownBox value={country} onChange={handleCountryChange} items={countries} editable/>
             <span className={styles.error_text}>{error}</span>
         </div> 
     }
@@ -79,7 +83,7 @@ export default () => {
         if (matchedCountry != "") {
             return <div className={styles.location_search_box}>
                 <span>State or City</span>
-                <DropdownTextBox value={state} onChange={handleStateChange} items={displayedStates}/>
+                <DropdownBox value={state} onChange={handleStateChange} items={displayedStates} editable/>
             </div>    
         }
 

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { READY_TO_LOAD, SearchByName, RESULT_FAILED } from '../../../../actions/main/search';
 import PanelGrid from '../../../../components/PanelGrid';
-import { GridItem, ListItem, layout } from './Restaurant';
+import { Restaurant } from './Restaurant';
 import styles from "./style.scss";
 
 export default ({match}) => {               
@@ -16,23 +16,14 @@ export default ({match}) => {
     }, []);
 
     const renderRestaurant = (item, key, layout) => {
-        switch (layout) {
-            case "Grid":
-                return <GridItem {...item} key={key}/>;
-            case "List":
-                return <ListItem {...item} key={key}/>;
-            default:
-                return null;
-        }
+        return <Restaurant {...item} key={key}/>;
     }
 
     return (
         <div className={styles.container}>            
-            <p className={styles.title}>Restaurants</p>
-            {/* <p className={styles.body}>{`We found ${result.length} restaurants!`}</p>
-            <p className={styles.description}>{`Searched Name : ${props.match.params.name}`}</p> */}            
+            <p className={styles.title}>Restaurants</p>                   
             <div className={styles.grid_container}>
-                <PanelGrid items={restaurants.result} itemRenderer={renderRestaurant} config={{showNavigator: true, fitContentSizeToPanel: true, layout: layout}}/>
+                <PanelGrid items={restaurants.result} itemRenderer={renderRestaurant} config={{lengthPerPage: 10, gap: "16px"}}/>
             </div>            
         </div>
     );

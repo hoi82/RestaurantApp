@@ -1,0 +1,126 @@
+@import "../../theme/global.scss";
+@import "../../theme/utils.scss";
+
+.datepicker {
+    @include relative(128px, 40px);
+
+    .date_button {
+        @include content_medium_button(128px);
+        font-size: $h2-size;
+
+    }
+    
+    .popup {
+        @include absolute(48px, auto, auto, auto);
+        @include set_size(400px, 200px);
+        background-color: lightblue;
+    }
+
+    .calendar {        
+        background-color: $grade1-bg-color; 
+        
+        button {
+            font-family: inherit;
+        }
+
+        button[class ~= "react-calendar__navigation__arrow"] {
+            @include set_size(32px, 32px);
+            box-sizing: border-box;
+            padding: 0;
+            background-color: $grade2-bg-color;
+            border-radius: 5px;
+
+            &:not(:first-child) {
+                margin-left: 8px;
+            }
+        }
+
+        button[class ~= "react-calendar__navigation__label"] {
+            @include set_size(120px);
+            margin-left: 8px;
+
+            & > span {
+                font-size: $h2-size;
+            }
+        }
+
+        div[class ~= "react-calendar__month-view"] {
+            margin-top: 8px;
+
+            div[class ~= "react-calendar__month-view__weekdays"] {
+                @include set_size($height: $h1-size);
+
+                & > div {
+                    text-align: center;
+
+                    abbr {
+                        line-height: $h1-size;
+                        font-weight: 600;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+
+        div[class ~= "react-calendar__month-view__days"] {
+            margin-top: 8px;
+
+            button[class ~= "react-calendar__month-view__days__day"] {
+                @include set_size(40px, 40px);
+                background-color: $grade1-bg-color;                
+                padding: 0;                
+                padding: 2px;
+
+                abbr {
+                    display: table-cell;
+                    @include set_size(36px, 36px);
+                    border-radius: 4px;
+                    background-color: $content-button-bg;
+                    color: $highlight-highlight-color;
+                    font-size: $h3-size;
+                    vertical-align: middle;
+                }
+            }
+
+            button[class ~= "react-calendar__month-view__days__day--neighboringMonth"] {
+                abbr {
+                    background-color: $grade5-bg-color;
+                    color: $content-color;
+                }
+            }
+
+            button[class ~= "react-calendar__month-view__days__day"]:disabled {
+                abbr {
+                    background-color: $grade2-bg-color;
+                    color: $grade1-bg-color
+                }
+            }
+        } 
+        
+        div[class ~= "react-calendar__year-view"] {
+            margin-top: 8px;
+
+            button[class ~= "react-calendar__year-view__months__month"] {
+                @include set_size(100%, 48px);
+                padding: 0;
+                background-color: $grade1-bg-color;
+                padding: 2px;
+
+                abbr {
+                    display: table-cell;
+                    @include set_size(96px, 44px);
+                    border-radius: 4px;
+                    background-color: $content-button-bg;
+                    color: $highlight-highlight-color;
+                    font-size: $h3-size;
+                    vertical-align: middle;
+                }
+
+                &:disabled > abbr {
+                    background-color: $grade2-bg-color;
+                    color: $grade1-bg-color;
+                }
+            }            
+        }
+    }
+}

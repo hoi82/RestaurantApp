@@ -4,7 +4,16 @@
 
 .menu_title {
     @include title;
-    margin-top: 36px;
+    margin-top: 18px;
+
+    &::before {
+        display: block;
+        width: 100%;
+        height: 1px;
+        content: "";
+        background-color: $grade5-bg-color;            
+        margin-bottom: 18px;
+    }  
 }
 
 .menu_panel {

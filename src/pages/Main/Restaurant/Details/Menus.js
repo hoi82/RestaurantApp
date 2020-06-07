@@ -10,7 +10,7 @@ export default function Menus({menus = []}) {
 
         if (menus.map) {
             return menus.map((menu, i) => (
-                <Menu id={menu} key={i}/>
+                <Menu key={i} {...menu}/>
             ))
         }
         else {

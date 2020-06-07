@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from "./style.scss";
+import arrow from "../../image/down-arrow.svg";
 
 const Item = ({className, onClick, item}) => {    
     const handleClick = (e) => {
@@ -10,7 +11,7 @@ const Item = ({className, onClick, item}) => {
     );
 };
 
-export default ({items, onChange, value, width, onBlur = null}) => {   
+export default ({items=[], onChange, value, width, onBlur = null, editable}) => {   
     //TODO: 두개가 있을 경우 하나가 열려있는 상태에서 다른걸 클릭하면 원래 열려있던게 닫히지 않음. 
     //blur에서 relatedTarget에 다른 dropbox일때도 추가함(name으로 판별했는데 좀더 안전한 방법으로 해야할듯).
     const [boxOpen, setBoxOpen] = useState(false);         
@@ -107,8 +108,15 @@ export default ({items, onChange, value, width, onBlur = null}) => {
     }
 
     return (
-        <div onBlur={handleBlur} className={styles.dropdown} onKeyDown={handleNavigation}>
-            <input type="text" name="input" autoComplete="off" className={styles.input} value={value} onChange={handleChange} onClick={handleInputClick} onBlur={handleInputBlur} width={width}/>            
+        <div onBlur={handleBlur} className={styles.dropdown} onKeyDown={handleNavigation} style={{maxWidth: width}}>
+            { editable ? 
+                <input type="text" name="input" autoComplete="off" className={styles.input} value={value} onChange={handleChange} onClick={handleInputClick} onBlur={handleInputBlur}/>
+                :
+                <div className={styles.display} style={{maxWidth: width}}>
+                    <span>{value}</span>
+                    <button onClick={handleInputClick}><img src={arrow} style={{transform: boxOpen ? "rotate(0.5turn)" : "rotate(0turn)"}}/></button>
+                </div>
+            }            
             {renderContents()}                                   
         </div>
     );

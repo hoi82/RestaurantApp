@@ -57,8 +57,8 @@ div, button {
 }
 
 .box {    
-    overflow: hidden;
-    background-color: $bg-color;        
+    overflow: auto;
+    background-color: $grade1-bg-color;        
 }
 
 .bgimg, .box {

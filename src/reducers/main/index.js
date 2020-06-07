@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
 import search from "./search";
-import details from "./details";
+import reservation from "./reservation";
+import restaurant from "./restaurant";
 
 export default combineReducers({
     search: search,
-    details: details
+    restaurant: restaurant,
+    reservation: reservation
 })

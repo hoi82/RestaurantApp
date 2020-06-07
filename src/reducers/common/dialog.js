@@ -5,15 +5,12 @@ const dialog = (state = initDialog, action) => {
     const { type, payload } = action;    
     switch (type) {
         case SHOW_DIALOG:                    
-            return {
+            return Object.assign({}, initDialog, {
                 show: true,
                 ...payload
-            }
+            });
         case CLOSE_DIALOG:
-            return {
-                show: false,
-                onClose: state.onClose
-            };
+            return Object.assign({}, state, { show: false });
         default:
             return state;
     }

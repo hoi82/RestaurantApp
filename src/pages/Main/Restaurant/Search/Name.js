@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import path from "path";
 import styles from "./styles.scss";
-import Dropdown from '../../../../components/DropdownTextBox';
+import DropdownBox from '../../../../components/DropdownBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { GetNames, READY_TO_LOAD, NAME_FAILED, SearchByName } from '../../../../actions/main/search';
 import { endpoint } from '../../../../config/url';
@@ -54,7 +54,7 @@ export default () => {
             <span className={styles.description}>Input the name what you want.</span>
             <div className={styles.search_container}>
                 <div className={styles.name_search_box} onFocus={handleFocus} onBlur={handleBlur}>
-                    <Dropdown value={name} onChange={handleChange} items={names}/>
+                    <DropdownBox value={name} onChange={handleChange} items={names} editable/>
                     <button className={styles.search_btn} onClick={handleSearch}>Search</button>
                 </div>        
                 <span className={styles.error_text}>{error}</span>

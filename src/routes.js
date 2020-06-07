@@ -8,6 +8,10 @@ import { asyncResultByName, asyncResultByCategory, asyncResultByLocation } from 
 import { asyncDetails } from "./pages/Main/Restaurant/Details";
 import { asyncMenu } from "./pages/Main/Restaurant/Menu";
 import { asyncNewReview } from "./pages/Main/Restaurant/Review";
+import { asyncReservation } from "./pages/Main/Restaurant/Reservation";
+import { asyncReservationResult } from "./pages/Main/Restaurant/ReservationResult";
+import { asyncTakeout } from "./pages/Main/Restaurant/Takeout";
+import { asyncFavorites } from "./pages/Main/Favorites";
 
 export default [
     {
@@ -61,6 +65,31 @@ export default [
                     {
                         path: endpoint.newReview,
                         component: asyncNewReview,
+                        exact: true
+                    },
+                    {
+                        path: path.resolve(endpoint.editReview, ":resid", ":id"),
+                        component: asyncNewReview,
+                        exact: true
+                    },
+                    {
+                        path: path.resolve(endpoint.restaurantReservation, ":id"),
+                        component: asyncReservation,
+                        exact: true
+                    },
+                    {
+                        path: path.resolve(endpoint.restaurantReservationResult, ":id"),
+                        component: asyncReservationResult,
+                        exact: true
+                    },
+                    {
+                        path: path.resolve(endpoint.takeout, ":id"),
+                        component: asyncTakeout,                        
+                        exact: true
+                    },
+                    {
+                        path: endpoint.favoriteRestaurants,
+                        component: asyncFavorites,
                         exact: true
                     }
                 ]

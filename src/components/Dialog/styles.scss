@@ -38,15 +38,19 @@
         min-height: 240px;
         font-size: 14px;
         font-weight: 600;
-        color: $content-color;                                    
-        padding: 24px;            
-        white-space: pre;            
-        overflow: hidden;     
-        box-sizing: border-box;       
+        color: $content-color;
+        padding: 24px;
+        overflow: hidden;
+        border-radius: 8px;
+        white-space: pre;
+        overflow: hidden;
+        box-sizing: border-box;
     }
 
     .button_box {                         
-        @include relative_full;         
+        @include row_flex(center, center);   
+        @include set_size(100%);
+        padding: 8px;      
         align-self: baseline;   
         
         & > button {
@@ -54,7 +58,7 @@
         }
 
         .alert_btn {                
-            background-color: $alert-color;
+            background-color: $alert-color;            
             
             &:hover {
                 background-color: $alert-hover-color;
@@ -66,7 +70,7 @@
         }
 
         .success_btn {                
-            background-color: $success-color;
+            background-color: $success-color;            
 
             &:hover {
                 background-color: $success-hover-color;
@@ -78,15 +82,11 @@
         }
 
         .confirm_btn {
-            background-color: $confirm-color;
+            width: 50%;
 
-            &:hover {
-                background-color: $confirm-hover-color;
-            }
-
-            &:active {
-                background-color: $confirm-active-color;
-            }
+            &:not(:first-of-type) {
+                margin-left: 8px;
+            }             
         }
     }
 }

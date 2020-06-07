@@ -4,11 +4,13 @@ import Ratings from 'react-ratings-declarative';
 import styles from "./NewReview.module.scss";
 import { useParams, useLocation, useHistory } from 'react-router';
 import { getFullAddress } from '../../../../utils/getStrings';
-import { fetchRestaurantThumbnail, uploadReview } from './utils';
+import { fetchRestaurantThumbnail, uploadReview, editReview } from '../utils';
 import { IMAGE_URL, endpoint } from '../../../../config/url';
 import { ErrorMessages } from '../../../../types/ErrorMessages';
 import { useDispatch } from 'react-redux';
 import { showDialog } from "../../../../actions/common/dialog";
+import { DialogMode } from '../../../../types/Variables';
+import noImage from '../../../../types/noImage';
 
 export default function NewReview() {       
     const [rating, setRating] = useState(0);
@@ -24,9 +26,17 @@ export default function NewReview() {
     const dispatch = useDispatch();
 
     useEffect(() => {        
-        fetchRestaurantThumbnail(param.id).then((res) => {
+        const { review } = location.state ? location.state : {};        
+
+        if (review) {
+            setRating(review.rating);
+            setTitle(review.title);
+            setComment(review.comment);
+        }
+
+        fetchRestaurantThumbnail(param.resid).then((res) => {
             setRestaurant(res);
-        })      
+        })                
     }, []);
 
     useEffect(() => {
@@ -55,15 +65,11 @@ export default function NewReview() {
     }
 
     const handleCommentBlur = (e) => {
-        setCommentError(comment.trim() == "" ? ErrorMessages.EMPTY_TEXT : "");
-    }
-
-    const handleImageError = (e) => {
-        console.log(e.target);
-    }
+        setCommentError(comment.trim().length < 50 ? ErrorMessages.EMPTY_TEXT : "");
+    }    
 
     const validation = () => {
-        if (rating != 0 && title.trim() != "" && comment.trim() != "") {
+        if (rating != 0 && title.trim() != "" && comment.trim().length >= 50) {
             return true;
         }
         else {
@@ -76,23 +82,47 @@ export default function NewReview() {
         setForceUpdate(true);
         
         if (validation()) {
-            uploadReview({
-                resId: param.id,
-                rating: rating, 
-                title: title,
-                comment: comment
-            }).then((res) => {
-                dispatch(showDialog({
-                    content: "등록되었습니다.",
-                    onClose: () => {
-                        history.push(`${endpoint.restaurantDetail}/${param.id}`);
-                    }
-                }))
-            }).catch((err) => {
-                dispatch(showDialog({
-                    content: "에러가 발생했습니다."
-                }))
-            });
+            if (location.state) {                
+                editReview({
+                    id: param.id,                     
+                    resId: param.resId,
+                    rating: rating,
+                    title: title,
+                    comment: comment                                 
+                }).then((res) => {
+                    dispatch(showDialog({
+                        mode: DialogMode.SUCCESS,
+                        content: "수정되었습니다.",
+                        onClose: () => {
+                            history.push(`${endpoint.restaurantDetail}/${param.resid}`);
+                        }
+                    }))
+                }).catch((err) => {
+                    dispatch(showDialog({
+                        content: "에러가 발생했습니다."
+                    }))
+                });
+            }
+            else {
+                uploadReview({
+                    resId: param.resid,
+                    rating: rating, 
+                    title: title,
+                    comment: comment
+                }).then((res) => {
+                    dispatch(showDialog({
+                        mode: DialogMode.SUCCESS,
+                        content: "등록되었습니다.",
+                        onClose: () => {
+                            history.push(`${endpoint.restaurantDetail}/${param.resid}`);
+                        }
+                    }))
+                }).catch((err) => {
+                    dispatch(showDialog({
+                        content: "에러가 발생했습니다."
+                    }))
+                });
+            }          
         }        
     }    
 
@@ -103,8 +133,9 @@ export default function NewReview() {
     return (
         <div className={styles.newreview}>
             <form className={styles.container} onSubmit={handleSubmit}>
+                {/* <span className={styles.main_title}>New Review</span> */}
                 <header className={styles.res_profile}>
-                    <img src={restaurant.thumbnail ? `${IMAGE_URL}${restaurant.thumbnail}` : null} onError={handleImageError}/>
+                    <img src={restaurant.thumbnail ? `${IMAGE_URL}/${restaurant.thumbnail}` : noImage}/>
                     <div>
                         <span className={styles.name}>{restaurant.name}</span>
                         <span className={styles.address}>{getFullAddress(restaurant.address)}</span>
@@ -132,17 +163,17 @@ export default function NewReview() {
                 <div className={styles.input_container}>
                     <NormalInput header="제목" value={title} onChange={handleTitleChange} forceUpdate={forceUpdate}/>
                 </div> 
-                <div>
+                <div className={styles.comment_box}>
                     <div className={styles.comment_container}>
                         <div style={{display: "flex"}}>
                             <span className={styles.comment_title}>내용</span>
                             <span className={styles.error_title}>{commentError}</span>
                         </div>                        
-                        <span className={styles.comment_title}>{`${comment.length}/500`}</span>
+                        <span className={styles.comment_title}>{`${comment.length}/50`}</span>
                     </div>                
-                    <textarea className={styles.comment_textbox} value={comment} onFocus={null} onChange={handleCommentChange} onBlur={handleCommentBlur} onFocus={handleCommentFocus} spellCheck={false} maxLength={500}/>
+                    <textarea className={styles.comment_textbox} value={comment} onFocus={null} onChange={handleCommentChange} onBlur={handleCommentBlur} onFocus={handleCommentFocus} spellCheck={false} minLength={50}/>
                 </div>                
-                <button className={styles.commit_btn}>리뷰 올리기</button>
+                <button className={styles.commit_btn}>{location.state ? "리뷰 수정하기" : "리뷰 등록하기"}</button>
             </form>            
         </div>
     );

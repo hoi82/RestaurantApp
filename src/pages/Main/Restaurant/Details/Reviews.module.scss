@@ -2,9 +2,13 @@
 @import "../../../../theme/utils.scss";
 @import "./style.scss";
 
+.reviews {
+    
+}
 .review_title_panel {
-    @include row_flex(flex-start, center);
-    margin-top: 36px;
+    @include row_flex(space-between, center);
+    flex-wrap: wrap;
+    margin-top: 18px;
 
     .review_title {            
         @include title;                          
@@ -13,7 +17,16 @@
     & > span {
         margin-bottom: 0;
         margin-right: 16px;
-    }            
+    }   
+    
+    &::before {
+        display: block;
+        width: 100%;
+        height: 1px;
+        content: "";
+        background-color: $grade5-bg-color;            
+        margin-bottom: 18px;
+    }  
 }   
 
 .new_review_btn {                

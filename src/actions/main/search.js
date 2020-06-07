@@ -1,5 +1,6 @@
 import axios from "axios";
 import url from "url";
+import { axiosConfig } from "../../config/url";
 
 export const READY_TO_LOAD = "READY_TO_LOAD";
 export const NAME_LOADING = "NAME_LOADING";
@@ -31,16 +32,7 @@ export const GetNames = (name) => async (dispatch) => {
     dispatch({ type: NAME_LOADING });
 
     try {
-        const { data } = await axios.get(SEARCH_NAMES_URL, {
-            headers: {                
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            params: {
-                name: name
-            },
-            withCredentials: true    
-        });
+        const { data } = await axios.get(SEARCH_NAMES_URL, Object.assign({}, axiosConfig, {params: {name: name}}));
         dispatch({ type: NAME_LOADED, payload: data });   
     } catch (error) {
         dispatch({ type: NAME_FAILED, payload: error });
@@ -50,13 +42,7 @@ export const GetNames = (name) => async (dispatch) => {
 export const GetAllCategories = () => async (dispatch) => {
     dispatch({ type: CATEGORY_LOADING });
     try {
-        const { data } = await axios.get(CATEGORIES_URL, {
-            headers: {                
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            withCredentials: true
-        });
+        const { data } = await axios.get(CATEGORIES_URL, axiosConfig);
         dispatch({ type: CATEGORY_LOADED, payload: data });
     } catch (error) {
         dispatch({ type: CATEGORY_FAILED, payload: error });
@@ -65,16 +51,7 @@ export const GetAllCategories = () => async (dispatch) => {
 
 export const GetCountries = (name) => async (dispatch) => {    
     dispatch({ type: COUNTRY_LOADING });
-    axios.get(COUNTRY_URL, {
-        headers: {                
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        params: {
-            name: name
-        },
-        withCredentials: true
-    }).then((res) => {            
+    axios.get(COUNTRY_URL,  Object.assign({}, axiosConfig, {params: {name: name}})).then((res) => {
         dispatch({ type: COUNTRY_LOADED, payload: res.data });
     }).catch((err) => {
         dispatch({ type: COUNTRY_FAILED, payload: err });
@@ -84,16 +61,7 @@ export const GetCountries = (name) => async (dispatch) => {
 export const GetStates = (country) => {
     return (dispatch) => {
         dispatch({ type: STATE_LOADING });        
-        return axios.get(STATE_URL, {
-            headers: {                
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            params: {
-                country: country
-            },
-            withCredentials: true
-        }).then((res) => {
+        return axios.get(STATE_URL, Object.assign({}, axiosConfig, {params: {country: country}})).then((res) => {
             dispatch({ type: STATE_LOADED, payload: res.data });
         }).catch((err) => {
             dispatch({ type: STATE_FAILED, payload: err });

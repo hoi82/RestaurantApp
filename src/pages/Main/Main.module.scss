@@ -1,8 +1,54 @@
 @import "../../theme/global.scss";
 @import "../../theme/utils.scss";
 
-.content {    
-    @include absolute(0, $left: $main-nav_width);
-    @include set_size(calc(100% - #{$main-nav_width}), 100%);
+.main {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    min-height: 100%;    
+}
+
+.content_panel {            
+    @include set_size(calc(100% - #{$main-nav_width}), auto);       
     background-color: $grade1-bg-color;
+    border-radius: 8px;
+    margin-top: 16px;
+    box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.5);   
+}
+
+.header_menu {
+    @include relative(100%, 40px);
+    min-width: 960px;
+    background-color: $grade2-bg-color;
+}
+
+.banner {
+    @include relative(100%, 180px);
+    max-width: 1280px;
+    min-width: 960px;
+    margin: 16px auto auto auto;
+    border-radius: 8px;
+    background-color: $grade2-bg-color;
+    // box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.5);   
+}
+
+.footer_menu {
+    @include relative(100%, 240px);
+    background-color: $grade2-bg-color;
+    margin-top: 16px;
+}
+
+.content {
+    @include relative(100%);
+    @include row_flex(stretch, flex-start);    
+    min-width: 960px;
+    max-width: 1280px;    
+    margin: auto;
+    flex-grow: 2;
+}
+
+@media screen and (max-width: 1290px) {
+    .banner {
+        border-radius: 0;
+    }
 }

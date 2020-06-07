@@ -1,39 +1,69 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchRestaurant } from '../../../../actions/main/details';
+import { fetchRestaurantIfNeed } from '../../../../actions/main/restaurant/details';
 import { getFullAddress } from '../../../../utils/getStrings';
 import styles from "./style.scss";
-import favorite from "../../../../image/favorite.svg";
+import addFavIcon from "../../../../image/addfav.svg";
+import removeFavIcon from "../../../../image/removefav.svg";
 import share from "../../../../image/share.svg";
 import gm from "../../../../image/gps.svg";
 import noImage from '../../../../types/noImage';
-import { showDialog } from "../../../../actions/common/dialog";
-import { fetchReviews, getFormattedTimeString, getDayName, isInTime } from './utils';
+import { showDialog, closeDialog } from "../../../../actions/common/dialog";
+import { getFormattedTimeString, getDayName, isInTime, addFavorite, getRestaurantIsFavorite, removeFavorite } from '../utils';
 import ReactHtmlParser from "react-html-parser";
-import { IMAGE_URL } from '../../../../config/url';
+import { IMAGE_URL, endpoint } from '../../../../config/url';
 import Reviews from './Reviews';
 import Menus from './Menus';
 import { HashLink } from "react-router-hash-link";
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+import GoogleMapReact from "google-map-react";
+import close from "../../../../image/close.svg";
+import marker from "../../../../image/marker.svg";
+import { DialogMode } from '../../../../types/Variables';
 
-function Details({match}) {   
-    const details = useSelector((store) => store.main.details);    
-    const [reviews, setReviews] = useState([]);
-    const param = useParams();    
+function Marker({name}) {
+    return (
+        <div className={styles.marker_container}>
+            <img src={marker} className={styles.marker}/>
+            <span>{name}</span>
+        </div>        
+    )
+}
 
-    const dispatch = useDispatch(); 
+function Details() {   
+    const details = useSelector((store) => store.main.restaurant.details); 
+    const reviews = useSelector((store) => store.main.restaurant.reviews);       
+    const [userfavorite, setUserFavorite] = useState(false);
+    const param = useParams();      
+    const dispatch = useDispatch();       
+
     useEffect(() => {
-        dispatch(fetchRestaurant(param.id));
-        fetchReviews(param.id).then((data) => setReviews(data));        
-    }, []);
+        dispatch(fetchRestaurantIfNeed(param.id));                     
+        getRestaurantIsFavorite(param.id).then((res) => {
+            setUserFavorite(res);
+        })
+    }, []);         
 
-    useEffect(() => {
-        
-    }, [details]);            
+    const handleDialog = (e) => {
+        dispatch(closeDialog());
+    }
 
     const showGoogleMap = (e) => {
         dispatch(showDialog({
-            content: "aaa"
+            bgimg: false,
+            buttons: true,
+            content: <div style={{width: "640px", height: "480px"}}>
+                <GoogleMapReact center={{lat: details.address.lat, lng: details.address.lng}} defaultZoom={18} 
+                options={{fullscreenControl: false}} 
+                bootstrapURLKeys={{key: "AIzaSyAmHuLLFXqvW5v8hgpdO8MNYLEXirB6v9I"}}
+                yesIWantToUseGoogleMapApiInternals>
+                    <Marker lat={details.address.lat} lng={details.address.lng} name={details.name}/>
+                </GoogleMapReact>
+                <button className={styles.dialog_btn} onClick={handleDialog}>
+                    <img src={close}/>
+                </button>
+            </div>
         }))
     };
 
@@ -46,6 +76,38 @@ function Details({match}) {
         }, 0);
 
         return (result / arr.length).toFixed(1);
+    }
+
+    const handleFavorite = (e) => {
+        if (userfavorite) {
+            removeFavorite(param.id).then((res) => {
+                dispatch(showDialog({
+                    mode: DialogMode.SUCCESS,
+                    bgimg: false,
+                    content: "This restaurant is removed from your favorite list",
+                    onClose: () => {
+                        setUserFavorite(false);
+                    }
+                }))
+            })
+        }
+        else {
+            addFavorite(param.id).then((res) => {            
+                dispatch(showDialog({
+                    mode: DialogMode.SUCCESS,
+                    bgimg: false,
+                    content: "Sucessfully added to your favorite list",
+                    onClose: () => {
+                        setUserFavorite(true);
+                    }
+                }));
+            }).catch((err) => {
+                dispatch(showDialog({
+                    mode: DialogMode.ALERT,
+                    content: err
+                }));
+            })
+        }        
     }
 
     const renderOpens = (dates) => {
@@ -73,44 +135,43 @@ function Details({match}) {
         else {
             return null;
         }
-    };
+    };    
 
     return (
         <div className={styles.details}>
             <div className={styles.container}>
-                <div className={styles.upper_container}>
+                <div className={styles.name_panel}>
+                    <span className={styles.name}>{details.name}</span>
+                    <img src={userfavorite ? removeFavIcon : addFavIcon} onClick={handleFavorite}/>
+                    <img src={share}/>
+                    <div className={styles.info_inner_panel}>
+                        <span className={styles.address}>{getFullAddress(details.address)}</span>
+                        <img onClick={showGoogleMap} src={gm}/>
+                    </div>
+                </div> 
+                <div className={styles.upper_container}>                    
                     <div className={styles.thumbnail_panel}>
-                        <img src={details.thumbnail ? `${IMAGE_URL}/${details.thumbnail}` : `data:image/png;base64,${noImage}`}/>
-                        <span className={styles.rating}>{`${getRatingAvg(reviews)} / 10 in ${reviews.length} reviews`}</span>
+                        <img src={details.thumbnail ? `${IMAGE_URL}/${details.thumbnail}` : noImage}/>
+                        <span className={styles.rating}>{`${reviews.reviewRating} / 10 in ${reviews.totalReviews} reviews`}</span>
                     </div>                
-                    <div className={styles.info_panel}>
-                        <div className={styles.info_inner_panel}>
-                            <span className={styles.name}>{details.name}</span>
-                            <img src={favorite}/>
-                            <img src={share}/>
-                        </div>  
-                        <div className={styles.info_inner_panel}>
-                            <span className={styles.address}>{getFullAddress(details.address)}</span>
-                            <img onClick={showGoogleMap} src={gm}/>
-                        </div>
+                    <div className={styles.info_panel}>                                                 
                         <p className={styles.hour_title}>Now <span className={styles.hour_content}>{isInTime(details.opens) ? "Opened" : "Closed"}</span></p>
-                        {renderOpens(details.opens)}
-                        <span></span>
+                        {renderOpens(details.opens)}                      
                     </div>
                 </div>
+                <section className={styles.navigator}>
+                    <button><span>Contact</span></button>
+                    <Link to={`${endpoint.restaurantReservation}/${param.id}`}>Reservation</Link>
+                    <Link to={`${endpoint.takeout}/${param.id}`}>Take Out</Link>
+                    <HashLink smooth to={"#review"}><span>Reviews</span></HashLink>
+                </section>
                 <div className={styles.lower_container}>
                     <span className={styles.desc_title}>Description</span>
                     <p className={styles.desc}>{ReactHtmlParser(details.description)}</p>
                     <Menus menus={details.menus}/>            
-                    <Reviews resid={param.id} thumbnail={details.thumbnail} id={"review"} reviews={reviews}/>
+                    <Reviews id={"review"} resid={param.id}/>
                 </div>
-            </div>            
-            <footer className={styles.navigator}>
-                <button><span>Contact</span></button>
-                <button><span>Reservation</span></button>
-                <button><span>Take Out</span></button>
-                <HashLink smooth to={"#review"}><span>Reviews</span></HashLink>
-            </footer>    
+            </div>                         
         </div>
     );
 }

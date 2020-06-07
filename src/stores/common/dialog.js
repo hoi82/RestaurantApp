@@ -5,9 +5,12 @@ const initDialog = {
     mode: DialogMode.ALERT,
     withTitle: false,
     title: "",    
+    bgimg: true,
     content: null,    
     buttons: null,
     onClose: null,
+    onConfirm: null,
+    onCancel: null
 }
 
 export default initDialog;

@@ -27,17 +27,16 @@
 }
 
 .panel {            
-    @include set_size_full;    
-    border: 32px solid $grade2-bg-color;
-    border-radius: 10px;
-    background-color: $grade2-bg-color;    
-    overflow-y: auto; 
+    @include set_size(100%, calc(100% - 60px));                
+    border-style: solid;    
+    border-radius: 10px;        
     flex-grow: 10;   
 
     .inner_panel {
         @include set_size_full;             
-        display: grid;
-        gap: 8px;
+        display: grid;      
+        overflow: hidden;
+        grid-template-columns: repeat(1, 100%);        
     }
 }
 
@@ -46,26 +45,25 @@
     @include relative(100%, 56px);
 
     .selected {
-        background-color: $highlight-color;
+        background-color: $content-button-bg;
         color: $highlight-highlight-color;
         @include set_size(36px, 36px);
 
         &:hover {
-            background-color: $highlight-hover-color;
+            background-color: $content-button-hover-bg;
         }
 
         &:active {
-            background-color: $highlight-active-color;
+            background-color: $content-button-active-bg;
         }
-    }
+    }    
 
     button {                
-        @include set_size(32px, 32px);
-        @include global_transition;
+        @include set_size(32px, 32px);        
         background-color: $grade2-bg-color;    
         color: $title-color;    
         border-radius: 5px;
-        padding: 0;
+        padding: 0;     
         margin: 0px 4px;
 
         &:first-child {
@@ -74,7 +72,7 @@
 
         &:last-child {
             margin-right: 0;
-        }
+        }   
 
         &:hover {
             background-color: $grade4-bg-color;

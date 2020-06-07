@@ -24,7 +24,7 @@ const getExtractor = () => {
 
 const loadBranchData = (store, path) => {      
     const branch = matchRoutes(routes, path);         
-    const promises = branch.map(({route, match}) => {        
+    const promises = branch.map(({route, match}) => {             
         if (route.loadData) {                        
             return Promise.all(                
                 route.loadData({ params: match.params, getState: store.getState })
@@ -69,7 +69,7 @@ app.use(express.static(joinPath(isProduction ? "dist" : "", "public")));
 app.use(serveFavicon(joinPath(isProduction ? "dist" : "", "public/favicon.ico")));
 
 app.get("*", async (req, res) => {            
-    const {store} = configureStore({url: req.url});                          
+    const {store} = configureStore({url: req.url});                              
     loadBranchData(store, req.path).then(async () => {        
         const extractor = getExtractor();
         const context = {};                    

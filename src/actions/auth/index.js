@@ -1,4 +1,5 @@
 import axios from "axios";
+import { axiosConfig } from "../../config/url";
 
 export const AUTH_READY = "AUTH_READY";
 export const AUTH_PROCESSING = "AUTH_PROCESSING";
@@ -17,13 +18,7 @@ const LOG_OUT_URL = "http://localhost:3005/api/users/logout/";
 export const SessionCheck = () => {    
     return (dispatch) => {    
         dispatch({type: AUTH_PROCESSING});            
-        return axios.get(SESSION_URL, {
-            headers: {                
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            withCredentials: true
-        }).then((res) => {    
+        return axios.get(SESSION_URL, axiosConfig).then((res) => {    
             setTimeout(() => {
                 dispatch({ type: SESSION_VALIDATING, payload: res.data });
             }, 300);                                
@@ -41,13 +36,7 @@ export const LogIn = (email, password) => {
                 email: email,
                 password: password
             },
-            {
-                headers: {                
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                withCredentials: true,                            
-        }).then((res) => {            
+            axiosConfig).then((res) => {            
             dispatch({ type: LOGIN_VALIDATING, payload: res.data }); 
         }).catch((err) => {                      
             dispatch({ type: LOGIN_VALIDATING, payload: { email: email, error: err }});
@@ -58,13 +47,7 @@ export const LogIn = (email, password) => {
 export const LogOut = () => {
     return (dispatch) => {
         dispatch({type: AUTH_PROCESSING});
-        return axios.post(LOG_OUT_URL, {
-                headers: {                
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                withCredentials: true,            
-        }).then((res) => {
+        return axios.post(LOG_OUT_URL, axiosConfig).then((res) => {
             dispatch({ type: LOGIN_VALIDATING, payload: res.data }); 
         }).catch((err) => {
             dispatch({ type: LOGIN_VALIDATING, payload: { error: err }});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { DialogMode } from "../../types/Variables";
 import styles from "./styles.scss";
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,7 +9,9 @@ import success from "../../image/success.svg";
 
 export default function Dialog(props) {
     const dialog = useSelector((store) => store.shared.dialog);     
-    const dispatch = useDispatch();       
+    const dispatch = useDispatch();  
+    const [mouseDownObj, setMouseDownObj] = useState(null);
+    const overlayRef = useRef();
 
     const handleClose = () => {   
         dispatch(closeDialog());     
@@ -31,23 +33,56 @@ export default function Dialog(props) {
             default:
                 break;
         }
-    }
+    }    
 
-    const renderBtnBg = () => {        
+    const renderBtn = () => {        
         switch (dialog.mode) {
             case DialogMode.ALERT:
-                this.setState({ btnClass : styles.alert_btn });
-                break;
+                return <button className={styles.alert_btn} onClick={handleClose}>
+                    <span>
+                        닫기
+                    </span>
+                </button>
             case DialogMode.SUCCESS:
-                this.setState({ btnClass : styles.success_btn });
-                break;
+                return <button className={styles.success_btn} onClick={handleClose}>
+                    <span>
+                        닫기
+                    </span>
+                </button>
             case DialogMode.CONFIRM:
-                this.setState({ btnClass : styles.confirm_btn });
-                break;
+                return <React.Fragment>
+                    <button className={styles.confirm_btn} onClick={handleConfirm}>
+                        <span>예</span>
+                    </button>
+                    <button className={styles.confirm_btn} onClick={handleCancel}>
+                        <span>아니오</span>
+                    </button>
+                </React.Fragment>
             default:
-                return null;
                 break;
         }
+    }
+
+    const handleConfirm = (e) => {
+        dispatch(closeDialog());
+        if (typeof(dialog.onConfirm) == "function")
+            dialog.onConfirm();
+    }
+
+    const handleCancel = (e) => {
+        dispatch(closeDialog());
+        if (typeof(dialog.onCancel) == "function")
+            dialog.onCancel();
+    }    
+
+    const handleOverlayDown = (e) => {
+        setMouseDownObj(e.target);        
+    }
+
+    const handleOverlayUp = (e) => {
+        if (e.target == mouseDownObj && e.target == overlayRef.current) {
+            dispatch(closeDialog());
+        }        
     }
     
     //NOTE: state에 속성을 부여해 true면 컴포넌트, false면 null return
@@ -58,8 +93,8 @@ export default function Dialog(props) {
             {
                 dialog.show ?
                 <div className={styles.dialog}>
-                    <div className={styles.overlay}></div>
-                    <div className={styles.container}>
+                    <div className={styles.overlay}/>
+                    <div className={styles.container} ref={overlayRef} onMouseDown={handleOverlayDown} onMouseUp={handleOverlayUp}>
                         <div className={styles.box}>
                             {/* {
                                 this.state.title != "" ?
@@ -69,19 +104,15 @@ export default function Dialog(props) {
                                 :
                                 null
                             }                     */}
-                            {renderBg()}
+                            {dialog.bgimg ? renderBg() : null}
                             <div className={styles.content_box}>
                                 {dialog.content}
-                            </div>                                
-                            <div className={styles.button_box}>
-                                {dialog.buttons ? dialog.buttons : (
-                                    <button className={styles.alert_btn} onClick={handleClose}>
-                                        <span>
-                                            닫기
-                                        </span>                                        
-                                    </button>
-                                )}                                
-                            </div>
+                            </div>        
+                            {
+                                dialog.buttons ? null : <div className={styles.button_box}>
+                                    {renderBtn()}                                
+                                </div>
+                            }                                                    
                         </div>    
                     </div>                        
                 </div>                                   

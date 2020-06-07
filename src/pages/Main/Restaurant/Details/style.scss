@@ -7,19 +7,89 @@
     font-weight: 600;                    
 }
 
+.dialog_btn {
+    @include content_small_btn;
+    @include absolute(32px, 32px);
+    @include set_size(32px, 32px);
+    padding: 8px;
+
+    img {
+        @include set_size_full;
+    }
+}
+
+.marker_container {
+    @include absolute(-28px, $left: -12px);
+    @include row_flex(flex-start, flex-start);
+
+    & * {
+        user-select: none;
+    }
+
+    .marker {        
+        @include set_size(24px, 32px);
+    }
+
+    span {
+        line-height: $h1-size;
+        background-color: $content-button-bg;
+        color: $highlight-highlight-color;
+        padding: 0 8px;
+        border-radius: 3px;
+        align-self: center;
+        font-size: $h5-size;
+        font-weight: 600;
+    }
+}
+
 .details {
     @include relative_full;    
-    max-height: calc(100% - 56px);    
-    overflow-y: auto;
 
     .container {
-        @include column_flex(flex-start, stretch);
+        display: flex;
+        flex-wrap: wrap;
         padding: 72px;
     }
 
+    .name_panel {
+        @include set_size(100%);    
+        
+        img {
+            @include relative(24px, 24px);
+            border-radius: 3px;                    
+            padding: 0;
+            margin-left: 8px;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .name {                    
+            font-size: $h0-size;                                        
+            color: $deep-title-color;
+            font-weight: 600;  
+            margin-top: 4px;                  
+        }                                
+
+        .address {
+            margin-top: 4px;
+            font-size: $h3-size;
+            color: $title-color;                    
+        }
+
+        &::after {
+            display: block;
+            width: 100%;
+            height: 1px;
+            content: "";
+            background-color: $grade5-bg-color;
+            margin-top: 18px;
+        }
+    }
+
     .upper_container {
-        @include relative(100%);        
-        @include row_flex(flex-start, center);        
+        @include relative(auto);                     
+        @include row_flex(stretch, center);    
+        margin-top: 18px;    
 
         .thumbnail_panel {
             @include relative(160px, 240px);
@@ -39,7 +109,7 @@
                 color: $deep-title-color;
                 font-weight: 600;
             }
-        }
+        }        
 
         .info_panel {
             @include relative;
@@ -49,15 +119,8 @@
             .info_inner_panel {
                 @include relative;             
                 @include row_flex(flex-start, center);
-                margin-bottom: 24px;                             
-
-                .name {                    
-                    font-size: $h0-size;                                        
-                    color: $deep-title-color;
-                    font-weight: 600;  
-                    margin-top: 4px;                  
-                }                
-
+                margin-bottom: 24px;  
+                
                 img {
                     @include relative(24px, 24px);
                     border-radius: 3px;                    
@@ -65,19 +128,13 @@
                     margin-left: 8px;
                     user-select: none;
                     cursor: pointer;
-                }
-
-                .address {
-                    margin-top: 4px;
-                    font-size: $h3-size;
-                    color: $title-color;                    
-                }
+                }                
             }                        
 
             .hour_title {
-                font-size: $h2-size;
+                font-size: $h1-size;
                 color: $title-color;
-                margin: 0 0 24px 0;                
+                margin: 0 0 16px 36px;                
             }
 
             .calentdar_container {
@@ -86,6 +143,7 @@
                 .calendar_panel {
                     @include relative;
                     display: flex;
+                    min-width: 240px;
                     padding-top: 16px;
 
                     & > div:first-child {
@@ -98,7 +156,7 @@
                         }
                     }
 
-                    & > div > div > span {
+                    & > div > div > span {                        
                         font-size: $h4-size;
                         color: $title-color;
                     }
@@ -106,20 +164,29 @@
             }            
 
             .hour_content {
-                font-size: $h3-size;
+                font-size: $h2-size;
                 color: $content-color;
                 font-weight: 900;
             }
-        }
+        }        
     }        
 
     .lower_container {
         @include relative(100%);
         @include column_flex(flex-start, stretch); 
+        margin-top: 18px;
         
         .desc_title {
             @include title;
-            margin-top: 36px;
+
+            &::before {
+                display: block;
+                width: 100%;
+                height: 1px;
+                content: "";
+                background-color: $grade5-bg-color;            
+                margin-bottom: 18px;
+            }  
         }
 
         .desc {
@@ -128,28 +195,47 @@
             line-height: $h1-size;
             color: $content-color;
             margin: 24px 0 0 0;
-        }             
+        }                
     }
 
     .navigator {
-        @include set_size($height: 56px);
-        position: fixed;
-        left: 320px;
-        right: 0;
-        bottom: 0;
-        padding: 0 16px;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        column-gap: 16px;        
-        z-index: 2;    
+        @include set_size(240px);        
+        @include column_flex(center, center);
+        position: relative;        
+        margin-left: 36px;                       
 
-        & > button, a {
-            @include content_medium_button; 
+        & > button, a {            
+            @include content_medium_button(160px); 
+            display: block;
             line-height: 40px;                      
             text-align: center;
             text-decoration: none;
             align-self: center;
+
+            &:not(:first-child) {
+                margin-top: 16px;
+            }
         }        
+    }
+
+    @media screen and (max-width : 1230px ) {
+        .navigator {
+            @include set_size(100%);        
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            column-gap: 16px; 
+            margin-left: 0;
+            margin-top: 36px;  
+            
+            & > button, a {
+                width: 100%;
+                margin: 0;
+    
+                &:not(:first-child) {
+                    margin: 0;
+                }
+            }
+        }
     }
 }
 
@@ -179,4 +265,3 @@
         margin-top: 16px;
     }
 }
-

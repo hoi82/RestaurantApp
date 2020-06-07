@@ -2,9 +2,9 @@
 @import "../../../../theme/utils.scss";
 
 .review {
-    @include row_flex(flex-start, flex-start);
-    @include relative;    
-    border-radius: 10px;
+    @include row_flex(flex-start, flex-start);  
+    flex-wrap: wrap;  
+    @include relative;        
     background-color: $grade1-bg-color;
     padding: 16px;    
     
@@ -25,11 +25,21 @@
             font-size: $h5-size;
             color: $deep-title-color;
             font-weight: 600;
-        }
+        }          
+    }    
+
+    &::after {
+        position: relative;
+        display: block;
+        content: "";
+        width: 100%;
+        height: 1px;
+        background-color: $grade5-bg-color;
+        margin-top: 32px;
     }
 
     .content {
-        @include relative_full;
+        @include relative(calc(100% - 144px));
 
         .info_panel {
             @include relative(100%);
@@ -64,6 +74,16 @@
             }
         }
 
+        & > img {
+            @include absolute(8px, 8px, auto, auto);
+            @include set_size(24px, 24px);
+            cursor: pointer;
+            user-select: none;
+            background-color: $grade2-bg-color;
+            border-radius: 3px;
+            padding: 4px;
+        }  
+
         .review_title {
             display: block;
             font-size: $h1-size;
@@ -71,4 +91,18 @@
             margin-top: 16px;
         }        
     }
+
+    .menu {        
+        @include column_flex(center, center);
+
+        button, a {
+            @include content_small_btn(200px);
+            text-align: center;
+            text-decoration: none;
+
+            &:not(:first-child) {
+                margin-top: 8px;
+            }
+        }
+    }      
 }

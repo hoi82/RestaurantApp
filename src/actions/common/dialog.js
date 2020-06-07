@@ -4,9 +4,12 @@ export const CLOSE_DIALOG = "CLOSD_DIALOG";
 export const showDialog = (props = {
     mode: DialogMode.ALERT,    
     title: "",    
-    content: null,    
+    content: null, 
+    bgimg: true,   
     buttons: null,
-    onClose: null,}) => {    
+    onClose: null,
+    onConfirm: null,
+    onCancel: null}) => {    
     return {
         type: SHOW_DIALOG,
         payload: props

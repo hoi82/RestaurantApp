@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams, useLocation } from 'react-router';
-import { fetchMenu } from '../Details/utils';
+import { fetchMenu } from '../utils';
 import { IMAGE_URL } from '../../../../config/url';
 import noImage from '../../../../types/noImage';
 import styles from "./Menu.module.scss";
-import favorite from "../../../../image/favorite.svg";
+import favorite from "../../../../image/addfav.svg";
 import share from "../../../../image/share.svg";
 
 export default function Menu() {    
@@ -26,7 +26,7 @@ export default function Menu() {
         <div className={styles.menu}>
             <div className={styles.container}>
                 <div className={styles.header}>
-                    <img className={styles.thumbnail} src={menu.thumbnail ? `${IMAGE_URL}/${menu.thumbnail}` : `data:image/png;base64,${noImage}`}/>
+                    <img className={styles.thumbnail} src={menu.thumbnail ? `${IMAGE_URL}/${menu.thumbnail}` : noImage}/>
                     <div className={styles.header_content}>
                         <div>
                             <span className={styles.name}>{menu.name}</span>

@@ -1,26 +1,29 @@
-import { READY_TO_LOAD_RESTAURANT, LOADING_RESTAURANT, LOADED_RESTAURANT, FAIL_TO_LOAD_RESTAURANT } from "../../../actions/main/details";
+import { READY_TO_LOAD_RESTAURANT, LOADING_RESTAURANT, LOADED_RESTAURANT, FAIL_TO_LOAD_RESTAURANT } from "../../../actions/main/restaurant/details";
 
 const initState = {
     status: READY_TO_LOAD_RESTAURANT,
     id: "",
+    name: "",
+    category: "",
+    thumbnail: null,
     address: {
         country: "",
         state: "",
         remains: ""
+    },    
+    opens: {
+        timezone: 0,
+        time: [[],[],[],[],[],[],[]]
     },
+    menus: [],
     contact: [],
-    name: "",
-    category: "",
-    businessHour: {
-        open: "",
-        close: "",
-        day: []
-    },
+    description: "",
+    reviews: [],
     error: ""
 }
 
 export default (state = initState, action) => {
-    const {type, payload} = action;
+    const {type, payload} = action;    
     switch (type) {
         case LOADING_RESTAURANT:
             return Object.assign({...state}, {status: LOADING_RESTAURANT});

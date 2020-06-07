@@ -1,8 +1,9 @@
 import { AUTH_PROCESSING, LOG_IN_FAILED, LOG_IN_SUCCESS, SESSION_FOUND, SESSION_LOST, LOGIN_VALIDATING, SESSION_VALIDATING, AUTH_READY, RESET_AUTH } from "../../actions/auth";
 
 
-export const initialAuth = {
+export const initialAuth = {    
     state: "",    
+    id: "",
     email: "",
     name: "",
     lastAccess: new Date(0),
@@ -59,6 +60,7 @@ export const auth = (state = initialAuth, action) => {
                 if (payload.error) {
                     return {
                         state: SESSION_LOST,
+                        id: "",
                         email: "",
                         name: "",
                         lastAccess: new Date(0),
@@ -69,6 +71,7 @@ export const auth = (state = initialAuth, action) => {
                     if (payload.session) {
                         return {
                             state: SESSION_FOUND,
+                            id: payload.id,
                             email: payload.email,
                             name: payload.name,
                             lastAccess: state.lastAccess,
@@ -78,6 +81,7 @@ export const auth = (state = initialAuth, action) => {
                     else {
                         return {
                             state: SESSION_LOST,
+                            id: "",
                             email: "",
                             name: "",
                             lastAccess: new Date(0),

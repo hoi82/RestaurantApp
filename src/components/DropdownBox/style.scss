@@ -7,6 +7,30 @@
     .input {        
         @include content_input;
     }
+
+    .display {
+        @include relative;
+        @include content_input;                
+
+        span {
+            display: inline-block;
+            width: 100%;
+            line-height: 48px;
+        }
+
+        button {
+            @include absolute($left: 0);
+            @include set_size(100%, 48px);
+            background-color: transparent;
+            padding: 0;
+
+
+            img {
+                @include absolute($right: 16px, $bottom: 16px);
+                @include set_size(16px, 16px);                
+            }
+        }        
+    }
 }
 
 .item_panel {

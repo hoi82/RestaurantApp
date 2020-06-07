@@ -10,6 +10,7 @@
         @include big_content_title;
         margin: 0;
         margin-left: 8px;
+        margin-bottom: 36px;
     }
 
     .body {
@@ -23,13 +24,84 @@
     }
 
     .grid_container {
-        @include relative(100%, calc(100% - 80px));
+        @include relative(100%, calc(100% - 80px));        
     }
 }
+
+.restaurant_list {
+    @include row_flex(flex-start, flex-start);
+    @include relative(100%, 240px); 
+    flex-wrap: wrap;        
+    background-color: $grade1-bg-color;
+    padding: 16px;
+    overflow: hidden;    
+
+    .thumb {
+        @include set_size(160px, 200px);
+        object-fit: cover;    
+        border-radius: 3px;
+        background-color: $grade2-bg-color;
+    }
+
+    .content_panel {
+        @include column_flex(center, flex-start);        
+        @include set_size(calc(100% - 236px));
+        margin-left: 24px;
+        
+        .name {            
+            color: $deep-title-color;
+            font-size: 36px;
+            font-weight: 600;
+
+            & ~ span {
+                font-size: $h3-size;
+                font-weight: 600;
+                color: $title-color;
+                margin-top: 16px;
+            }
+        }            
+
+        p {
+            margin: 4px 0px;
+            font-size: $h3-size;
+            font-weight: 600;
+            color: $title-color;                                
+            min-width: 120px;            
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            text-align: left;
+
+            span {                    
+                font-size: $h3-size;
+                font-weight: 600;
+                color: $deep-title-color;
+                margin: 0px 12px;                                        
+            }
+        }
+        
+    }  
+    
+    &::after {
+        position: relative;
+        display: block;
+        content: "";
+        width: 100%;
+        height: 1px;
+        background-color: $grade5-bg-color;
+        margin-top: 12px;
+        align-items: baseline;
+    }
+}
+
 
 .restaurant_grid {
     position: relative;    
     @include set_size_full;
+    min-width: 160px;
+    max-width: 261.3px;  
+    min-height: 240px;
+    max-height: 391.9px;        
     padding: 0;
     border-radius: 5px;
     background-color: $grade3-bg-color;
@@ -69,50 +141,4 @@
             }
         }
     }
-}
-
-.restaurant_list {
-    @include row_flex(flex-start, center);
-    @include relative_full;            
-    border-radius: 5px;
-    background-color: $grade3-bg-color;
-    padding: 0;
-    overflow: hidden;    
-
-    .thumb {
-        @include set_size(auto, calc(100% - 16px));
-        margin: 8px;
-        object-fit: cover;    
-        border-radius: 3px;
-        background-color: $grade2-bg-color;
-    }
-
-    .content_panel {
-        @include column_flex(center, flex-start);        
-        @include set_size(calc(100% - 236px));
-        margin-left: 8px;   
-        
-        .content_inner_panel {
-            @include row_flex(flex-start, center);
-            width: 100%;
-
-            p {
-                margin: 4px 0px;
-                font-size: $h3-size;
-                font-weight: 600;
-                color: $title-color;                                
-                min-width: 120px;            
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-
-                span {                    
-                    font-size: $h3-size;
-                    font-weight: 600;
-                    color: $deep-title-color;
-                    margin: 0px 12px;                                        
-                }
-            }
-        }
-    }    
 }

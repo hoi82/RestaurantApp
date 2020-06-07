@@ -20,7 +20,10 @@ export default (props) => {
                             </Link>                            
                             <Link className={styles.acco_button} to="/">                                
                                 Hot!                                
-                            </Link>                        
+                            </Link>  
+                            <Link className={styles.acco_button} to={endpoint.favoriteRestaurants}>
+                                Favorites
+                            </Link>                      
                         <div className={styles.sub_acco}>
                             <div className={styles.acco_item}>
                                 <label className={styles.acco_header} htmlFor="cbSearch">
@@ -39,12 +42,26 @@ export default (props) => {
                                         </Link>
                                 </div>
                             </div>
-                        </div>
-                            <Link className={styles.acco_button} to="/">                                
-                                My Reservation                                
-                            </Link>                                            
+                        </div>                            
                     </div>
-                </div>                
+                </div>   
+                <div className={styles.acco_item}>
+                    <label className={styles.acco_header} htmlFor="cbReserve">
+                        My Reservations
+                    </label>
+                    <input className={styles.acco_idc} type="checkbox" id="cbReserve" hidden/>
+                    <div className={styles.acco_content}>
+                        <Link className={styles.acco_button} to={""}>
+                            Restaurants
+                        </Link>
+                        <Link className={styles.acco_button} to={""}>
+                            Takeouts
+                        </Link>
+                        <Link className={styles.acco_button} to={""}>
+                            Menu Orders
+                        </Link>
+                    </div>
+                </div>             
                 <div className={styles.acco_item}>
                     <label className={styles.acco_header} htmlFor="cbReceipt">
                         Receipt
