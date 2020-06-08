@@ -5,11 +5,15 @@ import noImage from "../../../../types/noImage";
 import { useHistory } from 'react-router';
 import { endpoint, IMAGE_URL } from '../../../../config/url';
 import path from "path";
+import { useDispatch } from 'react-redux';
+import { fetchRestaurant } from '../../../../actions/main/restaurant/details';
 
-export const Restaurant = ({id, name, address, thumbnail, businessHour}) => {
+export const Restaurant = ({id, name, address, thumbnail}) => {
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const handleDetails = (e) => {
+        dispatch(fetchRestaurant(id));
         history.push(path.resolve(endpoint.restaurantDetail, id));
     }
 

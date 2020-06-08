@@ -69,7 +69,7 @@ app.use(express.static(joinPath(isProduction ? "dist" : "", "public")));
 app.use(serveFavicon(joinPath(isProduction ? "dist" : "", "public/favicon.ico")));
 
 app.get("*", async (req, res) => {            
-    const {store} = configureStore({url: req.url});                              
+    const {store} = configureStore({url: req.url});       
     loadBranchData(store, req.path).then(async () => {        
         const extractor = getExtractor();
         const context = {};                    

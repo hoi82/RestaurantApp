@@ -9,7 +9,7 @@ import share from "../../../../image/share.svg";
 import gm from "../../../../image/gps.svg";
 import noImage from '../../../../types/noImage';
 import { showDialog, closeDialog } from "../../../../actions/common/dialog";
-import { getFormattedTimeString, getDayName, isInTime, addFavorite, getRestaurantIsFavorite, removeFavorite } from '../utils';
+import { getFormattedTimeString, getDayName, isInTime } from '../utils';
 import ReactHtmlParser from "react-html-parser";
 import { IMAGE_URL, endpoint } from '../../../../config/url';
 import Reviews from './Reviews';
@@ -21,6 +21,8 @@ import GoogleMapReact from "google-map-react";
 import close from "../../../../image/close.svg";
 import marker from "../../../../image/marker.svg";
 import { DialogMode } from '../../../../types/Variables';
+import { fetchFavoritesIfNeed, removeFavorite, addFavorite, FAVORITES_FETCHED } from '../../../../actions/main/favorite/restaurant';
+import { fetchMenusIfNeed } from '../../../../actions/main/menu';
 
 function Marker({name}) {
     return (
@@ -33,17 +35,16 @@ function Marker({name}) {
 
 function Details() {   
     const details = useSelector((store) => store.main.restaurant.details); 
-    const reviews = useSelector((store) => store.main.restaurant.reviews);       
-    const [userfavorite, setUserFavorite] = useState(false);
-    const param = useParams();      
-    const dispatch = useDispatch();       
+    const reviews = useSelector((store) => store.main.restaurant.reviews);
+    const favorites = useSelector((store) => store.main.favorite.restaurant);
+    const param = useParams(); 
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchRestaurantIfNeed(param.id));                     
-        getRestaurantIsFavorite(param.id).then((res) => {
-            setUserFavorite(res);
-        })
-    }, []);         
+        dispatch(fetchRestaurantIfNeed(param.id));
+        dispatch(fetchFavoritesIfNeed());
+        dispatch(fetchMenusIfNeed(param.id));
+    }, []);      
 
     const handleDialog = (e) => {
         dispatch(closeDialog());
@@ -65,48 +66,34 @@ function Details() {
                 </button>
             </div>
         }))
-    };
+    };    
 
-    const getRatingAvg = (arr = []) => {
-        if (!arr || arr.length == 0)
-            return "?";
-
-        const result = arr.reduce((acc, cur, i) => {
-            return acc + cur.rating;
-        }, 0);
-
-        return (result / arr.length).toFixed(1);
+    const isFavorite = () => {        
+        return favorites.list.filter((v) => v.id == param.id).length > 0;
     }
 
     const handleFavorite = (e) => {
-        if (userfavorite) {
-            removeFavorite(param.id).then((res) => {
-                dispatch(showDialog({
-                    mode: DialogMode.SUCCESS,
-                    bgimg: false,
-                    content: "This restaurant is removed from your favorite list",
-                    onClose: () => {
-                        setUserFavorite(false);
-                    }
-                }))
-            })
+        if (isFavorite()) {
+            dispatch(removeFavorite(param.id)).then(() => {
+                if (favorites.status == FAVORITES_FETCHED) {
+                        dispatch(showDialog({
+                        mode: DialogMode.SUCCESS,
+                        bgimg: false,
+                        content: "This restaurant is removed from your favorite list",                        
+                    }));
+                }
+            });            
         }
         else {
-            addFavorite(param.id).then((res) => {            
-                dispatch(showDialog({
-                    mode: DialogMode.SUCCESS,
-                    bgimg: false,
-                    content: "Sucessfully added to your favorite list",
-                    onClose: () => {
-                        setUserFavorite(true);
-                    }
-                }));
-            }).catch((err) => {
-                dispatch(showDialog({
-                    mode: DialogMode.ALERT,
-                    content: err
-                }));
-            })
+            dispatch(addFavorite(param.id)).then(() => {
+                if (favorites.status == FAVORITES_FETCHED) {
+                    dispatch(showDialog({
+                        mode: DialogMode.SUCCESS,
+                        bgimg: false,
+                        content: "Sucessfully added to your favorite list",                        
+                    }));        
+                }
+            });            
         }        
     }
 
@@ -142,7 +129,7 @@ function Details() {
             <div className={styles.container}>
                 <div className={styles.name_panel}>
                     <span className={styles.name}>{details.name}</span>
-                    <img src={userfavorite ? removeFavIcon : addFavIcon} onClick={handleFavorite}/>
+                    <img src={isFavorite() ? removeFavIcon : addFavIcon} onClick={handleFavorite}/>
                     <img src={share}/>
                     <div className={styles.info_inner_panel}>
                         <span className={styles.address}>{getFullAddress(details.address)}</span>
@@ -168,7 +155,7 @@ function Details() {
                 <div className={styles.lower_container}>
                     <span className={styles.desc_title}>Description</span>
                     <p className={styles.desc}>{ReactHtmlParser(details.description)}</p>
-                    <Menus menus={details.menus}/>            
+                    <Menus restaurantID={param.id}/>            
                     <Reviews id={"review"} resid={param.id}/>
                 </div>
             </div>                         

@@ -15,34 +15,32 @@ export default (props) => {
                     </label>                    
                     <input className={styles.acco_idc} type="checkbox" id="cbRes" hidden/>
                     <div className={styles.acco_content}>
-                            <Link className={styles.acco_button} to="/">                                
-                                Top Related                                
-                            </Link>                            
-                            <Link className={styles.acco_button} to="/">                                
-                                Hot!                                
-                            </Link>  
-                            <Link className={styles.acco_button} to={endpoint.favoriteRestaurants}>
-                                Favorites
-                            </Link>                      
-                        <div className={styles.sub_acco}>
-                            <div className={styles.acco_item}>
-                                <label className={styles.acco_header} htmlFor="cbSearch">
-                                    Search
-                                </label>                                
-                                <input className={styles.acco_idc} type="checkbox" id="cbSearch" hidden/>
-                                <div className={styles.acco_content}>
-                                        <Link className={styles.acco_button} to={endpoint.searchRestaurantByName}>                                            
-                                            By Name
-                                        </Link>                                        
-                                        <Link className={styles.acco_button} to={endpoint.searchRestaurantByCategory}>                                            
-                                            By Category                                            
-                                        </Link>                                        
-                                        <Link className={styles.acco_button} to={endpoint.searchRestaurantByLocation}>                                            
-                                            By Location                                            
-                                        </Link>
-                                </div>
-                            </div>
-                        </div>                            
+                        <Link className={styles.acco_button} to="/">                                
+                            Top Related                                
+                        </Link>                            
+                        <Link className={styles.acco_button} to="/">                                
+                            Hot!                                
+                        </Link>  
+                        <Link className={styles.acco_button} to={endpoint.favoriteRestaurants}>
+                            Favorites
+                        </Link>                                              
+                    </div>
+                </div>
+                <div className={styles.acco_item}>
+                    <label className={styles.acco_header} htmlFor="cbSearch">
+                        Search
+                    </label>
+                    <input className={styles.acco_idc} type="checkbox" id="cbSearch" hidden/>
+                    <div className={styles.acco_content}>
+                        <Link className={styles.acco_button} to={endpoint.searchRestaurantByName}>
+                            By Name
+                        </Link>
+                        <Link className={styles.acco_button} to={endpoint.searchRestaurantByCategory}>
+                            By Category
+                        </Link>
+                        <Link className={styles.acco_button} to={endpoint.searchRestaurantByLocation}>
+                            By Location
+                        </Link>
                     </div>
                 </div>   
                 <div className={styles.acco_item}>

@@ -12,7 +12,7 @@ const initState = {
         remains: ""
     },    
     opens: {
-        timezone: 0,
+        timezone: "",
         time: [[],[],[],[],[],[],[]]
     },
     menus: [],

@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from "./Menus.module.scss";
 import plan from "../../../../image/plan.svg";
 import Menu from './Menu';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchMenusIfNeed } from '../../../../actions/main/menu';
 
-export default function Menus({menus = []}) {
+export default function Menus({restaurantID}) {
+    const menus = useSelector((store) => store.main.menu);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchMenusIfNeed(restaurantID);
+    }, []);
+
     const renderMenus = (menus) => {
         if (!menus || menus.length == 0)
             return null;
@@ -21,9 +30,9 @@ export default function Menus({menus = []}) {
     return (
         <React.Fragment>
             <span className={styles.menu_title}>Menus</span>                    
-            { menus && menus.length > 0 ? <div className={styles.menu_panel}>
+            { menus.list.length > 0 ? <div className={styles.menu_panel}>
                 <div className={styles.menu_inner_panel}>
-                    {renderMenus(menus)}
+                    {renderMenus(menus.list)}
                 </div>
             </div> 
             : <div className={styles.menu_noitem_panel}>

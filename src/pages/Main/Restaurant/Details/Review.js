@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import styles from "./Review.module.scss";
-import { fetchUserName, ISODateToString, deleteReview } from '../utils';
+import { ISODateToString, deleteReview } from '../utils';
 import Ratings from "react-ratings-declarative";
 import ReactHtmlParser from "react-html-parser";
 import menu from "../../../../image/menu.svg";

@@ -1,6 +1,6 @@
 import axios from "axios"
 import { axiosConfig } from "../../../config/url";
-import moment from "moment";
+import moment from "moment-timezone";
 
 const REVIEW_URL = "http://localhost:3005/api/restaurant/_ID/reviews";
 const USER_NAME_URL = "http://localhost:3005/api/user/_ID/name";
@@ -83,18 +83,20 @@ export const isInTime = (date) => {
     if (!date) return false;
     const now = new Date();
     const standard = new Date(new Date().setHours(0,0));    
-    const ocArr = date.time[now.getDay()];
+    const ocArr = date.time[now.getDay()];    
 
     for (let i = 0; i < ocArr.length; i++) {
-        const oc = ocArr[i];
-        const thereOpen = new Date(standard.getTime() + ((now.getTimezoneOffset() - date.timezone) * 60 * 1000) + (oc.open[0] * 1000 * 60 * 60) + (oc.open[1] * 1000 * 60));
-        const thereClose = new Date(standard.getTime() + ((now.getTimezoneOffset() - date.timezone) * 60 * 1000) + (oc.close[0] * 1000 * 60 * 60) + (oc.close[1] * 1000 * 60)); 
+        const oc = ocArr[i];        
+        const thereOpen = moment().tz(date.timezone).set({hour: oc.open.hour, minute: oc.open.minute}).unix();
+        const thereClose = moment().tz(date.timezone).set({hour: oc.close.hour, minute: oc.close.minute}).unix();                
         
-        const thereOpenTime = thereOpen.getHours() * 60 + thereOpen.getMinutes();
-        const thereCloseTime = thereClose.getHours() * 60 + thereClose.getMinutes();
-        const nowTime = now.getHours() * 60 + now.getMinutes();
+        const nowTime = moment().unix();
 
-        if (nowTime >= thereOpenTime && nowTime < thereCloseTime) {
+        // console.log("topen", thereOpen);
+        // console.log("now", nowTime);
+        // console.log("tclose", thereClose);
+
+        if (nowTime >= thereOpen && nowTime < thereClose) {            
             return true;
         }        
     }        

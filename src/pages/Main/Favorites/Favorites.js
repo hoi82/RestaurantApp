@@ -4,9 +4,10 @@ import styles from "./Favorites.module.scss";
 import { getFullAddress } from '../../../utils/getStrings';
 import { IMAGE_URL } from '../../../config/url';
 import noImage from '../../../types/noImage';
+import { fetchFavoritesIfNeed } from '../../../actions/main/favorite/restaurant';
+import { useDispatch, useSelector } from 'react-redux';
 
-const GridType = ({name, address, thumbnail}) => {    
-    console.log(address);
+const GridType = ({name, address, thumbnail}) => {        
     return (
         <div className={styles.item_grid}>
             <img src={thumbnail ? `${IMAGE_URL}/${thumbnail}` : noImage}/>
@@ -25,14 +26,12 @@ const ListType = ({}) => {
 }
 
 export default function Favorites({}) {
-    const [restaurants, setRestaurants] = useState([]);
     const [gridMode, setGridMode] = useState("Grid");
+    const restaurants = useSelector((store) => store.main.favorite.restaurant);    
+    const dispatch = useDispatch();    
     
-    useEffect(() => {
-        getFavoriteRestaurants().then((res) => {
-            setRestaurants(res);
-            console.log(res);
-        })
+    useEffect(() => {        
+        dispatch(fetchFavoritesIfNeed());
     }, []);
 
     const renderRestaurants = (restaurants = []) => (
@@ -59,7 +58,7 @@ export default function Favorites({}) {
                     </div>
                 </header>                
                 <div className={gridMode == "Grid" ? styles.grid_grid : styles.grid_list}>
-                    {renderRestaurants(restaurants)}
+                    {renderRestaurants(restaurants.list)}
                 </div>
             </div>                       
         </div>
