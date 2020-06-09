@@ -11,7 +11,7 @@ import { fetchReviewsIfNeed } from '../../../../actions/main/restaurant/reviews'
 export default function Reviews({id, resid}) {
     const reviews = useSelector((store) => store.main.restaurant.reviews);
     const [page, setPage] = useState(0);
-    const [pageLength, setPageLength] = useState(4);
+    const [pageLength, setPageLength] = useState(10);
     const dispatch = useDispatch();
     const param = useParams();
 
@@ -21,11 +21,16 @@ export default function Reviews({id, resid}) {
 
     const handleDelete = (id) => {
 
-    }
+    }    
 
     const renderReview = (item, i) => {
         return <Review key={i} {...item} onDelete={handleDelete}/>
     }    
+
+    const handlePageChange = (pageNumber) => {
+        setPage(pageNumber);
+        dispatch(fetchReviewsIfNeed(resid, pageNumber, pageLength));        
+    }
 
     return (
         <React.Fragment>
@@ -36,8 +41,8 @@ export default function Reviews({id, resid}) {
                 }                        
             </div>                                        
             { reviews.items.length > 0 ? <div style={{height: "auto", marginTop: "24px"}}>
-                <PanelGrid config={{lengthPerPage: pageLength}} 
-                items={reviews.items} itemRenderer={renderReview}/>
+                <PanelGrid config={{lengthPerPage: pageLength, fullLength: reviews.totalReviews, dynamicFetch: true}} 
+                items={reviews.items} itemRenderer={renderReview} onPageChange={handlePageChange}/>
             </div>
             : <div className={styles.review_noitem_panel}>
                 <div style={{display: "flex"}}>                            

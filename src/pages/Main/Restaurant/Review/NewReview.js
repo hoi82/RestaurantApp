@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NormalInput from "../../../../components/InputWithHeader/NormalInput";
 import Ratings from 'react-ratings-declarative';
 import styles from "./NewReview.module.scss";
-import { useParams, useHistory } from 'react-router';
+import { useParams, useHistory, useLocation } from 'react-router';
 import { getFullAddress } from '../../../../utils/getStrings';
 import { IMAGE_URL, endpoint } from '../../../../config/url';
 import { ErrorMessages } from '../../../../types/ErrorMessages';
@@ -11,7 +11,7 @@ import { showDialog } from "../../../../actions/common/dialog";
 import { DialogMode } from '../../../../types/Variables';
 import noImage from '../../../../types/noImage';
 import { fetchRestaurantIfNeed } from '../../../../actions/main/restaurant/details';
-import { updateRating, updateComment, updateTitle } from '../../../../actions/main/restaurant/review';
+import { updateRating, updateComment, updateTitle, uploadReview, REVIEW_UPLOADED, editReview } from '../../../../actions/main/restaurant/review';
 
 export default function NewReview() {       
     const review = useSelector((store) => store.main.restaurant.review);
@@ -20,6 +20,7 @@ export default function NewReview() {
     const [commentError, setCommentError] = useState("");
     const param = useParams();    
     const history = useHistory();
+    const location = useLocation();
     const dispatch = useDispatch();
     const restaurant = useSelector((store) => store.main.restaurant.details);
 
@@ -27,15 +28,15 @@ export default function NewReview() {
 
     useEffect(() => {        
         dispatch(fetchRestaurantIfNeed(param.resid));  
-    }, []);      
+    }, []);           
 
     useEffect(() => {
         if (forceUpdate) {
-            if (rating == 0) {
+            if (review.rating == 0) {
                 setRatingError(ErrorMessages.EMPTY_TEXT);
             }
 
-            if (comment.trim() == "") {
+            if (review.comment.trim() == "") {
                 setCommentError(ErrorMessages.EMPTY_TEXT);
             }
         }
@@ -71,48 +72,33 @@ export default function NewReview() {
         e.preventDefault();
         setForceUpdate(true);
         
-        if (validation()) {
-            // if (location.state) {                
-            //     editReview({
-            //         id: param.id,                     
-            //         resId: param.resId,
-            //         rating: rating,
-            //         title: title,
-            //         comment: comment                                 
-            //     }).then((res) => {
-            //         dispatch(showDialog({
-            //             mode: DialogMode.SUCCESS,
-            //             content: "수정되었습니다.",
-            //             onClose: () => {
-            //                 history.push(`${endpoint.restaurantDetail}/${param.resid}`);
-            //             }
-            //         }))
-            //     }).catch((err) => {
-            //         dispatch(showDialog({
-            //             content: "에러가 발생했습니다."
-            //         }))
-            //     });
-            // }
-            // else {
-            //     uploadReview({
-            //         resId: param.resid,
-            //         rating: rating, 
-            //         title: title,
-            //         comment: comment
-            //     }).then((res) => {
-            //         dispatch(showDialog({
-            //             mode: DialogMode.SUCCESS,
-            //             content: "등록되었습니다.",
-            //             onClose: () => {
-            //                 history.push(`${endpoint.restaurantDetail}/${param.resid}`);
-            //             }
-            //         }))
-            //     }).catch((err) => {
-            //         dispatch(showDialog({
-            //             content: "에러가 발생했습니다."
-            //         }))
-            //     });
-            // }          
+        if (validation()) {    
+            const action = location.pathname.split("/").pop();  
+            
+            if (action == "new") {
+                dispatch(uploadReview(param.resid)).then(() => {
+                    if (review.status == REVIEW_UPLOADED) {
+                        dispatch(showDialog({
+                            mode: DialogMode.SUCCESS,
+                            content: "등록되었습니다.",
+                            onClose: () => {
+                                history.push(`${endpoint.restaurantDetail}/${param.resid}`);
+                            }
+                        }))
+                    }
+                })
+            }
+            else if (action == "edit") {
+                dispatch(editReview()).then(() => {
+                    dispatch(showDialog({
+                        mode: DialogMode.SUCCESS,
+                        content: "수정되었습니다.",
+                        onClose: () => {
+                            history.push(`${endpoint.restaurantDetail}/${param.resid}`);
+                        }
+                    }))        
+                })
+            }                           
         }        
     }    
 

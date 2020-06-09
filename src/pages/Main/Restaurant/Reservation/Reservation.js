@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { fetchRestaurantThumbnail, fetchReservationInfo, createReservation } from '../utils';
 import { useParams, useHistory } from 'react-router';
 import { getFullAddress } from '../../../../utils/getStrings';
 import { IMAGE_URL, endpoint } from '../../../../config/url';
@@ -15,7 +14,7 @@ import { registerReservation, updateMember, updateTime, updateMessage } from '..
 import { fetchRestaurantIfNeed } from '../../../../actions/main/restaurant/details';
 
 export default function Reservation({}) {
-    const restaurant = useSelector((store) => store.main.details);    
+    const restaurant = useSelector((store) => store.main.restaurant.details);    
     const reservation = useSelector((store) => store.main.reservation);
     const [date, setDate] = useState(new Date());
     const dispatch = useDispatch();
@@ -24,7 +23,7 @@ export default function Reservation({}) {
 
     useEffect(() => {        
         dispatch(fetchRestaurantIfNeed(param.id));        
-    },[]);
+    },[]);    
 
     useEffect(() => {        
         
@@ -43,27 +42,14 @@ export default function Reservation({}) {
     }
 
     const handleTime = (sTime, eTime) => {         
-        if (sTime) {
-            const startSplit = sTime.split(":");            
-            
-            // setStart(new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(startSplit[0]), parseInt(startSplit[1])));
-        }
-        else {
-            // setStart(null);
-        }
-
-        if (eTime) {
-            // const endSplit = eTime.split(":");
-            // setEnd(new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(endSplit[0]), parseInt(endSplit[1])));
-        }
-        else {
-            // setEnd(null);
-        }
+        updateTime(sTime, eTime);
     }
 
     const handleMessage = (e) => {
         dispatch(updateMessage(e.target.value));
     }
+
+    console.log(restaurant);
 
     const handleSubmit = (e) => {                
         if (restaurant.reservation && restaurant.reservation.fee && restaurant.reservation.fee.value) {
@@ -84,6 +70,14 @@ export default function Reservation({}) {
         dispatch(registerReservation()).then(() => {
             
         })
+    }    
+
+    const getOpenTime = () => {
+        return {hour:8, minute: 0}
+    }
+
+    const getCloseTime = () => {
+        return {hour:20, minute: 0}
     }
 
     return (
@@ -101,8 +95,8 @@ export default function Reservation({}) {
                     <span className={styles.content_header}>Date</span>
                     <DatePicker date={date} onChange={handleDate}/>
                     <span className={styles.content_header}>Time</span>
-                    {/* <TimePicker startTime={null} intervalTime={null} endTime={null} 
-                    reservedTimes={null} onTimeChange={handleTime}/> */}
+                    <TimePicker startTime={getOpenTime()} endTime={getCloseTime()}
+                    reservedTimes={[]}  timezone={restaurant.opens.timezone} onTimeChange={handleTime}/>
                     <span className={styles.content_header}>Member</span>
                     <DropdownBox value={reservation.member} onChange={handleMember} items={[1,2,3,4,5,6,7,8]} width="160px"/>
                     <span className={styles.content_header}>Personal Message</span>

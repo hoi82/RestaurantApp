@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from "./style.scss";
 import prev from "../../image/left-arrow.svg";
 import next from "../../image/next.svg";
@@ -6,31 +6,51 @@ import first from "../../image/back.svg";
 import last from "../../image/skip.svg";
 
 const defaultConfig = {
+    dynamicFetch: false,
+    fullLength: 9,
     lengthPerPage: 9,    
     borderWidth: "32px",
     borderColor: "rgb(240,240,245)",
     gap: "16px"
 }
 
-export default ({items = [], itemRenderer, config = defaultConfig}) => {        
+export default ({items = [], itemRenderer, config = defaultConfig, onPageChange}) => {        
     const [pageNumber, setPageNumber] = useState(0);
-    const [itemLength, setItemLength] = useState(config.lengthPerPage || 0); 
+    const [itemLength, setItemLength] = useState(config.lengthPerPage || 0);     
     const panel = useRef();       
 
     const getRenderingItems = (items) => {
         if (itemLength) {
-            return items.slice(itemLength * pageNumber, itemLength * (pageNumber + 1)).map((item, i) => {
-                return itemRenderer(item, i);
-            });
-        }else {            
+            if (config.dynamicFetch) {
+                return items.map((item, i) => {
+                    return itemRenderer(item, i);
+                });
+            }
+            else {
+                return items.slice(itemLength * pageNumber, itemLength * (pageNumber + 1)).map((item, i) => {
+                    return itemRenderer(item, i);
+                });
+            }            
+        }else {                        
             return items.map((item, i) => {
                 return itemRenderer(item, i);
             });           
         }        
-    }    
+    }        
+
+    useEffect(() => {
+        if (typeof onPageChange == "function") {
+            onPageChange(pageNumber);
+        }
+    }, [pageNumber])
 
     const getNavigationButtonCount = () => {
-        return Math.min(10, (items.length % itemLength > 0 ? parseInt(items.length / itemLength) + 1 : parseInt(items.length / itemLength)));
+        if (config.dynamicFetch) {
+            return parseInt(config.fullLength / config.lengthPerPage) + 1;
+        }
+        else {
+            return Math.min(10, (items.length % itemLength > 0 ? parseInt(items.length / itemLength) + 1 : parseInt(items.length / itemLength)));
+        }        
     }
     
     const renderPageButtons = () => {        

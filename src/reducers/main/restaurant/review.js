@@ -2,6 +2,7 @@ import { FETCHING_REVIEW, READY_TO_FETCH_REVIEW, REVIEW_UPLOADED, REVIEW_EDITED,
 
 const initState = {
     status: READY_TO_FETCH_REVIEW,
+    id: "",
     resid: "",
     rating: 0,
     title: "",
@@ -61,6 +62,7 @@ export default (state = initState, action) => {
             return {
                 status: READY_TO_FETCH_REVIEW,
                 resid: payload.resid,
+                id: payload.id,
                 rating: payload.rating,
                 title: payload.title,
                 comment: payload.comment,

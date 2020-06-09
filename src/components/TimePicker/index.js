@@ -1,41 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import styles from "./styles.scss";
 import reload from "../../image/reload.svg";
+import moment from "moment-timezone";
 
-export default function TimePicker({startTime = "0:00", intervalTime = "1:00", endTime = "24:00", reservedTimes = [], display={maxWidth: "640px", height: "auto"}, onTimeChange}) {
+export default function TimePicker({startTime = {hour: 0, minute: 0}, intervalTime = {hour:1, minute: 0}, endTime = {hour: 24, minute: 0}, 
+    reservedTimes = [], timezone = "America/Havana", date= {year: 2010, month: 1, date: 1},
+    display={maxWidth: "640px", height: "auto"}, onTimeChange}) {
     const [start, setStart] = useState(null);
-    const [end, setEnd] = useState(null);
-    const [reservedTimesStr, setReservedTimeStr] = useState([]);
-
-    useEffect(() => {        
-        setReservedTimeStr(reservedTimes.map((res, i) => {            
-            if (res.start.split(":").length != 2) {
-                const sDate = new Date(res.start);
-                const sEnd = new Date(res.end);
-                return {
-                    start: `${sDate.getHours()}:${sDate.getMinutes()}`,
-                    end: `${sEnd.getHours()}:${sEnd.getMinutes()}`
-                }
-            } 
-            else {                
-                return res;
-            }
-        }));
-    },[reservedTimes]);
+    const [end, setEnd] = useState(null);    
 
     useEffect(() => {
         if (typeof onTimeChange == "function")
             onTimeChange(start, end);
-    }, [start, end]);
+        console.log("start", start);
+        console.log("end", end);
+    }, [start, end]);    
 
     const validatedSetStart = (time) => {
-        if (end && reservedTimesStr.filter((r, i) => {
-            return (timeStrToMilliSecond(r.start) <= timeStrToMilliSecond(time)) && (timeStrToMilliSecond(r.end) <= timeStrToMilliSecond(end));
+        if (end && reservedTimes.filter((r, i) => {
+            const rStart = moment(r.start);
+            const rEnd = moment(r.end);
+            return rStart.isSameOrBefore(time) && rEnd.isSameOrBefore(end);            
         }).length == 0) {
-            setStart(time);
+            setStart(moment(time).format());
         } 
         else if (!end) {
-            setStart(time);
+            setStart(moment(time).format());
         } 
         else {
             setStart(null);
@@ -43,74 +33,62 @@ export default function TimePicker({startTime = "0:00", intervalTime = "1:00", e
     }
 
     const validatedSetEnd = (time) => {
-        if (start && reservedTimesStr.filter((r, i) => {
-            return (timeStrToMilliSecond(r.start) >= timeStrToMilliSecond(start)) && (timeStrToMilliSecond(r.end) <= timeStrToMilliSecond(time));
+        if (start && reservedTimes.filter((r, i) => {
+            const rStart = moment(r.start);
+            const rEnd = moment(r.end);
+            return rStart.isSameOrAfter(start) && rEnd.isSameOrBefore(time);            
         }).length == 0) {            
-            setEnd(time);
+            setEnd(moment(time).format());
         } else if (!start) {
-            setEnd(time);
+            setEnd(moment(time).format());
         }
         else {            
             setEnd(null);
         }
-    }
-
-    const timeStrToTime = (time = "0:00") => {
-        const split = time.split(":");
-        return new Date(1970, 1, 1, split[0], split[1]);
-    }
-
-    const timeStrToMilliSecond = (time = "0:00") => {
-        const split = time.split(":");
-        return parseInt(split[0]) * 1000 * 60 * 60 + parseInt(split[1]) * 1000 * 60;
-    }
-
-    const intToTimeStr = (time) => {
-        const t = new Date(time);
-        return `${t.getHours() < 10 ? "0" + t.getHours() : t.getHours()}:${t.getMinutes() < 10 ? "0" + t.getMinutes() : t.getMinutes()}`;
-    }
+    }        
 
     const renderTimeTable = () => {        
-        const tables = [];
+        const tables = [];           
+        
+        const s = moment.tz(timezone).set({year: date.year, month: date.month - 1, date: date.date}).set(startTime).set({second: 0, millisecond: 0});
+        const e = moment.tz(timezone).set({year: date.year, month: date.month - 1, date: date.date}).set(endTime).set({second: 0, millisecond: 0});
 
-        const sTime = timeStrToTime(startTime);
-        const interval = timeStrToMilliSecond(intervalTime);
-        const eTime = timeStrToTime(endTime);
-
-        for (let i = sTime.getTime(); i <= eTime.getTime() ; i = i + interval) {            
-            tables.push(intToTimeStr(i));
-        }                
+        for (let i = s.valueOf();
+            i <= e.valueOf(); 
+            i = i + intervalTime.hour * 3600 * 1000 + intervalTime.minute * 60 * 1000) {                    
+            tables.push(moment(i));
+        }        
 
         return tables.map((time, i) => {
-            if (reservedTimesStr.filter((res, j) => {
-                        return (timeStrToMilliSecond(time) >= timeStrToMilliSecond(res.start)) 
-                            && (timeStrToMilliSecond(time) <= timeStrToMilliSecond(res.end))
-                    }).length == 0) {                
-                const className = time == start ? styles.start : (time == end ? styles.end : null);                
-                return <button className={className} key={i} onClick={handleTimeClick}>{time}</button>
+            if (reservedTimes.filter((res, j) => {
+                return time.isSameOrAfter(moment(res.start))
+                    && time.isSameOrBefore(moment(res.end))                
+            }).length > 0) {
+                return <button key={i} disabled>{time.locale(moment.locale()).format("HH:mm")}</button>                
             }
             else {
-                return <button key={i} disabled={true}>{time}</button>
-            }
-        })            
+                const className = time.isSame(start) ? styles.start : (time.isSame(end) ? styles.end : null);                
+                return <button className={className} key={i} data-value={time.valueOf()} onClick={handleTimeClick}>{time.tz(timezone).locale(moment.locale()).format("HH:mm")}</button>
+            }            
+        });        
     }
 
     const handleTimeClick = (e) => {
-        const selected = e.target.textContent;
+        const selected = moment(Number(e.target.dataset.value));        
         if (!start) {
-            if (selected == end) {
+            if (selected.isSame(end)) {
                 setEnd(null);
             }
             else {
                 validatedSetStart(selected);
             }            
         } else {
-            if (selected == start) {
+            if (selected.isSame(start)) {
                 setStart(null);
             }
             else {
                 if (!end) {
-                    if (timeStrToMilliSecond(selected) < timeStrToMilliSecond(start)) {
+                    if (selected.isBefore(start)) {
                         validatedSetEnd(start);
                         validatedSetStart(selected);
                     } 
@@ -119,11 +97,11 @@ export default function TimePicker({startTime = "0:00", intervalTime = "1:00", e
                     }                    
                 } 
                 else {
-                    if (selected == end) {
+                    if (selected.isSame(end)) {
                         setEnd(null);
                     }
                     else {                        
-                        if (timeStrToMilliSecond(selected) < timeStrToMilliSecond(start)) {
+                        if (selected.isBefore(start)) {
                             validatedSetEnd(start);
                             validatedSetStart(selected);
                         } 
@@ -144,9 +122,9 @@ export default function TimePicker({startTime = "0:00", intervalTime = "1:00", e
     return (
         <div className={styles.container} style={{maxWidth: display.maxWidth, height: display.height}}>
             <div className={styles.indicator}>
-                <span>{start ? start : "--:--"}</span>
+                <span>{start ? moment.tz(start, timezone).locale(moment.locale()).format("HH:mm") : "--:--"}</span>
                 <span> ~ </span>
-                <span>{end ? end : "--:--"}</span>
+                <span>{end ? moment.tz(end, timezone).locale(moment.locale()).format("HH:mm") : "--:--"}</span>
                 <img onClick={handleReset} src={reload} className={styles.reload}/>
             </div>            
             <div className={styles.time_table}>

@@ -68,7 +68,7 @@ export default [
                         exact: true
                     },
                     {
-                        path: path.resolve(endpoint.editReview, ":resid", ":id"),
+                        path: endpoint.editReview,
                         component: asyncNewReview,
                         exact: true
                     },

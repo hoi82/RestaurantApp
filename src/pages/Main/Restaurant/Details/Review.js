@@ -11,6 +11,7 @@ import { endpoint } from '../../../../config/url';
 import { showDialog } from "../../../../actions/common/dialog";
 import { DialogMode } from '../../../../types/Variables';
 import Popup from '../../../../components/Popup';
+import { setReview } from '../../../../actions/main/restaurant/review';
 
 function Review({id, rating, created, title, comment, userID, resID, userName, onDelete}) {
     const auth = useSelector((store) => store.auth);    
@@ -46,6 +47,18 @@ function Review({id, rating, created, title, comment, userID, resID, userName, o
     const injectCR = (str = "") => {        
         return str.replace(/[\r\n]/g, "<br>");
     }    
+
+    const handleEdit = (e) => {
+        dispatch(setReview({
+            id: id,
+            resid: resID,
+            rating: rating,
+            title: title,
+            comment: comment
+        })).then(() => {
+            history.push(endpoint.editReview.replace(":resid", resID));
+        });
+    }
 
     const handleRemove = (e) => {
         setContextOpen(false);
@@ -98,7 +111,7 @@ function Review({id, rating, created, title, comment, userID, resID, userName, o
             <Popup triggerID={btnID} position={{top: "24px", right: "64px"}}>
                 <div className={styles.menu}>
                     {auth.id == userID ? <React.Fragment>
-                        <Link to={{pathname: `${endpoint.editReview}/${resID}/${id}`}}>Edit</Link>
+                        <button onClick={handleEdit}>Edit</button>
                         <button onClick={handleRemove}>Remove</button>
                     </React.Fragment> : null }
                     <button>Send a message to reviewer</button>

@@ -18,12 +18,13 @@ export const uploadReview = (restaurantID) => (dispatch, getState) => {
     const { review } = getState().main.restaurant;        
 
     dispatch({type: FETCHING_REVIEW});
-    return axios.patch(REVIEW_URL, {
+    return axios.post(REVIEW_URL, {
         resId: restaurantID,
         rating: review.rating,
         title: review.title,
         comment: review.comment
     }, axiosConfig).then((res) => {
+        console.log(res);
         dispatch({type: REVIEW_UPLOADED});
     }).catch((err) => {
         dispatch({type: REVIEW_FETCH_FAILED, payload: err});
@@ -31,8 +32,9 @@ export const uploadReview = (restaurantID) => (dispatch, getState) => {
 }
 
 export const editReview = () => (dispatch, getState) => {
-    return axios.post(REVIEW_URL, {
-        resId: review.resid,
+    const { review } = getState().main.restaurant;
+
+    return axios.put(`${REVIEW_URL}/${review.id}`, {        
         rating: review.rating,
         title: review.title,
         comment: review.comment
@@ -47,8 +49,17 @@ export const initReview = () => {
     return {type: RESET_REVIEW};
 }
 
-export const setReview = (review) => {
-    return {type: SET_REVIEW, payload: review};
+export const setReview = (review = {
+    resid: "",
+    id: "",
+    rating: 0,
+    title: "",
+    comment: "",
+}) => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        dispatch({type: SET_REVIEW, payload: review});
+        resolve(null);
+    }); 
 }
 
 export const updateRating = (value) => {
