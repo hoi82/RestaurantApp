@@ -23,8 +23,7 @@ export const uploadReview = (restaurantID) => (dispatch, getState) => {
         rating: review.rating,
         title: review.title,
         comment: review.comment
-    }, axiosConfig).then((res) => {
-        console.log(res);
+    }, axiosConfig).then((res) => {        
         dispatch({type: REVIEW_UPLOADED});
     }).catch((err) => {
         dispatch({type: REVIEW_FETCH_FAILED, payload: err});

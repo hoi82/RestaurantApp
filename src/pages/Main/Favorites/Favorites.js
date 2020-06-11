@@ -1,32 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { getFavoriteRestaurants } from '../Restaurant/utils';
+import React, { useEffect } from 'react';
 import styles from "./Favorites.module.scss";
 import { getFullAddress } from '../../../utils/getStrings';
-import { IMAGE_URL } from '../../../config/url';
+import { IMAGE_URL, endpoint } from '../../../config/url';
 import noImage from '../../../types/noImage';
 import { fetchFavoritesIfNeed } from '../../../actions/main/favorite/restaurant';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import PanelGrid from '../../../components/PanelGrid';
+import { fetchRestaurant } from '../../../actions/main/restaurant/details';
+import StyledCheckBox from "../../../components/StyledCheckBox";
 
-const GridType = ({name, address, thumbnail}) => {        
+const Restaurant = ({id, name, address, thumbnail}) => {
+    const history = useHistory();
+    const dispatch = useDispatch();
+
+    const handleDetails = (e) => {
+        dispatch(fetchRestaurant(id));
+        history.push(`${endpoint.restaurantDetail}/${id}`);
+    }
+
     return (
-        <div className={styles.item_grid}>
-            <img src={thumbnail ? `${IMAGE_URL}/${thumbnail}` : noImage}/>
-            <div>{name}</div>
-            <div>{getFullAddress(address)}</div>
+        <div className={styles.restaurant}>
+            <img className={styles.thumb} src={thumbnail ? `${IMAGE_URL}/${thumbnail}` :  noImage}/>
+            <div className={styles.content_panel}>                                   
+                <span className={styles.name}>{name}</span>                
+                <span>{getFullAddress(address)}</span>                
+            </div>    
+            <StyledCheckBox/>      
         </div>
     )
-}
+};
 
-const ListType = ({}) => {
-    return (
-        <div>
-            list
-        </div>
-    )
-}
-
-export default function Favorites({}) {
-    const [gridMode, setGridMode] = useState("Grid");
+export default function Favorites({}) {    
     const restaurants = useSelector((store) => store.main.favorite.restaurant);    
     const dispatch = useDispatch();    
     
@@ -34,16 +39,9 @@ export default function Favorites({}) {
         dispatch(fetchFavoritesIfNeed());
     }, []);
 
-    const renderRestaurants = (restaurants = []) => (
-        restaurants.map((res, i) => {
-            if (gridMode == "Grid") {
-                return <GridType key={i} {...res}/>
-            }
-            else {
-                return <ListType key={i} {...res}/>
-            }
-        })
-    )
+    const renderRestaurant = (item, key) => {
+        return <Restaurant {...item} key={key}/>;
+    }
 
     return (
         <div className={styles.container}> 
@@ -57,8 +55,8 @@ export default function Favorites({}) {
                         <img/>
                     </div>
                 </header>                
-                <div className={gridMode == "Grid" ? styles.grid_grid : styles.grid_list}>
-                    {renderRestaurants(restaurants.list)}
+                <div className={styles.grid_list}>
+                <PanelGrid items={restaurants.list} itemRenderer={renderRestaurant} config={{lengthPerPage: 10, gap: "16px"}}/>
                 </div>
             </div>                       
         </div>

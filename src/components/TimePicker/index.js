@@ -3,32 +3,24 @@ import styles from "./styles.scss";
 import reload from "../../image/reload.svg";
 import moment from "moment-timezone";
 
-export default function TimePicker({startTime = {hour: 0, minute: 0}, intervalTime = {hour:1, minute: 0}, endTime = {hour: 24, minute: 0}, 
-    reservedTimes = [], timezone = "America/Havana", date= {year: 2010, month: 1, date: 1},
-    display={maxWidth: "640px", height: "auto"}, onTimeChange}) {
-    const [start, setStart] = useState(null);
-    const [end, setEnd] = useState(null);    
-
-    useEffect(() => {
-        if (typeof onTimeChange == "function")
-            onTimeChange(start, end);
-        console.log("start", start);
-        console.log("end", end);
-    }, [start, end]);    
+export default function TimePicker({begin = "", interval = {hour:1, minute: 0}, close = "",
+    start="", end="",
+    reservedTimes = [], timezone = "America/Havana",
+    display={maxWidth: "640px", height: "auto"}, onTimeChange}) {        
 
     const validatedSetStart = (time) => {
-        if (end && reservedTimes.filter((r, i) => {
+        if (close && reservedTimes.filter((r, i) => {
             const rStart = moment(r.start);
             const rEnd = moment(r.end);
             return rStart.isSameOrBefore(time) && rEnd.isSameOrBefore(end);            
         }).length == 0) {
-            setStart(moment(time).format());
+            onTimeChange(moment(time).format(), end);
         } 
-        else if (!end) {
-            setStart(moment(time).format());
+        else if (!close) {
+            onTimeChange(moment(time).format(), end);
         } 
         else {
-            setStart(null);
+            onTimeChange(null, end);
         }
     }
 
@@ -38,37 +30,51 @@ export default function TimePicker({startTime = {hour: 0, minute: 0}, intervalTi
             const rEnd = moment(r.end);
             return rStart.isSameOrAfter(start) && rEnd.isSameOrBefore(time);            
         }).length == 0) {            
-            setEnd(moment(time).format());
+            onTimeChange(start, (moment(time).format()));
         } else if (!start) {
-            setEnd(moment(time).format());
+            onTimeChange(start, moment(time).format());
         }
         else {            
-            setEnd(null);
+            onTimeChange(start, null);
         }
     }        
 
-    const renderTimeTable = () => {        
+    const fillAllEmpty = () => {
+        const arr = [];
+        for (let i = 0; i < 25; i++) {            
+            arr.push(
+                <button key={i} disabled>{moment({hour: i, minute: 0}).format("HH:mm")}</button>
+            )
+        }
+
+        return arr;
+    }
+
+    const renderTimeTable = () => {
+        if (begin == null || close == null) 
+            return fillAllEmpty();
+
         const tables = [];           
         
-        const s = moment.tz(timezone).set({year: date.year, month: date.month - 1, date: date.date}).set(startTime).set({second: 0, millisecond: 0});
-        const e = moment.tz(timezone).set({year: date.year, month: date.month - 1, date: date.date}).set(endTime).set({second: 0, millisecond: 0});
+        const s = moment(begin).set({second: 0, millisecond: 0});
+        const e = moment(close).set({second: 0, millisecond: 0});
 
         for (let i = s.valueOf();
             i <= e.valueOf(); 
-            i = i + intervalTime.hour * 3600 * 1000 + intervalTime.minute * 60 * 1000) {                    
+            i = i + interval.hour * 3600 * 1000 + interval.minute * 60 * 1000) {                    
             tables.push(moment(i));
         }        
 
         return tables.map((time, i) => {
             if (reservedTimes.filter((res, j) => {
-                return time.isSameOrAfter(moment(res.start))
-                    && time.isSameOrBefore(moment(res.end))                
+                return time.isBetween(moment(res.start), moment(res.end), undefined, "[]");                
             }).length > 0) {
                 return <button key={i} disabled>{time.locale(moment.locale()).format("HH:mm")}</button>                
             }
-            else {
-                const className = time.isSame(start) ? styles.start : (time.isSame(end) ? styles.end : null);                
-                return <button className={className} key={i} data-value={time.valueOf()} onClick={handleTimeClick}>{time.tz(timezone).locale(moment.locale()).format("HH:mm")}</button>
+            else {                
+                const className = time.isSame(start) ? styles.start : (time.isSame(end) ? styles.end : null);
+                timezone ? time.tz(timezone) : null;
+                return <button className={className} key={i} data-value={time.valueOf()} onClick={handleTimeClick}>{time.locale(moment.locale()).format("HH:mm")}</button>
             }            
         });        
     }
@@ -77,17 +83,17 @@ export default function TimePicker({startTime = {hour: 0, minute: 0}, intervalTi
         const selected = moment(Number(e.target.dataset.value));        
         if (!start) {
             if (selected.isSame(end)) {
-                setEnd(null);
+                onTimeChange(start, null);
             }
             else {
                 validatedSetStart(selected);
             }            
         } else {
             if (selected.isSame(start)) {
-                setStart(null);
+                onTimeChange(null, end);
             }
             else {
-                if (!end) {
+                if (!close) {
                     if (selected.isBefore(start)) {
                         validatedSetEnd(start);
                         validatedSetStart(selected);
@@ -98,7 +104,7 @@ export default function TimePicker({startTime = {hour: 0, minute: 0}, intervalTi
                 } 
                 else {
                     if (selected.isSame(end)) {
-                        setEnd(null);
+                        onTimeChange(start, null);
                     }
                     else {                        
                         if (selected.isBefore(start)) {
@@ -115,16 +121,15 @@ export default function TimePicker({startTime = {hour: 0, minute: 0}, intervalTi
     }
 
     const handleReset = () => {
-        setStart(null);
-        setEnd(null);
-    }
+        onTimeChange(null, null);
+    }    
 
     return (
         <div className={styles.container} style={{maxWidth: display.maxWidth, height: display.height}}>
             <div className={styles.indicator}>
-                <span>{start ? moment.tz(start, timezone).locale(moment.locale()).format("HH:mm") : "--:--"}</span>
+                <span>{start ? moment(start).tz(timezone).locale(moment.locale()).format("HH:mm") : "--:--"}</span>
                 <span> ~ </span>
-                <span>{end ? moment.tz(end, timezone).locale(moment.locale()).format("HH:mm") : "--:--"}</span>
+                <span>{end ? moment(end).tz(timezone).locale(moment.locale()).format("HH:mm") : "--:--"}</span>
                 <img onClick={handleReset} src={reload} className={styles.reload}/>
             </div>            
             <div className={styles.time_table}>

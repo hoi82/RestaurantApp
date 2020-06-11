@@ -91,7 +91,7 @@ app.get("*", async (req, res) => {
         const htmlString = getHtmlString(linkTags, styleTags, content, scriptTags);            
         res.send(htmlString);
     }).catch(err => {
-        console.log(`😱 Rendering Error: ${err}`);
+        console.log(`😱 Rendering Error: ${err.stack}`);
     });     
 });
 

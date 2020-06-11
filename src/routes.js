@@ -11,7 +11,7 @@ import { asyncNewReview } from "./pages/Main/Restaurant/Review";
 import { asyncReservation } from "./pages/Main/Restaurant/Reservation";
 import { asyncReservationResult } from "./pages/Main/Restaurant/ReservationResult";
 import { asyncTakeout } from "./pages/Main/Restaurant/Takeout";
-import { asyncFavorites } from "./pages/Main/Favorites";
+import { asyncFavoriteRestaurants } from "./pages/Main/Favorites";
 
 export default [
     {
@@ -89,7 +89,7 @@ export default [
                     },
                     {
                         path: endpoint.favoriteRestaurants,
-                        component: asyncFavorites,
+                        component: asyncFavoriteRestaurants,
                         exact: true
                     }
                 ]

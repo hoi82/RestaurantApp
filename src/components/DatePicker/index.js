@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import styles from "./style.scss";
 import Popup from '../Popup';
 import Calendar from 'react-calendar';
+import moment from "moment";
 
 function DatePicker({date, onChange}) {    
     const [btnID, setBtnID] = useState(`datepic${new Date().getTime()}`);    
@@ -10,7 +11,7 @@ function DatePicker({date, onChange}) {
     const handleDateChange = (value) => {        
         onChange(value);
         btnRef.current.click();
-    }
+    }    
 
     return (
         <div className={styles.datepicker}>

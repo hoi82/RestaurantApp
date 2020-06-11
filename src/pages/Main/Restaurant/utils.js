@@ -90,11 +90,7 @@ export const isInTime = (date) => {
         const thereOpen = moment().tz(date.timezone).set({hour: oc.open.hour, minute: oc.open.minute}).unix();
         const thereClose = moment().tz(date.timezone).set({hour: oc.close.hour, minute: oc.close.minute}).unix();                
         
-        const nowTime = moment().unix();
-
-        // console.log("topen", thereOpen);
-        // console.log("now", nowTime);
-        // console.log("tclose", thereClose);
+        const nowTime = moment().unix();        
 
         if (nowTime >= thereOpen && nowTime < thereClose) {            
             return true;

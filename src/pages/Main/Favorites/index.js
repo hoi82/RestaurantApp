@@ -3,6 +3,6 @@ import loadable from "@loadable/component";
 
 const Favorites = loadable(() => import("./Favorites"));
 
-export const asyncFavorites = (props) => (
+export const asyncFavoriteRestaurants = (props) => (
     <Favorites {...props}/>
 )
