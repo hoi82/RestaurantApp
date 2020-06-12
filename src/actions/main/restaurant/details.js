@@ -9,19 +9,19 @@ export const FAIL_TO_LOAD_RESTAURANT = "FAIL_TO_LOAD_RESTAURANT";
 const RESTAURANT_DETAIL_URL = "http://localhost:3005/api/restaurant";
 
 export const fetchRestaurantIfNeed = (id) => ((dispatch, getState) => {
-    if (shouldFetch(getState)) {        
+    if (shouldFetch(getState, id)) {            
         return dispatch(fetchRestaurant(id));
     }
 
     return null;
 });
 
-const shouldFetch = (getState) => {
+const shouldFetch = (getState, id) => {
     const {main} = getState();    
-    return main.restaurant.details.status == READY_TO_LOAD_RESTAURANT;
+    return main.restaurant.details.status == READY_TO_LOAD_RESTAURANT || main.restaurant.details.id != id;
 };
 
-export const fetchRestaurant = (id) => {
+export const fetchRestaurant = (id) => {    
     return (dispatch) => {
         dispatch({type: LOADING_RESTAURANT});
         return axios.get(`${RESTAURANT_DETAIL_URL}/${id}`, axiosConfig).then((res) => {

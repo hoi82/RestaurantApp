@@ -7,9 +7,16 @@ import moment from "moment";
 function DatePicker({date, onChange}) {    
     const [btnID, setBtnID] = useState(`datepic${new Date().getTime()}`);    
     const btnRef = useRef();
+
+    const isSame = (date1 = new Date(), date2 = new Date()) => {
+        return (date1.getFullYear() == date2.getFullYear()) && (date1.getMonth() == date2.getMonth()) && (date1.getDate() == date2.getDate());
+    }
     
-    const handleDateChange = (value) => {        
-        onChange(value);
+    const handleDateChange = (value) => {  
+        if (!isSame(value, date)) {
+            onChange(value);        
+        }
+
         btnRef.current.click();
     }    
 

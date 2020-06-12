@@ -1,35 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router';
+import { useParams } from 'react-router';
 import { getFullAddress } from '../../../../utils/getStrings';
-import { IMAGE_URL, endpoint } from '../../../../config/url';
+import { IMAGE_URL } from '../../../../config/url';
 import styles from "./Reservation.module.scss";
 import DatePicker from "../../../../components/DatePicker";
 import TimePicker from "../../../../components/TimePicker";
 import DropdownBox from '../../../../components/DropdownBox';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showDialog } from "../../../../actions/common/dialog";
 import { DialogMode } from '../../../../types/Variables';
 import moment from "moment-timezone";
-import { registerReservation, updateMember, updateTime, updateMessage, fetchReservationIfNeed, RESERVATION_COMPLETE, fetchReservation } from '../../../../actions/main/reservation';
-import { fetchRestaurantIfNeed } from '../../../../actions/main/restaurant/details';
+import { registerReservation, updateMember, updateTime, updateMessage } from '../../../../actions/main/reservation';
+import { fetchRestaurantIfNeed, LOADED_RESTAURANT } from '../../../../actions/main/restaurant/details';
+import { fetchReservationInfo } from '../utils';
 
 export default function Reservation({}) {
     const restaurant = useSelector((store) => store.main.restaurant.details);    
     const reservation = useSelector((store) => store.main.reservation);
     const [calculatedReserves, setCalculatedReserves] = useState([]);
-    const dispatch = useDispatch();
-    const history = useHistory();
+    const [date, setDate] = useState(new Date());
+    const dispatch = useDispatch();    
     const param = useParams();
 
     useEffect(() => {        
-        dispatch(fetchRestaurantIfNeed(param.id));
-        dispatch(fetchReservation(param.id, reservation.date));        
-    },[]);
+        dispatch(fetchRestaurantIfNeed(param.id));        
+    },[]);    
 
-    useEffect(() => {
-        console.log("changed\r\n:", reservation);
-        setCalculatedReserves(calculateReserved());
-    }, [reservation]);    
+    useEffect(() => {                        
+        fetchReservationInfo(param.id, date).then((res) => {            
+            setCalculatedReserves(calculateReserved(res));
+        });
+          
+    }, [restaurant.status == LOADED_RESTAURANT && date]);
+
+    
 
     const handleForm = (e) => {
         e.preventDefault();        
@@ -39,13 +43,12 @@ export default function Reservation({}) {
         dispatch(updateMember(value));
     } 
     
-    const handleDate = (value) => {                
-        dispatch(updateTime({start: null, end: null}));
-        dispatch(fetchReservationIfNeed(param.id, value));        
+    const handleDate = (value) => {
+        setDate(value);        
     }
 
-    const handleTime = (sTime, eTime) => {        
-        dispatch(updateTime({start: sTime, end: eTime}));          
+    const handleTime = (sTime, eTime) => {
+        dispatch(updateTime({start: sTime, end: eTime}));
     }
 
     const handleMessage = (e) => {
@@ -60,8 +63,7 @@ export default function Reservation({}) {
                 buttons: false,
                 content: "The cancellation fee will be paid.\r\nDo you want to continue reservation?",
                 onConfirm: requestReservation
-            }))
-            // requestReservation();
+            }))            
         } 
         else {
             requestReservation();
@@ -69,15 +71,11 @@ export default function Reservation({}) {
     } 
     
     const requestReservation = () => {        
-        dispatch(registerReservation((state, payload) => {  
-            if (state == RESERVATION_COMPLETE) {
-                history.push(`${endpoint.restaurantReservationResult}/${payload}`);
-            }
-        }));        
+        dispatch(registerReservation());        
     }    
 
     const getDateMoment = () => {
-        return restaurant.opens.timezone ? moment.tz(reservation.date, restaurant.opens.timezone) : moment(reservation.date);
+        return restaurant.opens.timezone ? moment.tz(date, restaurant.opens.timezone) : moment(date);
     }
 
     const getOpenTime = () => {        
@@ -109,8 +107,7 @@ export default function Reservation({}) {
         }) || [];
     }
 
-    const calculateReserved = () => {
-        const reservations = reservation.reserved;
+    const calculateReserved = (reservations = []) => {        
         const schedule = getRestaurantSchedule();        
         
         const result = [];        
@@ -121,7 +118,7 @@ export default function Reservation({}) {
                 start: moment(reservation.start).format(), 
                 end: moment(reservation.end).format()
             });
-        });                
+        });             
 
         //Fill with Restaurant's Rest Time
         for (let i = 1; i < schedule.length; i++) {            
@@ -138,14 +135,21 @@ export default function Reservation({}) {
         //Fill with the gap between Current Time and Restaurant Open
         if (schedule.length > 0) {            
             const now = moment();
-            const open = moment.tz(restaurant.opens.timezone).set(schedule[0].open).set({second: 0, millisecond: 0});
+            const open = moment.tz(restaurant.opens.timezone).set({
+                year: date.getFullYear(),
+                month: date.getMonth(),
+                date: date.getDate()
+            }).set(schedule[0].open).set({
+                second: 0, 
+                millisecond: 0
+            });
             if (open.isBefore(now)) {
                 result.push({
                     start: open.format(),
                     end: now.format()
                 })
             }
-        }
+        }                
 
         return result;
     }    
@@ -163,7 +167,7 @@ export default function Reservation({}) {
                 </header>    
                 <div className={styles.info_panel}>                    
                     <span className={styles.content_header}>Date</span>
-                    <DatePicker date={reservation.date} onChange={handleDate}/>
+                    <DatePicker date={date} onChange={handleDate}/>
                     <span className={styles.content_header}>Time</span>
                     <TimePicker begin={getOpenTime()} close={getCloseTime()} start={reservation.start} end={reservation.end}
                     reservedTimes={calculatedReserves} timezone={restaurant.opens.timezone} onTimeChange={handleTime}/>

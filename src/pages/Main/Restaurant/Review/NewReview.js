@@ -109,7 +109,7 @@ export default function NewReview() {
     return (
         <div className={styles.newreview}>
             <form className={styles.container} onSubmit={handleSubmit}>
-                {/* <span className={styles.main_title}>New Review</span> */}
+                <span className={styles.main_title}>Review</span>
                 <header className={styles.res_profile}>
                     <img src={restaurant.thumbnail ? `${IMAGE_URL}/${restaurant.thumbnail}` : noImage}/>
                     <div>
@@ -117,7 +117,7 @@ export default function NewReview() {
                         <span className={styles.address}>{getFullAddress(restaurant.address)}</span>
                     </div>
                 </header>
-                <div>
+                <div>                
                     <div style={{display: "flex", marginBottom: "8px"}}>
                         <span className={styles.comment_title}>평가</span>
                         <span className={styles.error_title}>{ratingError}</span>
@@ -140,7 +140,7 @@ export default function NewReview() {
                     <NormalInput header="제목" value={review.title} onChange={handleTitleChange} forceUpdate={forceUpdate}/>
                 </div> 
                 <div className={styles.comment_box}>
-                    <div className={styles.comment_container}>
+                    <div className={styles.comment_container}>                        
                         <div style={{display: "flex"}}>
                             <span className={styles.comment_title}>내용</span>
                             <span className={styles.error_title}>{commentError}</span>

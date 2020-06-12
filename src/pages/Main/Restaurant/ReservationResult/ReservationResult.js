@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
-import { fetchReservation, fetchRestaurantThumbnail } from '../utils';
+import { fetchReservation } from '../utils';
 import { getFullAddress } from '../../../../utils/getStrings';
 import styles from "./ReservationResult.module.scss";
 import { endpoint } from '../../../../config/url';
-import share from "../../../../image/share.svg";
 
-export default function ReservationResult({}) {
+export default function ReservationResult({}) {    
     const histroy = useHistory();
     const param = useParams();
-    const [resInfo, setResInfo] = useState({});
-    const [restaurantThumbnail, setRestaurantThumbnail] = useState({});    
+    const [resInfo, setResInfo] = useState({});    
 
-    useEffect(() => {
-        fetchReservation(param.id).then((reservation) => {            
-            setResInfo(reservation);
-            fetchRestaurantThumbnail(reservation.resid).then((res) => {
-                setRestaurantThumbnail(res);                
-            }).catch((err) => {
-                console.log(err);
-            })
+    useEffect(() => {        
+        fetchReservation(param.id).then((reservation) => {                        
+            setResInfo(reservation);            
         }).catch((err) => {
             console.log(err);
         })
-    },[]);
+    },[]);    
 
     const handleExit = (e) => {
         histroy.replace(`${endpoint.restaurantDetail}/${restaurantThumbnail.id}`);
@@ -37,8 +30,8 @@ export default function ReservationResult({}) {
                 </div>            
                 <div className={styles.content_box}>
                     <span className={styles.title}>Restaurant</span>
-                    <span className={styles.res_name}>{restaurantThumbnail.name}</span>
-                    <span className={styles.content}>{getFullAddress(restaurantThumbnail.address)}</span>
+                    <span className={styles.res_name}>{resInfo.resname}</span>
+                    <span className={styles.content}>{getFullAddress(resInfo.resaddress)}</span>
                 </div>
                 <div className={styles.content_box}>
                     <span className={styles.title}>Reservation Info</span>

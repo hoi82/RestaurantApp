@@ -6,11 +6,7 @@
     padding: 72px;    
 
     .container {
-        @include relative(100%);
-
-        // & > *:not(:first-child) {
-        //     margin-top: 36px;
-        // }
+        @include relative(100%);        
 
         .main_title {
             font-size: 24px;
@@ -156,7 +152,8 @@
         }
 
         .submit_btn {
-            @include content_medium_button(160px);                
+            @include content_medium_button(160px);   
+            border: none;             
         }
     }
 }

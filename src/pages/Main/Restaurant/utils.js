@@ -141,7 +141,7 @@ export const deleteReview = (id) => {
 
 export const fetchReservationInfo = (resid, date) => {    
     return new Promise((resolve, reject) => {                
-        axios.get(`${RESERVATION_URL}/${resid}/${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`, 
+        axios.get(`${RESERVATION_URL}/${resid}/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`, 
         axiosConfig).then((res) => {
             resolve(res.data);
         }).catch((err) => {

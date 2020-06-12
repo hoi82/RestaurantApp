@@ -58,14 +58,14 @@
     .thumb {
         @include set_size(160px, 200px);
         object-fit: cover;    
-        border-radius: 3px;
+        border-radius: 5px;
         background-color: $grade2-bg-color;
     }
 
     .content_panel {
         @include column_flex(center, flex-start);        
-        @include set_size(calc(100% - 236px));
-        margin-left: 24px;
+        @include set_size(calc(100% - 268px));
+        margin-left: 36px;
         
         .name {            
             color: $deep-title-color;
@@ -100,6 +100,17 @@
         }
         
     }  
+
+    .menu {
+        // @include absolute(16px, 16px, auto, auto);
+        @include set_size(24px, 24px);
+        cursor: pointer;
+        user-select: none;
+        background-color: $grade2-bg-color;
+        border-radius: 3px;
+        padding: 4px;
+        margin-left: 8px;
+    }  
     
     &::after {
         position: relative;
@@ -111,4 +122,18 @@
         margin-top: 12px;
         align-items: baseline;
     }
+
+    .menu_panel {        
+        @include column_flex(center, center);
+
+        button, a {
+            @include content_small_btn(200px);
+            text-align: center;
+            text-decoration: none;
+
+            &:not(:first-child) {
+                margin-top: 8px;
+            }
+        }
+    }      
 }

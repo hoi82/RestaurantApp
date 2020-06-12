@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from "./Favorites.module.scss";
 import { getFullAddress } from '../../../utils/getStrings';
 import { IMAGE_URL, endpoint } from '../../../config/url';
@@ -7,15 +7,19 @@ import { fetchFavoritesIfNeed } from '../../../actions/main/favorite/restaurant'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import PanelGrid from '../../../components/PanelGrid';
-import { fetchRestaurant } from '../../../actions/main/restaurant/details';
+import { fetchRestaurantIfNeed } from '../../../actions/main/restaurant/details';
 import StyledCheckBox from "../../../components/StyledCheckBox";
+import menu from "../../../image/menu.svg";
+import Popup from '../../../components/Popup';
+import { Link } from 'react-router-dom';
 
 const Restaurant = ({id, name, address, thumbnail}) => {
     const history = useHistory();
     const dispatch = useDispatch();
+    const [btnID, setBtnID] = useState(`review${new Date().getTime()}`);
 
     const handleDetails = (e) => {
-        dispatch(fetchRestaurant(id));
+        dispatch(fetchRestaurantIfNeed(id));
         history.push(`${endpoint.restaurantDetail}/${id}`);
     }
 
@@ -25,8 +29,17 @@ const Restaurant = ({id, name, address, thumbnail}) => {
             <div className={styles.content_panel}>                                   
                 <span className={styles.name}>{name}</span>                
                 <span>{getFullAddress(address)}</span>                
-            </div>    
-            <StyledCheckBox/>      
+            </div>               
+            <StyledCheckBox/>
+            <img className={styles.menu} src={menu} id={btnID}/>
+            <Popup triggerID={btnID} position={{top: "16px", right: "64px"}}>
+                <div className={styles.menu_panel}>
+                    <button>Remove</button>
+                    <Link to={`${endpoint.restaurantDetail}/${id}`}>Details</Link>
+                    <button>Reservation</button>
+                    <button>Take Out</button>
+                </div>
+            </Popup>
         </div>
     )
 };
