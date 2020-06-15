@@ -10,6 +10,9 @@ import { auth } from "./auth";
 import { status } from "./register/status";
 import main from "./main";
 
+//NOTE: Redux-form의 리듀서는 싱글톤으로 가급적 루트에 존재해야함. 
+//만약 하위에 집어넣고 싶다면 reduxForm wrapper에 해당 위치에서 reducer를 가져오도록 해야함
+//예: reduxForm({(state) => state.blah.blah})(MyComponent)
 const app = (history) => combineReducers(
     {   
         auth: auth,
@@ -25,7 +28,7 @@ const app = (history) => combineReducers(
             navigation: regNavi
         }),
         main: main,
-        router: connectRouter(history)
+        router: connectRouter(history),        
     }
 )
 

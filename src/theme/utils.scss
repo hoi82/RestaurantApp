@@ -232,7 +232,8 @@
 @mixin big_content_body {
     font-size: $h3-size;
     line-height: 80px;
-    vertical-align: middle; 
+    vertical-align: middle;
+    color: $content-color;
 }
 
 @mixin content_small_btn($width: auto) {

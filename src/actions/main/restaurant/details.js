@@ -23,7 +23,7 @@ const shouldFetch = (getState, id) => {
 
 export const fetchRestaurant = (id) => {    
     return (dispatch) => {
-        dispatch({type: LOADING_RESTAURANT});
+        dispatch({type: LOADING_RESTAURANT, payload: id});
         return axios.get(`${RESTAURANT_DETAIL_URL}/${id}`, axiosConfig).then((res) => {
             dispatch({type: LOADED_RESTAURANT, payload: res.data})
         }).catch((err) => {

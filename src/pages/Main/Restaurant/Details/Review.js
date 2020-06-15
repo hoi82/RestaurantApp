@@ -56,7 +56,7 @@ function Review({id, rating, created, title, comment, userID, resID, userName, o
             title: title,
             comment: comment
         })).then(() => {
-            history.push(endpoint.editReview.replace(":resid", resID));
+            history.push(`${endpoint.editReview.replace(":resid", resID).replace(":id", id)}`);
         });
     }
 

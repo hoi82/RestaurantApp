@@ -1,4 +1,5 @@
-import { READY_TO_LOAD, RESULT_LOADING, RESULT_LOADED, RESULT_FAILED, RESULT_RESET } from "../../../actions/main/search"
+import { READY_TO_LOAD, RESULT_LOADING, RESULT_LOADED, RESULT_FAILED, RESULT_RESET } from "../../../actions/main/search";
+import { produce } from "immer";
 
 const initState = {
     status: READY_TO_LOAD,
@@ -11,13 +12,25 @@ export default (state = initState, action) => {
 
     switch (type) {
         case RESULT_LOADING:
-            return { status: RESULT_LOADING, result: state.result, error: "" };
+            return produce(state, draft => {
+                Object.assign(draft, initState);
+                draft.status = RESULT_LOADING;
+            });
         case RESULT_LOADED:
-            return { status: RESULT_LOADED, result: payload, error: "" };
+            return produce(state, draft => {
+                draft.status = RESULT_LOADED;
+                draft.result = payload;
+                draft.error = "";
+            })            
         case RESULT_FAILED:
-            return { status: RESULT_FAILED, result: state.result, error: payload };
+            return produce(state, draft => {
+                draft.status = RESULT_FAILED;
+                draft.error = payload;
+            })            
         case RESULT_RESET:
-            return { status: READY_TO_LOAD, result: [], error: "" };
+            return produce(state, draft => {
+                Object.assign(draft, initState);
+            })            
         default:
             return state;
     }

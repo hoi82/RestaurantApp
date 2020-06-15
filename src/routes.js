@@ -4,10 +4,10 @@ import App from "./app";
 import { asyncMain, asyncLogin, asyncRegister, asyncSearchByName, asyncSearchByCategory, NotFound } from "./pages";
 import { asyncSearchByLocation } from "./pages/Main/Restaurant/Search";
 import { GetAllCategories } from "./actions/main/search";
-import { asyncResultByName, asyncResultByCategory, asyncResultByLocation } from "./pages/Main/Restaurant/SearchResult";
+import { asyncSearchResult } from "./pages/Main/Restaurant/SearchResult";
 import { asyncDetails } from "./pages/Main/Restaurant/Details";
 import { asyncMenu } from "./pages/Main/Restaurant/Menu";
-import { asyncNewReview } from "./pages/Main/Restaurant/Review";
+import { asyncReviewForm } from "./pages/Main/Restaurant/Review";
 import { asyncReservation } from "./pages/Main/Restaurant/Reservation";
 import { asyncReservationResult } from "./pages/Main/Restaurant/ReservationResult";
 import { asyncTakeout } from "./pages/Main/Restaurant/Takeout";
@@ -39,39 +39,40 @@ export default [
                     },
                     {
                         path: path.resolve(endpoint.resultRestaurantByName, ":name"),
-                        component: asyncResultByName,
+                        component: asyncSearchResult,
                         exact: true
                     },
                     {
                         path: path.resolve(endpoint.resultRestaurantByCategory, ":category"),
-                        component: asyncResultByCategory,
+                        component: asyncSearchResult,
                         exact: true
                     },
                     {
                         path: endpoint.resultRestaurantByLocation,
-                        component: asyncResultByLocation,
+                        component: asyncSearchResult,
                         exact: true
                     },
                     {
-                        path: path.resolve(endpoint.restaurantDetail, ":id"),
+                        path: endpoint.restaurantDetail,
                         component: asyncDetails,
-                        exact: true
+                        routes: [
+                            {
+                                path: endpoint.newReview,
+                                component: asyncReviewForm,
+                                exact: true
+                            },
+                            {
+                                path: endpoint.editReview,
+                                component: asyncReviewForm,
+                                exact: true
+                            },
+                        ]
                     },
                     {
                         path: path.resolve(endpoint.menuDetails, ":id"),
                         component: asyncMenu,
                         exact: true
-                    },
-                    {
-                        path: endpoint.newReview,
-                        component: asyncNewReview,
-                        exact: true
-                    },
-                    {
-                        path: endpoint.editReview,
-                        component: asyncNewReview,
-                        exact: true
-                    },
+                    },                    
                     {
                         path: path.resolve(endpoint.restaurantReservation, ":id"),
                         component: asyncReservation,

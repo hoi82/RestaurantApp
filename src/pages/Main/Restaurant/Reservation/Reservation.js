@@ -154,51 +154,49 @@ export default function Reservation({}) {
         return result;
     }    
 
-    return (
-        <div className={styles.reservation}>
-            <form className={styles.container} onSubmit={handleForm}>
-                <span className={styles.main_title}>Reservation</span>
-                <header className={styles.res_profile}>
-                    <img src={restaurant.thumbnail? `${IMAGE_URL}/${restaurant.thumbnail}` : null}/>
-                    <div>
-                        <span className={styles.name}>{restaurant.name}</span>
-                        <span className={styles.address}>{getFullAddress(restaurant.address)}</span>
-                    </div>
-                </header>    
-                <div className={styles.info_panel}>                    
-                    <span className={styles.content_header}>Date</span>
-                    <DatePicker date={date} onChange={handleDate}/>
-                    <span className={styles.content_header}>Time</span>
-                    <TimePicker begin={getOpenTime()} close={getCloseTime()} start={reservation.start} end={reservation.end}
-                    reservedTimes={calculatedReserves} timezone={restaurant.opens.timezone} onTimeChange={handleTime}/>
-                    <span className={styles.content_header}>Member</span>
-                    <DropdownBox value={reservation.member} onChange={handleMember} items={[1,2,3,4,5,6,7,8]} width="160px"/>
-                    <span className={styles.content_header}>Personal Message</span>
-                    <textarea value={reservation.message} className={styles.message} onChange={handleMessage}/>
-                </div>                            
-                {
-                    restaurant.reservation ? <div className={styles.cf_panel}>
-                        <span className={styles.content_header}>Cancellation Fee</span>
-                        <span className={styles.cf_content}>
-                            {
-                                restaurant.reservation.fee ? 
-                                `${restaurant.reservation.fee.currency} ${restaurant.reservation.fee.value}`
-                                : "Free"
-                            }
-                        </span>
+    return (        
+        <form className={styles.reservation} onSubmit={handleForm}>
+            <span className={styles.main_title}>Reservation</span>
+            <header className={styles.res_profile}>
+                <img src={restaurant.thumbnail? `${IMAGE_URL}/${restaurant.thumbnail}` : null}/>
+                <div>
+                    <span className={styles.name}>{restaurant.name}</span>
+                    <span className={styles.address}>{getFullAddress(restaurant.address)}</span>
+                </div>
+            </header>    
+            <div className={styles.info_panel}>                    
+                <span className={styles.content_header}>Date</span>
+                <DatePicker date={date} onChange={handleDate}/>
+                <span className={styles.content_header}>Time</span>
+                <TimePicker begin={getOpenTime()} close={getCloseTime()} start={reservation.start} end={reservation.end}
+                reservedTimes={calculatedReserves} timezone={restaurant.opens.timezone} onTimeChange={handleTime}/>
+                <span className={styles.content_header}>Member</span>
+                <DropdownBox value={reservation.member} onChange={handleMember} items={[1,2,3,4,5,6,7,8]} width="160px"/>
+                <span className={styles.content_header}>Personal Message</span>
+                <textarea value={reservation.message} className={styles.message} onChange={handleMessage}/>
+            </div>                            
+            {
+                restaurant.reservation ? <div className={styles.cf_panel}>
+                    <span className={styles.content_header}>Cancellation Fee</span>
+                    <span className={styles.cf_content}>
                         {
                             restaurant.reservation.fee ? 
-                            <React.Fragment>
-                                <span className={styles.cf_warning}>No payment is registered.</span>
-                                <button className={styles.cf_reg_btn}>Register Payment</button>
-                            </React.Fragment>
-                            : null
-                        }                        
-                    </div>
-                    : null
-                }                
-                <button className={styles.submit_btn} onClick={handleSubmit}>Submit</button>
-            </form>
-        </div>
+                            `${restaurant.reservation.fee.currency} ${restaurant.reservation.fee.value}`
+                            : "Free"
+                        }
+                    </span>
+                    {
+                        restaurant.reservation.fee ? 
+                        <React.Fragment>
+                            <span className={styles.cf_warning}>No payment is registered.</span>
+                            <button className={styles.cf_reg_btn}>Register Payment</button>
+                        </React.Fragment>
+                        : null
+                    }                        
+                </div>
+                : null
+            }                
+            <button className={styles.submit_btn} onClick={handleSubmit}>Submit</button>
+        </form>        
     );
 }

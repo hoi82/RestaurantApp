@@ -54,6 +54,7 @@
     "datejs": "^1.0.0-rc3",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "formik": "^2.1.4",
     "google-map-react": "^1.1.7",
     "history": "^4.10.1",
     "immer": "^7.0.0",

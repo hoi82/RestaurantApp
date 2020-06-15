@@ -5,155 +5,151 @@
     @include relative(100%);
     padding: 72px;    
 
-    .container {
-        @include relative(100%);        
+    .main_title {
+        font-size: 24px;
+        font-weight: 600;
+        color: $title-color;
 
-        .main_title {
-            font-size: 24px;
-            font-weight: 600;
-            color: $title-color;
-
-            &::after {
-                content: "";
-                display: block;
-                width: 100%;
-                height: 1px;
-                background-color: $grade5-bg-color;
-                margin: 17px auto 18px auto;
-            }
-        }
-
-        .res_profile {
-            @include row_flex(flex-start, flex-start);
-            flex-wrap: wrap;
-
-            & > div {                
-                @include column_flex(center, flex-start);
-                margin-left: 24px;
-            }
-
-            & > img {
-                @include relative(160px, 200px);
-                border-radius: 5px;
-            }
-
-            & > span {
-                display: block;
-            }
-
-            .name {
-                font-size: 36px;                                        
-                color: $deep-title-color;
-                font-weight: 600;  
-                margin-top: 4px;  
-            }
-
-            .address {
-                margin-top: 4px;
-                font-size: $h3-size;
-                color: $title-color;    
-            }
-
-            &::after {
-                content: "";
-                display: block;
-                width: 100%;
-                height: 1px;
-                background-color: $grade5-bg-color;
-                margin: 17px auto 18px auto;
-            }
-        }
-
-        .section_title {
+        &::after {
+            content: "";
             display: block;
-            font-size: $h1-size;
-            color: $deep-title-color;
-            font-weight: 600;            
+            width: 100%;
+            height: 1px;
+            background-color: $grade5-bg-color;
+            margin: 17px auto 18px auto;
+        }
+    }
+
+    .res_profile {
+        @include row_flex(flex-start, flex-start);
+        flex-wrap: wrap;
+
+        & > div {                
+            @include column_flex(center, flex-start);
+            margin-left: 24px;
         }
 
-        .info_panel {
-            &::after {
-                content: "";
-                display: block;
-                width: 100%;
-                height: 1px;
-                background-color: $grade5-bg-color;
-                margin: 17px auto 18px auto;
-            }
-        }
-
-        .content_header {
-            display: block;
-            font-size: $h4-size;
-            color: $title-color;
-            font-weight: 600;            
-
-            &:not(:first-of-type) {
-                margin-top: 36px;
-            }
-
-            & + * {
-                margin-top: 24px;
-            }
-        }
-
-        .cf_panel {
-            @include column_flex(flex-start, flex-start);
-
-            span {
-                display: block;
-            }
-
-            .cf_content {
-                font-size: $h1-size;
-                color: $content-color;
-                font-weight: 600;
-            }
-
-            .cf_warning {
-                font-size: $h4-size;
-                color: $alert-color;
-                font-weight: 600;
-                margin-top: 12px;
-            }
-
-            .cf_reg_btn {
-                @include content_medium_button(160px);
-                margin-top: 24px;
-            }
-
-            &::after {
-                content: "";
-                display: block;
-                width: 100%;
-                height: 1px;
-                background-color: $grade5-bg-color;
-                margin: 17px auto 18px auto;
-            }
-        }
-
-        .message {
-            @include relative(100%, 160px);
-            max-width: 640px;            
-            border: solid 1px $textbox-border-color;
+        & > img {
+            @include relative(160px, 200px);
             border-radius: 5px;
-            background-color: $grade2-bg-color;
-            color: $content-color;
-            font-family: inherit;
+        }
+
+        & > span {
+            display: block;
+        }
+
+        .name {
+            font-size: 36px;                                        
+            color: $deep-title-color;
+            font-weight: 600;  
+            margin-top: 4px;  
+        }
+
+        .address {
+            margin-top: 4px;
             font-size: $h3-size;
-            line-height: $h1-size;
-            padding: 8px;
-            box-sizing: border-box;
-            resize: none;
-
-            &:focus {
-                outline: none;
-            }
+            color: $title-color;    
         }
 
-        .submit_btn {
-            @include content_medium_button(160px);   
-            border: none;             
+        &::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: $grade5-bg-color;
+            margin: 17px auto 18px auto;
         }
+    }
+
+    .section_title {
+        display: block;
+        font-size: $h1-size;
+        color: $deep-title-color;
+        font-weight: 600;            
+    }
+
+    .info_panel {
+        &::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: $grade5-bg-color;
+            margin: 17px auto 18px auto;
+        }
+    }
+
+    .content_header {
+        display: block;
+        font-size: $h4-size;
+        color: $title-color;
+        font-weight: 600;            
+
+        &:not(:first-of-type) {
+            margin-top: 36px;
+        }
+
+        & + * {
+            margin-top: 24px;
+        }
+    }
+
+    .cf_panel {
+        @include column_flex(flex-start, flex-start);
+
+        span {
+            display: block;
+        }
+
+        .cf_content {
+            font-size: $h1-size;
+            color: $content-color;
+            font-weight: 600;
+        }
+
+        .cf_warning {
+            font-size: $h4-size;
+            color: $alert-color;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .cf_reg_btn {
+            @include content_medium_button(160px);
+            margin-top: 24px;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: $grade5-bg-color;
+            margin: 17px auto 18px auto;
+        }
+    }
+
+    .message {
+        @include relative(100%, 160px);
+        max-width: 640px;            
+        border: solid 1px $textbox-border-color;
+        border-radius: 5px;
+        background-color: $grade2-bg-color;
+        color: $content-color;
+        font-family: inherit;
+        font-size: $h3-size;
+        line-height: $h1-size;
+        padding: 8px;
+        box-sizing: border-box;
+        resize: none;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .submit_btn {
+        @include content_medium_button(160px);   
+        border: none;             
     }
 }

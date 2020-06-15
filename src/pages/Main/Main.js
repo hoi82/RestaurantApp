@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import NavPanel from "../../components/NavPanel";
-import global from "../../theme/global.scss";
 import Nav from "./Nav";
 import styles from "./Main.module.scss";
 import { renderRoutes } from "react-router-config";
@@ -38,9 +36,7 @@ export default function Main({route, location}) {
                     { location.pathname == endpoint.home ? null : renderRoutes(route.routes) }
                 </div>    
             </div>
-            <footer className={styles.footer_menu}></footer>
-            {/* <NavPanel width={global.main_nav_width} padding="0" positionRelative>                
-            </NavPanel> */}            
+            <footer className={styles.footer_menu}></footer>                     
         </div>
         :
         <Redirect to={{pathname: endpoint.login}}/>

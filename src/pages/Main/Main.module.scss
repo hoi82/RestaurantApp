@@ -9,7 +9,7 @@
 }
 
 .content_panel {            
-    @include set_size(calc(100% - #{$main-nav_width}), auto);       
+    @include relative(calc(100% - #{$main-nav_width}), auto);       
     background-color: $grade1-bg-color;
     border-radius: 8px;
     margin-top: 16px;

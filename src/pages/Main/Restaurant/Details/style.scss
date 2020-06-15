@@ -1,10 +1,10 @@
 @import "../../../../theme/global.scss";
 @import "../../../../theme/utils.scss";
 
-@mixin title {            
+@mixin title {                
     font-size: $h1-size;
     color: $title-color;
-    font-weight: 600;                    
+    font-weight: 600;    
 }
 
 .dialog_btn {
@@ -43,13 +43,10 @@
 }
 
 .details {
-    @include relative_full;    
-
-    .container {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 72px;
-    }
+    @include relative_full;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 72px;    
 
     .name_panel {
         @include set_size(100%);    
@@ -82,7 +79,7 @@
             height: 1px;
             content: "";
             background-color: $grade5-bg-color;
-            margin-top: 18px;
+            margin-top: 18px;            
         }
     }
 

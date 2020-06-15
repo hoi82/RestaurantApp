@@ -10,5 +10,5 @@ export default combineReducers({
     restaurant: restaurant,
     reservation: reservation,
     favorite: favorite,
-    menu: menu
+    menu: menu,    
 })

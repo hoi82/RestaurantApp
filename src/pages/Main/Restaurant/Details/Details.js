@@ -15,7 +15,7 @@ import { IMAGE_URL, endpoint } from '../../../../config/url';
 import Reviews from './Reviews';
 import Menus from './Menus';
 import { HashLink } from "react-router-hash-link";
-import { useParams } from 'react-router';
+import { useParams, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import GoogleMapReact from "google-map-react";
 import close from "../../../../image/close.svg";
@@ -23,6 +23,7 @@ import marker from "../../../../image/marker.svg";
 import { DialogMode } from '../../../../types/Variables';
 import { fetchFavoritesIfNeed, removeFavorite, addFavorite, FAVORITES_FETCHED } from '../../../../actions/main/favorite/restaurant';
 import { fetchMenusIfNeed } from '../../../../actions/main/menu';
+import { renderRoutes } from 'react-router-config';
 
 function Marker({name}) {
     return (
@@ -33,12 +34,13 @@ function Marker({name}) {
     )
 }
 
-function Details() {   
+function Details({route}) {   
     const details = useSelector((store) => store.main.restaurant.details); 
     const reviews = useSelector((store) => store.main.restaurant.reviews);
     const favorites = useSelector((store) => store.main.favorite.restaurant);
     const param = useParams(); 
-    const dispatch = useDispatch();
+    const location = useLocation();
+    const dispatch = useDispatch();    
 
     useEffect(() => {
         dispatch(fetchRestaurantIfNeed(param.id));
@@ -122,44 +124,44 @@ function Details() {
         else {
             return null;
         }
-    };    
+    };           
 
-    return (
-        <div className={styles.details}>
-            <div className={styles.container}>
-                <div className={styles.name_panel}>
-                    <span className={styles.name}>{details.name}</span>
-                    <img src={isFavorite() ? removeFavIcon : addFavIcon} onClick={handleFavorite}/>
-                    <img src={share}/>
-                    <div className={styles.info_inner_panel}>
-                        <span className={styles.address}>{getFullAddress(details.address)}</span>
-                        <img onClick={showGoogleMap} src={gm}/>
-                    </div>
-                </div> 
-                <div className={styles.upper_container}>                    
-                    <div className={styles.thumbnail_panel}>
-                        <img src={details.thumbnail ? `${IMAGE_URL}/${details.thumbnail}` : noImage}/>
-                        <span className={styles.rating}>{`${reviews.reviewRating} / 10 in ${reviews.totalReviews} reviews`}</span>
-                    </div>                
-                    <div className={styles.info_panel}>                                                 
-                        <p className={styles.hour_title}>Now <span className={styles.hour_content}>{isInTime(details.opens) ? "Opened" : "Closed"}</span></p>
-                        {renderOpens(details.opens)}                      
-                    </div>
+    return (        
+        location.pathname == endpoint.restaurantDetail.replace(":id", param.id) ?
+        <div className={styles.details}>            
+            <div className={styles.name_panel}>
+                <span className={styles.name}>{details.name}</span>
+                <img src={isFavorite() ? removeFavIcon : addFavIcon} onClick={handleFavorite}/>
+                <img src={share}/>
+                <div className={styles.info_inner_panel}>
+                    <span className={styles.address}>{getFullAddress(details.address)}</span>
+                    <img onClick={showGoogleMap} src={gm}/>
                 </div>
-                <section className={styles.navigator}>
-                    <button><span>Contact</span></button>
-                    <Link to={`${endpoint.restaurantReservation}/${param.id}`}>Reservation</Link>
-                    <Link to={`${endpoint.takeout}/${param.id}`}>Take Out</Link>
-                    <HashLink smooth to={"#review"}><span>Reviews</span></HashLink>
-                </section>
-                <div className={styles.lower_container}>
-                    <span className={styles.desc_title}>Description</span>
-                    <p className={styles.desc}>{ReactHtmlParser(details.description)}</p>
-                    <Menus restaurantID={param.id}/>            
-                    <Reviews id={"review"} resid={param.id}/>
+            </div> 
+            <div className={styles.upper_container}>                    
+                <div className={styles.thumbnail_panel}>
+                    <img src={details.thumbnail ? `${IMAGE_URL}/${details.thumbnail}` : noImage}/>
+                    <span className={styles.rating}>{`${reviews.reviewRating} / 10 in ${reviews.totalReviews} reviews`}</span>
+                </div>                
+                <div className={styles.info_panel}>                                                 
+                    <p className={styles.hour_title}>Now <span className={styles.hour_content}>{isInTime(details.opens) ? "Opened" : "Closed"}</span></p>
+                    {renderOpens(details.opens)}                      
                 </div>
-            </div>                         
+            </div>
+            <section className={styles.navigator}>
+                <button><span>Contact</span></button>
+                <Link to={`${endpoint.restaurantReservation}/${param.id}`}>Reservation</Link>
+                <Link to={`${endpoint.takeout}/${param.id}`}>Take Out</Link>
+                <HashLink smooth to={"#review"}><span>Reviews</span></HashLink>
+            </section>
+            <div className={styles.lower_container}>
+                <span className={styles.desc_title}>Description</span>
+                <p className={styles.desc}>{ReactHtmlParser(details.description)}</p>
+                <Menus restaurantID={param.id}/>            
+                <Reviews id={"review"} resid={param.id}/>
+            </div>                                  
         </div>
+        : renderRoutes(route.routes, {review : {rating: 4, title: "merong", comment: "guaaaaak"}})
     );
 }
 

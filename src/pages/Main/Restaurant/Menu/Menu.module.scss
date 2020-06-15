@@ -4,77 +4,76 @@
 .menu {
     @include relative_full;
     overflow-y: auto;
-    
-    .container {
-        @include column_flex(flex-start, stretch);
-        padding: 72px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 72px;        
 
-        .header {
-            @include relative(100%);
-            @include row_flex(flex-start, center);
+    .header {
+        @include relative(100%);
+        @include row_flex(flex-start, center);
 
-            .thumbnail {
-                @include relative(200px, 240px);
-                object-fit: cover;
-                border-radius: 10px;
-                background-color: $grade2-bg-color;
+        .thumbnail {
+            @include relative(200px, 240px);
+            object-fit: cover;
+            border-radius: 10px;
+            background-color: $grade2-bg-color;
+        }
+
+        .header_content {
+            @include set_size(100%);
+            margin-left: 36px;
+
+            & > div {
+                @include row_flex(flex-start, center);                    
             }
 
-            .header_content {
-                @include set_size(100%);
-                margin-left: 36px;
-
-                & > div {
-                    @include row_flex(flex-start, center);                    
-                }
-
-                .name {
-                    display: block;
-                    color: $deep-title-color;
-                    font-size: $h0-size;
-                    font-weight: 600;
-                }
-
-                .header_btn {
-                    @include set_size(24px, 24px);
-                    border-radius: 3px;                    
-                    cursor: pointer;
-                    user-select: none;
-                    margin-left: 8px;
-                }
-
-                .price_title {
-                    font-size: $h2-size;
-                    color: $title-color;
-                }
-
-                .price_content {
-                    margin-left: 8px;
-                    font-size: $h2-size;
-                    color: $content-color;
-                    font-weight: 600;
-                }
+            .name {
+                display: block;
+                color: $deep-title-color;
+                font-size: $h0-size;
+                font-weight: 600;
             }
-        }
 
-        .section_title {
-            font-size: $h1-size;
-            color: $title-color;
-            font-weight: 600;
-            margin-top: 36px;
-        }
+            .header_btn {
+                @include set_size(24px, 24px);
+                border-radius: 3px;                    
+                cursor: pointer;
+                user-select: none;
+                margin-left: 8px;
+            }
 
-        .section_content {
-            white-space: pre-wrap;
-            font-size: $h3-size;
-            line-height: $h1-size;
-            color: $content-color;
-            margin: 24px 0 0 0;
-        }
+            .price_title {
+                font-size: $h2-size;
+                color: $title-color;
+            }
 
-        .takeout_btn {
-            @include large_button;
-            margin-top: 36px;
+            .price_content {
+                margin-left: 8px;
+                font-size: $h2-size;
+                color: $content-color;
+                font-weight: 600;
+            }
         }
     }
+
+    .section_title {
+        font-size: $h1-size;
+        color: $title-color;
+        font-weight: 600;
+        margin-top: 36px;
+    }
+
+    .section_content {
+        white-space: pre-wrap;
+        font-size: $h3-size;
+        line-height: $h1-size;
+        color: $content-color;
+        margin: 24px 0 0 0;
+    }
+
+    .takeout_btn {
+        @include large_button;
+        margin-top: 36px;
+    }
+    
 }

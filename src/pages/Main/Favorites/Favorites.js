@@ -18,16 +18,23 @@ const Restaurant = ({id, name, address, thumbnail}) => {
     const dispatch = useDispatch();
     const [btnID, setBtnID] = useState(`review${new Date().getTime()}`);
 
-    const handleDetails = (e) => {
-        dispatch(fetchRestaurantIfNeed(id));
-        history.push(`${endpoint.restaurantDetail}/${id}`);
+    const handleReservation = (e) => {
+        
+    }
+
+    const handleTakeOut = (e) => {
+        
+    }
+
+    const handleDetail = (e) => {
+
     }
 
     return (
         <div className={styles.restaurant}>
             <img className={styles.thumb} src={thumbnail ? `${IMAGE_URL}/${thumbnail}` :  noImage}/>
             <div className={styles.content_panel}>                                   
-                <span className={styles.name}>{name}</span>                
+                <Link className={styles.name} to={`${endpoint.restaurantDetail.replace(":id", id)}`}>{name}</Link>
                 <span>{getFullAddress(address)}</span>                
             </div>               
             <StyledCheckBox/>
@@ -35,9 +42,9 @@ const Restaurant = ({id, name, address, thumbnail}) => {
             <Popup triggerID={btnID} position={{top: "16px", right: "64px"}}>
                 <div className={styles.menu_panel}>
                     <button>Remove</button>
-                    <Link to={`${endpoint.restaurantDetail}/${id}`}>Details</Link>
-                    <button>Reservation</button>
-                    <button>Take Out</button>
+                    <Link to={`${endpoint.restaurantDetail.replace(":id", id)}`} onClick={handleDetail}>Details</Link>
+                    <Link to={`${endpoint.restaurantReservation}/${id}`} onClick={handleReservation}>Reservation</Link>
+                    <Link to={`${endpoint.takeout}/${id}`} onClick={handleTakeOut}>Take Out</Link>
                 </div>
             </Popup>
         </div>
@@ -59,7 +66,7 @@ export default function Favorites({}) {
     return (
         <div className={styles.container}> 
             <div className={styles.favorites}>
-                <span className={styles.title}>My Favorites</span>
+                <span className={styles.title}>Favorite Restaurants</span>
                 <header className={styles.header}>
                     <button>Select All</button>
                     <div>

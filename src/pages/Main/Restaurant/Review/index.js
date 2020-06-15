@@ -1,8 +1,8 @@
 import React from "react";
 import loadable from "@loadable/component";
 
-const NewReview = loadable(() => import("./NewReview"));
+const ReviewFormContainer = loadable(() => import("./ReviewForm"));
 
-export const asyncNewReview = (props) => (
-    <NewReview {...props}/>
+export const asyncReviewForm = (props) => (
+    <ReviewFormContainer {...props}/>
 )

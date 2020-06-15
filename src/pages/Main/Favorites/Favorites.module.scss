@@ -71,6 +71,15 @@
             color: $deep-title-color;
             font-size: 36px;
             font-weight: 600;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            &:visited {
+                color: $deep-title-color;
+            }
 
             & ~ span {
                 font-size: $h3-size;
