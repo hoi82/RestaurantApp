@@ -19,7 +19,7 @@ export const fetchMenus = (restaurantID) => (dispatch) => {
 
 const shouldFetch = (restaurantID, getState) => {
     const { menu } = getState().main;
-    return (menu.status == READY_TO_FETCH_MENUS) || (menu.resid != restaurantID);
+    return (menu.status == READY_TO_FETCH_MENUS) || (menu.status != FETCHING_MENUS && menu.resid != restaurantID);
 }
 
 export const fetchMenusIfNeed = (restaurantID) => (dispatch, getState) => {

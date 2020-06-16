@@ -2,7 +2,7 @@ import axios from "axios"
 import { axiosConfig } from "../../../config/url";
 import moment from "moment-timezone";
 
-const REVIEW_URL = "http://localhost:3005/api/restaurant/_ID/reviews";
+const REVIEW_URL = "http://localhost:3005/api/review";
 const USER_NAME_URL = "http://localhost:3005/api/user/_ID/name";
 const MENU_URL = "http://localhost:3005/api/menu";
 const RESTAURANT_THUMBNAIL_URL = "http://localhost:3005/api/restaurant/thumbnail";
@@ -79,7 +79,7 @@ export const getDayName = (index) => {
     return new Intl.DateTimeFormat(getCurrnetLocale(), {weekday: "short"}).format(date);    
 }
 
-export const isInTime = (date) => {    
+export const isInTime = (date) => {        
     if (!date) return false;
     const now = new Date();
     const standard = new Date(new Date().setHours(0,0));    
@@ -205,6 +205,16 @@ export const getRestaurantIsFavorite = (resid) => {
 export const getFavoriteRestaurants = () => {
     return new Promise((resolve, reject) => {
         axios.get(FAVORITE_LIST, axiosConfig).then((res) => {
+            resolve(res.data);
+        }).catch((err) => {
+            reject(err);
+        })
+    })
+}
+
+export const fetchReview = (id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`${REVIEW_URL}/${id}`).then((res) => {
             resolve(res.data);
         }).catch((err) => {
             reject(err);

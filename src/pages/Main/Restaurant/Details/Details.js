@@ -34,7 +34,7 @@ function Marker({name}) {
     )
 }
 
-function Details({route}) {   
+function Details({route, match}) {   
     const details = useSelector((store) => store.main.restaurant.details); 
     const reviews = useSelector((store) => store.main.restaurant.reviews);
     const favorites = useSelector((store) => store.main.favorite.restaurant);
@@ -124,10 +124,9 @@ function Details({route}) {
         else {
             return null;
         }
-    };           
+    };         
 
-    return (        
-        location.pathname == endpoint.restaurantDetail.replace(":id", param.id) ?
+    return (                
         <div className={styles.details}>            
             <div className={styles.name_panel}>
                 <span className={styles.name}>{details.name}</span>
@@ -160,8 +159,7 @@ function Details({route}) {
                 <Menus restaurantID={param.id}/>            
                 <Reviews id={"review"} resid={param.id}/>
             </div>                                  
-        </div>
-        : renderRoutes(route.routes, {review : {rating: 4, title: "merong", comment: "guaaaaak"}})
+        </div>        
     );
 }
 

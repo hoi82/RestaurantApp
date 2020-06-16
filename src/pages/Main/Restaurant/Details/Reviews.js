@@ -6,7 +6,9 @@ import Review from './Review';
 import { Link } from 'react-router-dom';
 import { endpoint } from '../../../../config/url';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchReviewsIfNeed } from '../../../../actions/main/restaurant/reviews';
+import { fetchReviewsIfNeed, deleteReview } from '../../../../actions/main/restaurant/reviews';
+import { showDialog } from '../../../../actions/common/dialog';
+import { DialogMode } from '../../../../types/Variables';
 
 export default function Reviews({id, resid}) {
     const reviews = useSelector((store) => store.main.restaurant.reviews);
@@ -20,7 +22,13 @@ export default function Reviews({id, resid}) {
     },[]);
 
     const handleDelete = (id) => {
-
+        dispatch(showDialog({
+            mode: DialogMode.CONFIRM,
+            content: "정말 삭제하겠습니까?",
+            onConfirm: () => {  
+                dispatch(deleteReview(id));
+            }
+        }));         
     }    
 
     const renderReview = (item, i) => {

@@ -13,6 +13,7 @@ import moment from "moment-timezone";
 import { registerReservation, updateMember, updateTime, updateMessage } from '../../../../actions/main/reservation';
 import { fetchRestaurantIfNeed, LOADED_RESTAURANT } from '../../../../actions/main/restaurant/details';
 import { fetchReservationInfo } from '../utils';
+import noImage from '../../../../types/noImage';
 
 export default function Reservation({}) {
     const restaurant = useSelector((store) => store.main.restaurant.details);    
@@ -101,8 +102,8 @@ export default function Reservation({}) {
     }
 
     const getRestaurantSchedule = () => {
-        const time = getDateMoment();
-        return restaurant.opens.time[time.weekday()].sort((a, b) => {
+        const time = getDateMoment();              
+        return restaurant.opens.time[time.weekday()].slice().sort((a, b) => {            
             return Number(a.open.hour) - Number(b.open.hour) != 0 ? Number(a.open.hour) - Number(b.open.hour) : Number(a.open.minute) - Number(b.open.mminute);
         }) || [];
     }
@@ -158,7 +159,7 @@ export default function Reservation({}) {
         <form className={styles.reservation} onSubmit={handleForm}>
             <span className={styles.main_title}>Reservation</span>
             <header className={styles.res_profile}>
-                <img src={restaurant.thumbnail? `${IMAGE_URL}/${restaurant.thumbnail}` : null}/>
+                <img src={restaurant.thumbnail? `${IMAGE_URL}/${restaurant.thumbnail}` : noImage}/>
                 <div>
                     <span className={styles.name}>{restaurant.name}</span>
                     <span className={styles.address}>{getFullAddress(restaurant.address)}</span>

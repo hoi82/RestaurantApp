@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import styles from "./Review.module.scss";
-import { ISODateToString, deleteReview } from '../utils';
+import { ISODateToString } from '../utils';
 import Ratings from "react-ratings-declarative";
 import ReactHtmlParser from "react-html-parser";
 import menu from "../../../../image/menu.svg";
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { endpoint } from '../../../../config/url';
-import { showDialog } from "../../../../actions/common/dialog";
-import { DialogMode } from '../../../../types/Variables';
 import Popup from '../../../../components/Popup';
-import { setReview } from '../../../../actions/main/restaurant/review';
 
 function Review({id, rating, created, title, comment, userID, resID, userName, onDelete}) {
     const auth = useSelector((store) => store.auth);    
@@ -49,36 +45,11 @@ function Review({id, rating, created, title, comment, userID, resID, userName, o
     }    
 
     const handleEdit = (e) => {
-        dispatch(setReview({
-            id: id,
-            resid: resID,
-            rating: rating,
-            title: title,
-            comment: comment
-        })).then(() => {
-            history.push(`${endpoint.editReview.replace(":resid", resID).replace(":id", id)}`);
-        });
-    }
-
-    const handleRemove = (e) => {
-        setContextOpen(false);
-        dispatch(showDialog({
-            mode: DialogMode.CONFIRM,
-            content: "정말 삭제하겠습니까?",
-            onConfirm: () => {  
-                deleteReview(id).then((res) => {
-                    dispatch(showDialog({
-                        mode: DialogMode.SUCCESS,
-                        content: "삭제 되었습니다.",
-                        onClose: () => {
-                            onDelete(id);
-                        }
-                    }))
-                }).catch((err) => {
-
-                })
-            }
-        }));        
+        history.push(`${endpoint.editReview.replace(":resid", resID).replace(":id", id)}`);        
+    }  
+    
+    const handleDelete = (e) => {
+        onDelete(id);
     }
     
     return (
@@ -112,9 +83,9 @@ function Review({id, rating, created, title, comment, userID, resID, userName, o
                 <div className={styles.menu}>
                     {auth.id == userID ? <React.Fragment>
                         <button onClick={handleEdit}>Edit</button>
-                        <button onClick={handleRemove}>Remove</button>
+                        <button onClick={handleDelete}>Remove</button>
                     </React.Fragment> : null }
-                    <button>Send a message to reviewer</button>
+                    {auth.id != userID ? <button>Send a message to reviewer</button> : null}                    
                 </div>
             </Popup>                
         </div>

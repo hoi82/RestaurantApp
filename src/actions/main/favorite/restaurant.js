@@ -26,7 +26,7 @@ const shouldFetch = (getState) => {
     const { restaurant } = getState().main.favorite;
 
     return (restaurant.status == READY_TO_FETCH_FAVORITES) ||
-        ((restaurant.userid != "") && (restaurant.userid != auth.id));    
+        ((restaurant.status != FETCHING_FAVORITES) && (restaurant.userid != "") && (restaurant.userid != auth.id));    
 }
 
 export const fetchFavoritesIfNeed = () => (dispatch, getState) => {

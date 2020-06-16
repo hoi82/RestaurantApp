@@ -55,24 +55,18 @@ export default [
                     {
                         path: endpoint.restaurantDetail,
                         component: asyncDetails,
-                        routes: [
-                            {
-                                path: endpoint.newReview,
-                                component: asyncReviewForm,
-                                exact: true
-                            },
-                            {
-                                path: endpoint.editReview,
-                                component: asyncReviewForm,
-                                exact: true
-                            },
-                        ]
+                        exact: true
                     },
                     {
-                        path: path.resolve(endpoint.menuDetails, ":id"),
-                        component: asyncMenu,
+                        path: endpoint.newReview,
+                        component: asyncReviewForm,
                         exact: true
-                    },                    
+                    },
+                    {
+                        path: endpoint.editReview,
+                        component: asyncReviewForm,
+                        exact: true
+                    },
                     {
                         path: path.resolve(endpoint.restaurantReservation, ":id"),
                         component: asyncReservation,
@@ -83,6 +77,11 @@ export default [
                         component: asyncReservationResult,
                         exact: true
                     },
+                    {
+                        path: path.resolve(endpoint.menuDetails, ":id"),
+                        component: asyncMenu,
+                        exact: true
+                    },                                        
                     {
                         path: path.resolve(endpoint.takeout, ":id"),
                         component: asyncTakeout,                        
@@ -105,8 +104,7 @@ export default [
                 component: asyncRegister,
                 exact: true
             },
-            {
-                path: endpoint.notFound,
+            {                
                 component: NotFound,
             }
         ]
