@@ -18,7 +18,7 @@ export default function Nav({pageName, movePage, onRegister}) {
 
     const handleBacktoLogin = (e) => {
         dispatch(ResetRegisterStatus());
-    } 
+    }     
 
     return (        
         <div className={styles.nav_container}>                

@@ -2,5 +2,6 @@
 @import "../../theme/utils.scss";
 
 .content {
-    @include relative(744px, 100%);        
+    @include relative(744px, 100%);    
+    max-height: 960px;    
 }

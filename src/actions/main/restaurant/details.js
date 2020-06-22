@@ -9,7 +9,7 @@ export const FAIL_TO_LOAD_RESTAURANT = "FAIL_TO_LOAD_RESTAURANT";
 const RESTAURANT_DETAIL_URL = "http://localhost:3005/api/restaurant";
 
 export const fetchRestaurantIfNeed = (id) => ((dispatch, getState) => {    
-    if (shouldFetch(getState, id)) {            
+    if (shouldFetch(getState, id)) {                    
         return dispatch(fetchRestaurant(id));
     }
 

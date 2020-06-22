@@ -1,0 +1,45 @@
+@import "../../theme/global.scss";
+@import "../../theme/utils.scss";
+
+.header {
+    @include relative_full;
+    @include row_flex(flex-end, center);
+    max-width: 1280px;
+    margin: auto;
+
+    .trans_btn {
+        @include set_size(32px, 32px);         
+        padding: 4px;
+        border-radius: 4px;        
+        cursor: pointer;
+    }
+
+    .language_btn {
+        @include row_flex(space-between, center);
+        @include set_size(120px, 40px);
+        background-color: $grade2-bg-color;   
+        padding: 0 12px;     
+        margin: 0;
+
+        &:first-child {
+            border-top-right-radius: 4px;
+            border-top-left-radius: 4px;
+        }
+    
+        &:last-child {
+            border-bottom-right-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+        span {
+            display: block;
+            font-size: $h3-size;
+            color: $content-color;
+            font-weight: 600;
+        }
+    }    
+
+    .flag {
+        @include set_size(40px, 32px);
+    }
+}

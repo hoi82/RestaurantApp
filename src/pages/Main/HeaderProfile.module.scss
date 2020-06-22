@@ -1,0 +1,72 @@
+@import "../../theme/global.scss";
+@import "../../theme/utils.scss";
+
+.logged_btn {
+    @include relative(160px, 40px);
+    background-color: transparent;
+    padding-left: 8px;
+
+    .name_plate {
+        @include relative(120px, 100%);
+        @include column_flex(center, flex-start);
+    }
+
+    .name {
+        font-size: $h3-size;
+        color: $deep-title-color;
+        font-weight: 600;
+    }
+
+    .email {
+        font-size: $h5-size;
+        color: $title-color;
+    }
+
+    .name, .email {
+        display: block;
+    }
+}
+
+.login_btn {
+    @include relative(128px, 32px);
+    background-color: transparent;
+
+    span {
+        font-size: $h3-size;
+        font-weight: 600;
+        color: $title-color;
+    }
+}
+
+.profile_popup {
+    @include relative;
+    min-width: 240px;
+    padding: 8px;
+
+    .profile {
+        display: flex;
+
+        .name_plate {
+            @include column_flex(center, flex-start);
+            padding: 8px;
+
+            .name {
+                font-size: $h1-size;
+                font-weight: 600;
+                color: $deep-title-color;
+            }
+
+            .email {
+                font-size: $h4-size;
+                font-weight: 600;
+                color: $title-color;
+                margin-top: 8px;
+            }
+        }
+    }
+
+    .profile_btn {
+        @include content_medium_button();
+        margin-top: 8px;
+    }
+}

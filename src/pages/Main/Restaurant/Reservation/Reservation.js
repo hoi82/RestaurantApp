@@ -21,7 +21,7 @@ export default function Reservation({}) {
     const [calculatedReserves, setCalculatedReserves] = useState([]);
     const [date, setDate] = useState(new Date());
     const dispatch = useDispatch();    
-    const param = useParams();
+    const param = useParams();    
 
     useEffect(() => {        
         dispatch(fetchRestaurantIfNeed(param.id));        

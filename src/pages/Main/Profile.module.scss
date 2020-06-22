@@ -1,61 +1,71 @@
 @import "../../theme/global.scss";
 @import "../../theme/utils.scss";
 
-$grid_size : 72px;
+$grid_size : 96px;
 
 .profile {
-    @include relative(100%, $grid_size);
+    @include relative(100%, #{$grid_size});
     @include row_flex(stretch);    
     background-color: $grade1-bg-color;    
 
     .profile_pic {
-        @include set_size($grid_size, $grid_size);        
+        @include set_size(#{$grid_size}, #{$grid_size});
+    }
+            
+
+    .nameplate {
+        @include set_size(100%, 100%);
+        @include column_flex(center);            
+        padding: 8px;
+
+        span {
+            margin-left: 16px;
+            display: inline-block;
+        }
+
+        .name {
+            font-size: $h1-size;
+            font-weight: 600;
+            color: $content-color;
+        }
+
+        .email {
+            font-size: $h4-size;
+            font-weight: 300;
+            color: $content-color;
+        }
     }
 
-    .container {
-        @extend .profile;
-        @include set_size(100%);        
+    .toolbox {
+        @include row_flex($cross: center);
+        @include set_size($height: 100%);            
+        padding: 16px;
 
-        .nameplate {
-            @include set_size(100%, 100%);
-            @include column_flex(center);            
-            padding: 8px;
+        .icon {
+            @include set_size(28px, 28px);
+            user-select: none;
+            cursor: pointer;
 
-            span {
-                margin-left: 16px;
-                display: inline-block;
-            }
-
-            .name {
-                font-size: $h2-size;
-                font-weight: 600;
-                color: $content-color;
-            }
-
-            .email {
-                font-size: $h5-size;
-                font-weight: 300;
-                color: $content-color;
-            }
-        }
-    
-        .toolbox {
-            @include row_flex($cross: center);
-            @include set_size($height: 100%);            
-            padding: 16px;
-
-            .tool_button {                                
-                @include tool_btn(calc(#{$grid_size} * 0.5), calc(#{$grid_size} * 0.5));                   
-
-                &:last-child {
-                    margin-left: 8px;
-                }                                
-
-                .icon {
-                    @include set_size(28px, 28px);
-                }
+            &:last-of-type {
+                margin-left: 8px;
             }            
-        }
-    }
+        }        
+    }    
+}
+
+.no_member {    
+    @include relative(100%, 96px); 
+    @include column_flex(center, flex-start);
+    padding: 0 16px;      
     
+    .description {
+        font-size: $h4-size;
+        color: $title-color;
+        font-weight: 600;
+    }
+
+    .login_btn {
+        @include content_medium_button;
+        margin-top: 8px;
+    }
 }

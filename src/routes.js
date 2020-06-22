@@ -12,15 +12,16 @@ import { asyncReservation } from "./pages/Main/Restaurant/Reservation";
 import { asyncReservationResult } from "./pages/Main/Restaurant/ReservationResult";
 import { asyncTakeout } from "./pages/Main/Restaurant/Takeout";
 import { asyncFavoriteRestaurants } from "./pages/Main/Favorites";
+import { asyncOptions } from "./pages/Options";
 
 export default [
     {
         component: App,
         routes: [
             {
-                path: endpoint.home,                          
-                component: asyncMain,     
-                routes: [
+                path: [endpoint.searchMain, endpoint.restaurantMain, endpoint.searchResultMain, endpoint.reviewMain, endpoint.reservationMain],
+                component: asyncMain,                     
+                routes: [                    
                     {
                         path: endpoint.searchRestaurantByName,
                         component: asyncSearchByName,
@@ -91,12 +92,13 @@ export default [
                         path: endpoint.favoriteRestaurants,
                         component: asyncFavoriteRestaurants,
                         exact: true
-                    }
+                    },
+                    
                 ]
             },
             {
-                path: endpoint.login,                
-                component: asyncLogin,
+                path: "/",
+                component: asyncMain,
                 exact: true
             },
             {
@@ -104,9 +106,19 @@ export default [
                 component: asyncRegister,
                 exact: true
             },
+            {
+                path: endpoint.options,
+                component: asyncOptions,
+                exact: true
+            },
+            // {
+            //     path: endpoint.login,                
+            //     component: asyncLogin,
+            //     exact: true
+            // },   
             {                
                 component: NotFound,
-            }
+            }                     
         ]
     }
 ];

@@ -17,7 +17,7 @@ const Validator = {
             return ErrorMessages.INVALID_EMAIL;
         }
         else {
-            return ErrorMessages.CORRECT;     
+            return undefined;     
         }        
     },  
     
@@ -32,7 +32,7 @@ const Validator = {
     },
     
     validatePassword : (value) => {        
-        let result = "";   
+        let result = undefined;   
         
         if (value == undefined || value == null) {
             return ErrorMessages.EMPTY_PASSWORD;

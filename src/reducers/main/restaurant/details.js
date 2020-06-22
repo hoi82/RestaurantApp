@@ -16,6 +16,7 @@ const initState = {
         timezone: "",
         time: [[],[],[],[],[],[],[]]
     },
+    reservation: undefined,
     menus: [],
     contact: [],
     description: "",

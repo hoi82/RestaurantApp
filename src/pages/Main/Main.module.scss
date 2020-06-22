@@ -17,7 +17,7 @@
 }
 
 .header_menu {
-    @include relative(100%, 40px);
+    @include relative(100%, 48px);
     min-width: 960px;
     background-color: $grade2-bg-color;
 }

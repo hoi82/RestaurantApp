@@ -1,28 +1,47 @@
 @import "../../theme/global.scss";
 @import "../../theme/utils.scss";
 
-$width: 1024px;
-$height: 768px;
+// $width: 1024px;
+// $height: 768px;
 
 div {    
     margin: 0;
 
     .register {        
         @include relative_full;
+        display: flex;
+
+        .nav {
+            @include set_size($height: 100%);
+            @include row_flex(flex-end, center);            
+            flex: 1 0 320px;
+            background-color: $grade2-bg-color;            
+        }
+
+        .content {
+            @include set_size($height: 100%);
+            @include row_flex(flex-start, center);
+            flex: 1 1 960px;
+            background-color: $grade1-bg-color;
+        }
         
-        .container, .panel {
-            @include absolute($left: calc(50% - (#{$width} / 2)), $top: calc(50% - (#{$height} / 2)));
-            @include set_size($width, $height);              
-            overflow: hidden;
-            border-radius: 10px;
-        }
+        // .container, .panel {
+        //     @include absolute($left: calc(50% - (#{$width} / 2)), $top: calc(50% - (#{$height} / 2)));
+        //     @include set_size($width, $height);              
+        //     overflow: hidden;
+        //     border-radius: 10px;
+        // }
 
-        .container { 
-            @include row_flex;            
-        }
+        // .container { 
+        //     @include row_flex;            
+        // }
 
-        .panel {            
-            background-color: $grade4-bg-color;            
-        }
+        // .panel {
+        //     box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.5);
+        // }
+
+        // .panel {            
+        //     background-color: $grade4-bg-color;            
+        // }
     }
 }

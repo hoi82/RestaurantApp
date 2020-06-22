@@ -11,6 +11,7 @@ import Nav from "./Nav";
 import { FetchRegister, REGISTER_FETCHED, REGISTER_FAILED } from '../../actions/register/status';
 import { useHistory } from 'react-router';
 import { endpoint } from '../../config/url';
+import { Formik } from 'formik';
 
 export default function Register() {       
     const [tosAgree, setTOSAgree] = useState(false);    
@@ -43,12 +44,22 @@ export default function Register() {
 
     const renderContent = () => {                    
         return tosAgree ? 
-        <React.Fragment>       
-            <NavPanel width={global.register_nav_width} padding="0" hideShadow={true} positionRelative={true}>
-                <Nav movePage={movePage} pageName={pageName} onRegister={handleRegister}/>
-            </NavPanel>                 
-            <Content pageName={pageName}></Content>            
-        </React.Fragment>                                        
+        <Formik initialValues={{
+            email: "",
+            password: "",
+            name: "",
+            contact: "",
+            address: ""
+        }}>
+            <React.Fragment> 
+                <div className={styles.nav}>
+                    <Nav movePage={movePage} pageName={pageName} onRegister={handleRegister}/>
+                </div>
+                <div className={styles.content}>
+                    <Content pageName={pageName}></Content>
+                </div>
+            </React.Fragment>
+        </Formik>
         :
         <TOS onConfirm={tosConfirm}/>;
     }
@@ -71,11 +82,8 @@ export default function Register() {
     }
     
     return (        
-        <div className={styles.register}>   
-            <div className={styles.panel}/> 
-            <div className={styles.container}>
-                { renderContent() }                
-            </div>                                            
+        <div className={styles.register}>               
+            { renderContent() }            
         </div>        
     );    
 }

@@ -1,0 +1,77 @@
+@import "../../theme/global.scss";
+@import "../../theme/utils.scss";
+
+.login {    
+    @include relative(360px, auto);
+    @include column_flex;    
+    padding: 24px;
+
+    .logo {        
+        @include set_size(80px, 80px);
+        align-self: flex-end;        
+    }    
+
+    .item_container {
+        @include column_flex;
+        @include set_size(100%, 72px);
+
+        &:not(:first-of-type) {
+            margin-top: 16px;
+        }
+    }   
+
+    .sub_title {
+        @include small_title;
+        margin-bottom: 16px;            
+    }                
+
+    .text_box {            
+        @include content_input(200px);   
+        width: 100%;         
+    }
+
+    .login_btn {            
+        @include large_button;            
+    }
+
+    .link_btn {
+        margin: 16px 0 12px 0;
+        @include link_btn;
+        align-self: flex-start;            
+    }        
+
+    .register_btn {
+        @extend .link_btn;
+        margin-left: 8px;
+        margin-top: 2px;
+    } 
+    
+    .register_container {
+        margin-top: 16px;
+    }  
+    
+    .header_title {
+        @include input_header_text;
+        margin-left: 7px;        
+    } 
+    
+    .error_title {
+        @include input_error_text;
+        margin-left: 8px;
+        @include global_transition;
+        opacity: 0;
+    }
+
+    .error_visible {
+        opacity: 1;
+    }
+
+    .input {
+        @include content_input;
+        margin-top: 8px;
+    }
+
+    .header_box {
+        @include row_flex;             
+    }
+}

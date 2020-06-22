@@ -6,7 +6,7 @@ import Review from './Review';
 import { Link } from 'react-router-dom';
 import { endpoint } from '../../../../config/url';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchReviewsIfNeed, deleteReview } from '../../../../actions/main/restaurant/reviews';
+import { fetchReviewsIfNeed, deleteReview, fetchReviews, REVIEW_REMOVED } from '../../../../actions/main/restaurant/reviews';
 import { showDialog } from '../../../../actions/common/dialog';
 import { DialogMode } from '../../../../types/Variables';
 
@@ -26,19 +26,23 @@ export default function Reviews({id, resid}) {
             mode: DialogMode.CONFIRM,
             content: "정말 삭제하겠습니까?",
             onConfirm: () => {  
-                dispatch(deleteReview(id));
+                dispatch(deleteReview(id, page, pageLength)).then(({status}) => {
+                    if (status == REVIEW_REMOVED) {
+                        dispatch(fetchReviews(resid, page, pageLength));
+                    }                    
+                });
             }
         }));         
     }    
 
-    const renderReview = (item, i) => {
+    const renderReview = (item, i) => {        
         return <Review key={i} {...item} onDelete={handleDelete}/>
     }    
 
     const handlePageChange = (pageNumber) => {
         setPage(pageNumber);
         dispatch(fetchReviewsIfNeed(resid, pageNumber, pageLength));        
-    }
+    }    
 
     return (
         <React.Fragment>

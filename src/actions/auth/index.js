@@ -6,6 +6,7 @@ export const AUTH_PROCESSING = "AUTH_PROCESSING";
 export const LOGIN_VALIDATING = "LOGIN_VALIDATING";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_FAILED = "LOG_IN_FAILED";
+export const LOG_OUT = "LOG_OUT";
 export const SESSION_VALIDATING = "SESSION_VALIDATING";
 export const SESSION_FOUND = "SESSION_FOUND";
 export const SESSION_LOST = "SESSION_LOST";
@@ -28,7 +29,7 @@ export const SessionCheck = () => {
     };    
 };
 
-export const LogIn = (email, password) => {           
+export const processLogIn = (email, password) => {           
     return (dispatch) => {        
         dispatch({type: AUTH_PROCESSING});
         return axios.post(LOG_IN_URL, 
@@ -37,9 +38,10 @@ export const LogIn = (email, password) => {
                 password: password
             },
             axiosConfig).then((res) => {            
-            dispatch({ type: LOGIN_VALIDATING, payload: res.data }); 
-        }).catch((err) => {                      
-            dispatch({ type: LOGIN_VALIDATING, payload: { email: email, error: err }});
+            dispatch({ type: LOG_IN_SUCCESS, payload: res.data }); 
+        }).catch((err) => {                        
+            dispatch({ type: LOG_IN_FAILED, payload: {code: err.response.status, message: err.response.data}});
+            dispatch({ type: RESET_AUTH });
         });                       
     }        
 }
@@ -47,10 +49,11 @@ export const LogIn = (email, password) => {
 export const LogOut = () => {
     return (dispatch) => {
         dispatch({type: AUTH_PROCESSING});
-        return axios.post(LOG_OUT_URL, axiosConfig).then((res) => {
-            dispatch({ type: LOGIN_VALIDATING, payload: res.data }); 
+        return axios.get(LOG_OUT_URL, axiosConfig).then((res) => {
+            dispatch({ type: LOG_OUT, payload: res.data }); 
         }).catch((err) => {
-            dispatch({ type: LOGIN_VALIDATING, payload: { error: err }});
+            dispatch({ type: LOG_IN_FAILED, payload: { code: err.response.status, message: err.response.data }});
+            dispatch({ type: RESET_AUTH });
         });   
     }
 }

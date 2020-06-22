@@ -1,51 +1,70 @@
 @import "../../../theme/global.scss";
 @import "../../../theme/utils.scss";
 
-.container {
-    @include relative_full;          
-    overflow: auto;
 
-    .favorites {
-        @include relative_full;        
-        @include column_flex(flex-start, flex-start);        
-        padding: 72px;
+.favorites {
+    @include relative_full;            
+    padding: 72px;
 
-        .header {
-            @include set_size(100%);
-            @include row_flex(space-between, center);
+    .header {
+        @include set_size(100%);
+        @include row_flex(flex-end, center);
 
-            button {
-                @include content_small_btn(80px);
+        button {
+            @include content_small_btn(auto);
+            padding: 0 8px;
+
+            &:not(:first-of-type) {
+                margin-left: 8px;
             }
         }
 
-        .grid_grid {            
-            grid-template-columns: repeat(4, 1fr);                       
+        .header_btn_panel {
+            margin-left: 8px;            
+        }
+    }    
+
+    .no_result {
+        @include set_size(100%, 560px);
+        @include column_flex(center, center);
+
+        .svg {
+            @include set_size(160px, 160px);
+
+            .path {
+                fill: $grade5-bg-color;
+            }
         }
 
-        .grid_list {
-            grid-auto-rows: minmax(min-content, max-content);
+        .text {
+            font-size: $h1-size;
+            color: $title-color;
+            font-weight: 600;
+            margin-top: 16px;
+            white-space: pre;
         }
+    }     
+}    
 
-        .grid_grid, .grid_list {
-            @include relative_full;
-            display: grid;
-            gap: 8px; 
-            margin-top: 24px;
-        }        
-    }
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    color: $title-color;
 
-    .title {
-        @include big_content_title;
-        margin: 0;
-        margin-left: 8px;
-        margin-bottom: 36px;
-    }
-
-    .item_grid {
-        @include set_size(100%, 240px);
+    &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: $grade5-bg-color;
+        margin: 17px auto 18px auto;
     }
 }
+
+.item_grid {
+    @include set_size(100%, 240px);
+}
+
 
 .restaurant {
     @include row_flex(flex-start, flex-start);

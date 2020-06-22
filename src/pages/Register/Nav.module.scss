@@ -2,9 +2,10 @@
 @import "../../theme/utils.scss";
 
 .nav_container {
-    @include relative_full;    
+    @include relative(320px, 100%);      
     @include column_flex;
-    padding: 24px 32px;    
+    padding: 48px 32px;  
+    max-height: 960px;      
 
     button > * {
         pointer-events: none;
@@ -29,26 +30,24 @@
     }
     
     .item_box {
-        @include column_flex;        
-        flex-grow: 1;         
+        @include column_flex;                      
         
         .header {
             font-size: $h4-size;
             line-height: 16px;
             color: $title-color;
             font-weight: 600;
-            margin-left: 8px;
-            margin-bottom: 8px;
-    
-            &:first-child {
-                margin-top: 24px;
+            margin-left: 8px;  
+            
+            &:not(:first-of-type) {
+                margin-top: 40px;
             }
         }             
     
         .item_btn {            
             padding: 0;
             padding-left: 8px;
-            margin-bottom: 16px;
+            margin-top: 8px;
             background: rgba(225, 225, 230, 0);            
             text-align: left;                  
     
@@ -71,7 +70,8 @@
     }   
     
     .register_box {      
-        
+        margin-top: 64px;
+
         .register_btn {   
             width: 100%;                     
             padding: 0;                        

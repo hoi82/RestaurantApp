@@ -25,11 +25,15 @@ const shouldFetch = (getState, restaurantID, curPage) => {
 export const fetchReviews = (id, page = 0, pageLength = 999) => (
     (dispatch) => {        
         dispatch({type: LOADING_REVIEWS, payload: {resid: id, page: page}});
-        return axios.get(`${REVIEWS_URL.replace(":id", id)}?page=${page}&len=${pageLength}`, axiosConfig).then((res) => {            
-            dispatch({type: REVIEWS_LOADED, payload: res.data});
-        }).catch((err) => {
-            dispatch({type: FAIL_TO_LOAD_REVIEWS, payload: err});
-        })
+        return new Promise((resolve, reject) => {
+            axios.get(`${REVIEWS_URL.replace(":id", id)}?page=${page}&len=${pageLength}`, axiosConfig).then((res) => {            
+                dispatch({type: REVIEWS_LOADED, payload: res.data});
+                resolve({status: REVIEWS_LOADED});
+            }).catch((err) => {
+                dispatch({type: FAIL_TO_LOAD_REVIEWS, payload: err});
+                reject({status: FAIL_TO_LOAD_REVIEWS, error: err});
+            })
+        })        
     }
 )
 
@@ -69,12 +73,17 @@ export const editReview = (resid, id, review) => (dispatch) => {
     })
 }
 
-export const deleteReview = (id) => (dispatch) => {    
-    return axios.delete(`${REVIEW_URL}/${id}`, axiosConfig).then((res) => {
-        dispatch({type: REVIEW_REMOVED, payload: res.data});
-        dispatch(showDialog({
-            mode: DialogMode.SUCCESS,
-            content: "리뷰가 삭제되었습니다."
-        }))
-    })
+export const deleteReview = (id) => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        axios.delete(`${REVIEW_URL}/${id}`, axiosConfig).then((res) => {
+            dispatch({type: REVIEW_REMOVED, payload: res.data});
+            resolve({status: REVIEW_REMOVED});
+            dispatch(showDialog({
+                mode: DialogMode.SUCCESS,
+                content: "리뷰가 삭제되었습니다.",
+            }))
+        }).catch((err) => {
+            reject({status: FAIL_TO_LOAD_REVIEWS, error: err});
+        });
+    });    
 }
