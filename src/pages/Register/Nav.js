@@ -4,16 +4,19 @@ import styles from "./Nav.module.scss";
 import { endpoint } from "../../config/url";
 import { useDispatch } from 'react-redux';
 import { ResetRegisterStatus } from '../../actions/register/status';
+import { useFormikContext } from 'formik';
 
 export default function Nav({pageName, movePage, onRegister}) {
     const dispatch = useDispatch();
+    const context = useFormikContext();
 
     const handleClick = (e) => {
         movePage(e.target.value);
     }
 
     const handleRegister = (e) => {
-        onRegister();
+        // onRegister();
+        context.submitForm();
     }
 
     const handleBacktoLogin = (e) => {

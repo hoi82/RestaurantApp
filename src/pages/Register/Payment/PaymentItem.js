@@ -20,7 +20,7 @@ export default function PaymentItem({payment, onEdit, onRemove}) {
         }
     }
 
-    const renderInfo = () => {        
+    const renderInfo = () => {      
         switch (payment.kind) {
             case Payments.CREDIT_CARD:
                 return payment.number;                
@@ -38,7 +38,7 @@ export default function PaymentItem({payment, onEdit, onRemove}) {
     }
 
     const handleRemove = (e) => {        
-        onRemove(payment.id);        
+        onRemove(payment.index);        
     }
     
     return (

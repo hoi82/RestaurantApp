@@ -49,11 +49,9 @@
   "./dist/vendors.js": "/assets/vendors.js",
   "./dist/visa.svg": "/assets/05d2d57a68e6928c17a881955c205652.svg",
   "./dist/alert.svg": "/assets/184b15534b3a1a389febf7cde782f61e.svg",
-  "./dist/styles.scss": "/assets/e363af5efe88edaf2022d646481aecfb.ttf",
   "./dist/close.svg": "/assets/3240bba9340e46f43f5dece4cb7403ac.svg",
   "./dist/skip.svg": "/assets/36a0c5ded3b6d14c4f4ec0501f138c7e.svg",
   "./dist/menu.svg": "/assets/3de8496846a24a94c9e53a1ea0a595f6.svg",
-  "./dist/ccwarning.svg": "/assets/4619dcd4480d7d155d7bc71ef6636d02.svg",
   "./dist/translation.svg": "/assets/4a9a0e51e45a45e1020adbd843f82eb1.svg",
   "./dist/spain.svg": "/assets/4bd7d03523587a936afb4830bfc18ec5.svg",
   "./dist/addPaymentIcon.svg": "/assets/4c9d534ce1eba74f9d7258b02e8ebd4e.svg",
@@ -72,7 +70,6 @@
   "./dist/error.svg": "/assets/9201f3a819669247aa6bb06aa4697208.svg",
   "./dist/credit-card.svg": "/assets/9651f22ba1aad45f674936e2fa2a5a4d.svg",
   "./dist/gps.svg": "/assets/9b3a5b47c4c99623972d78a27ad66b0e.svg",
-  "./dist/jcblogo.svg": "/assets/9c0ef196756fc9c52edf45782b50b329.svg",
   "./dist/test.svg": "/assets/a0417de29735f64e3995b08963e0fceb.svg",
   "./dist/addfav.svg": "/assets/d625ffd94536fd737b60a02f4c6b5bc8.svg",
   "./dist/fintech.svg": "/assets/d9b9d3055b6e4076660f2039ae4bf1fc.svg",
@@ -83,8 +80,6 @@
   "./dist/reload.svg": "/assets/f62b0196cc0a767c85418bb983089022.svg",
   "./dist/left-arrow.svg": "/assets/fbd3dcecf534d02e3aa4a57de78d83ba.svg",
   "./dist/login.svg": "/assets/fc1b111e5efadb79e8894521c2ecaf99.svg",
-  "./dist/masterlogo.svg": "/assets/fc809c6564e20d94af0cf641b55a2a7e.svg",
-  "./dist/visalogo.svg": "/assets/fda9e62f9242b2881f6e554a014e1955.svg",
   "./dist/marker.svg": "/assets/ff94c5ecb03b5eea899a158444d5850f.svg",
   "./dist/loadable-stats.json": "/assets/loadable-stats.json"
 }

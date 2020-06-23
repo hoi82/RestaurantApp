@@ -170,7 +170,7 @@ const Validator = {
     validateCreditNumberCallback : (value, nameCallback) => {
         const name = Validator.validateCreditNumber(value);
 
-        runCallback(nameCallback, name);
+        runCallback(nameCallback, name.name, name.error);
     },
     
     validateExpire : (value) => {                
@@ -219,6 +219,12 @@ const Validator = {
         }
     },
 
+    validateCVCCallback : (value, messageCallback) => {
+        const message = Validator.validateCVC(value);
+
+        runCallback(messageCallback, message);
+    },
+
     validateExternalPassword : (value) => {
         if (value == "") {
             return ErrorMessages.EMPTY_PASSWORD;
@@ -228,6 +234,12 @@ const Validator = {
         }
     },
 
+    validateExternalPasswordCallback : (value, messageCallback) => {
+        const message = Validator.validateExternalPassword(value);
+
+        runCallback(messageCallback, message);
+    },
+
     validateText : (value) => {
         if (value == "") {
             return ErrorMessages.EMPTY_TEXT;
@@ -235,6 +247,12 @@ const Validator = {
         else {
             return ErrorMessages.CORRECT;
         }
+    },
+
+    validateTextCallback : (value, messageCallback) => {
+        const message = Validator.validateText(value);
+
+        runCallback(messageCallback, message);
     }
 }
 

@@ -1,48 +1,44 @@
 import React, { useState } from 'react';
 import styles from "./style.scss";
 import close from "../../../../../image/close.svg";
-import EmailInput from "../../../../../components/InputWithHeader/EmailInput";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateEmail, updatePassword } from "../../../../../actions/register/paypal";
-import ExternalPasswordInput from '../../../../../components/InputWithHeader/ExternalPasswordInput';
 import { updatePayment, createPayment } from '../../../../../actions/register/payments';
 import { DialogMode } from '../../../../../types/Variables';
 import { showDialog } from '../../../../../actions/common/dialog';
+import { Form, useFormikContext } from 'formik';
 
-export default function PaypalInput({edit=false, movePage, checkDuplicate}) {
-    const paypal = useSelector((store) => store.register.paypal);
-    const [forceUpdate, setForceUpdate] = useState(false);
-    const dispatch = useDispatch();
+const Input = ({name, header, type, extChange}) => {
+    const context = useFormikContext();
 
-    const backToList = () => {
-        movePage("list");
-    }
+    const handleFocus = (e) => {
+        context.setFieldTouched(name, false);
+    }    
 
-    const addEditAction = (action) => {
-        if (paypal.getValid()) {
-            if (checkDuplicate(paypal)) {
-                dispatch(showDialog({
-                    mode: DialogMode.ALERT,
-                    content: "같은 이메일 주소가 이미 존재합니다!",
-                }));
-            }
-            else {
-                dispatch(action(paypal));
-                backToList();
-            }
+    const handleChange = (e) => {
+        if (extChange) {
+            extChange(e);
         }
         else {
-            setForceUpdate(true);
+            context.handleChange(e);
         }
-    };
-
-    const handleEdit = () => {        
-        addEditAction(updatePayment);
     }
 
-    const handleAdd = () => {        
-        addEditAction(createPayment);      
-    }
+    return (
+        <React.Fragment>
+            <div className={styles.header_box}>
+                <span className={styles.header_title}>{header}</span>
+                <span className={context.touched[name] ? styles.error_title.concat(" ", styles.error_visible) : styles.error_title}>{context.errors[name]}</span>
+            </div>
+            <input className={styles.input} type={type ? type : "text"} name={name} value={context.values[name]} onChange={handleChange} onBlur={context.handleBlur} onFocus={handleFocus}/>
+        </React.Fragment>
+    )
+}
+
+export default function PaypalInput({edit=false, movePage}) {
+    const backToList = () => {
+        movePage("list");
+    }       
 
     const handleClose = (e) => {
         if (edit) {
@@ -51,34 +47,22 @@ export default function PaypalInput({edit=false, movePage, checkDuplicate}) {
         else {
             movePage("select");
         }        
-    }  
-
-    const handleEmailChange = (e) => {
-        dispatch(updateEmail(e.target.value));
-    }
-
-    const handlePasswordChange = (e) => {
-        dispatch(updatePassword(e.target.value));
-    }
+    }      
 
     return (
-        <div className={styles.container}>
+        <Form className={styles.container}>
             <div className={styles.inner_container}>
-                <div className={styles.content_container}>                
-                    <EmailInput value={paypal.email} forceUpdate={forceUpdate} onChange={handleEmailChange}/>
-                </div>
-                <div className={styles.content_container}>                
-                    <ExternalPasswordInput value={paypal.password} forceUpdate={forceUpdate} onChange={handlePasswordChange}/>
-                </div>
+                <Input header="이메일" name="email" type="email"/>
+                <Input header="비밀번호" name="password" type="password"/>
             </div>            
-            <button className={styles.add_btn} onClick={edit ? handleEdit : handleAdd}>
+            <button type="submit" className={styles.add_btn}>
                 <span className={styles.add_btn_text}>
                     {edit ? "저장하기" : "추가하기"}
                 </span>
             </button>
-            <button className={styles.close_btn} onClick={handleClose}>
+            <button type="button" className={styles.close_btn} onClick={handleClose}>
                 <img src={close} className={styles.close_icon}/>
             </button>
-        </div>
+        </Form>
     );    
 }

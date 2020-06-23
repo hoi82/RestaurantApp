@@ -3,20 +3,8 @@
 
 .payment {     
     @include relative_full;
-
-    .panel {        
-        transform: translateX(0%);
-        background-color: $primary-bg-color;
-    }
-
-    .container {
-        @include column_flex(flex-start, flex-start);        
-        padding: 24px 32px;
-    }
-
-    .panel, .container {        
-        @include absolute_full_stretch;
-    }
+    @include column_flex(flex-start, flex-start);        
+    padding: 160px 36px 24px 36px;    
 
     .header {
         display: block;
@@ -24,13 +12,12 @@
         line-height: 16px; 
         font-weight: 600;
         color: $title-color;        
-        margin: 112px 0px 8px 0px;
     }
 
     .add_button {
         @include content_medium_button(124px);        
         padding: 0;            
-        margin: 4px 0px;
+        margin-top: 12px;
     }
 
     .button_box {
@@ -51,7 +38,7 @@
 
     .content_container {
         @include relative(auto);        
-        margin-top: 16px;
+        margin-top: 68px;
         align-self: center;     
     }
 

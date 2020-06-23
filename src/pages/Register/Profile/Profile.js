@@ -1,55 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styles from "./Profile.module.scss";
-import EmailInput from '../../../components/InputWithHeader/EmailInput';
-import PasswordInput from '../../../components/InputWithHeader/PasswordInput';
-import NameInput from '../../../components/InputWithHeader/NameInput';
-import ContactInput from '../../../components/InputWithHeader/ContactInput';
-import AddressInput from '../../../components/InputWithHeader/AddressInput';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateEmail, updatePassword, updateName, updateContact, updateAddress } from '../../../actions/register/profile';
-import { REGISTER_FAILED } from '../../../actions/register/status';
+import { useFormikContext, Form } from 'formik';
 
-export default function Profile() {       
-    const profile = useSelector((store) => store.register.profile);
-    const status = useSelector((store) => store.register.status);
-    const [forceUpdate, setForceUpdate] = useState(false);
-    const dispatch = useDispatch();
-    
-    useEffect(() => {             
-        if (status.status == REGISTER_FAILED)
-            setForceUpdate(true);
-    }, [status]);
+const Input = ({header, name, type, autoFocus = false}) => {
+    const context = useFormikContext();      
 
-    const handleEmail = (e) => {
-        dispatch(updateEmail(e.target.value));
-    }    
-
-    const handlePassword = (e) => {
-        dispatch(updatePassword(e.target.value));
-    }
-
-    const handleName = (e) => {
-        dispatch(updateName(e.target.value));
-    }
-
-    const handleContact = (e) => {
-        dispatch(updateContact(e.target.value));
-    }
-
-    const handleAddress = (e) => {
-        dispatch(updateAddress(e.target.value));
+    const handleFocus = (e) => {
+        context.setFieldTouched(name, false);
     }
 
     return (
-        <div className={styles.profile}>
-            <div className={styles.panel}/>
-            <div className={styles.container}>
-                <EmailInput value={profile.email} forceUpdate={forceUpdate} onChange={handleEmail}/>
-                <PasswordInput value={profile.password} forceUpdate={forceUpdate} onChange={handlePassword}/>
-                <NameInput value={profile.name} forceUpdate={forceUpdate} onChange={handleName}/>
-                <ContactInput value={profile.contact} forceUpdate={forceUpdate} onChange={handleContact}/>
-                <AddressInput value={profile.address} forceUpdate={forceUpdate} onChange={handleAddress}/>
-            </div>                
-        </div>
+        <React.Fragment>
+            <div className={styles.header_box}>
+                <span className={styles.header_title}>{header}</span>
+                <span className={context.touched[name] ? styles.error_title.concat(" ", styles.error_visible) : styles.error_title}>{context.errors[name]}</span>
+            </div>
+            <input className={styles.input} type={type ? type : "text"} name={name} value={context.values[name]} onChange={context.handleChange} onBlur={context.handleBlur} autoFocus={autoFocus} onFocus={handleFocus}/>
+        </React.Fragment>        
+    )
+}
+
+export default function Profile() {       
+    const profile = useSelector((store) => store.register.profile);
+    const status = useSelector((store) => store.register.status);    
+    const context = useFormikContext();
+    const dispatch = useDispatch();      
+
+    const handleFocus = (e) => {
+        context.setFieldTouched("email", false);
+    }
+
+    return (
+        <Form className={styles.profile}>
+            <Input header="이메일" name="email" type="email" autoFocus/>
+            <Input header="비밀번호" name="password" type="password"/>
+            <Input header="이름" name="name"/>
+            <Input header="연락처" name="contact"/>
+            <Input header="주소" name="address"/>            
+        </Form>
     );    
 }

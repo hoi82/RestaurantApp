@@ -12,6 +12,7 @@ import { FetchRegister, REGISTER_FETCHED, REGISTER_FAILED } from '../../actions/
 import { useHistory } from 'react-router';
 import { endpoint } from '../../config/url';
 import { Formik } from 'formik';
+import Validator from '../../utils/Validator';
 
 export default function Register() {       
     const [tosAgree, setTOSAgree] = useState(false);    
@@ -22,25 +23,60 @@ export default function Register() {
     const status = useSelector((store) => store.register.status);
     const history = useHistory();
 
-    useEffect(() => {
-        switch (status.status) {
-            case REGISTER_FETCHED:
-                dispatch(showDialog({
-                    mode: DialogMode.SUCCESS,
-                    content: "가입을 축하드립니다. \r\n 닫기를 누르시면 로그인 화면으로 이동합니다.",
-                    onClose: () => history.replace(endpoint.login)
-                }));
-                break;
-            case REGISTER_FAILED:                           
-                dispatch(showDialog({
-                    mode: DialogMode.ALERT,
-                    content: `에러가 발생했습니다.(${status.info})`,                    
-                }))
-                break;
-            default:
-                break;
-        }
-    }, status);
+    // useEffect(() => {
+    //     switch (status.status) {
+    //         case REGISTER_FETCHED:
+    //             dispatch(showDialog({
+    //                 mode: DialogMode.SUCCESS,
+    //                 content: "가입을 축하드립니다. \r\n 닫기를 누르시면 로그인 화면으로 이동합니다.",
+    //                 onClose: () => history.replace(endpoint.login)
+    //             }));
+    //             break;
+    //         case REGISTER_FAILED:                           
+    //             dispatch(showDialog({
+    //                 mode: DialogMode.ALERT,
+    //                 content: `에러가 발생했습니다.(${status.info})`,                    
+    //             }))
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }, status);
+
+    const handleValidate = (values) => {
+        const errors = {};
+
+        Validator.validateEmailCallback(values.email, (err) => {
+            if (err)
+                errors.email = err;
+        });
+        
+        Validator.validatePasswordCallback(values.password, (err) => {
+            if (err)
+                errors.password = err;
+        });
+
+        Validator.validateNameCallback(values.name, (err) => {
+            if (err)
+                errors.name = err;
+        });
+
+        Validator.validateContactCallback(values.contact, (err) => {
+            if (err)
+                errors.contact = err;
+        });
+
+        Validator.validateAddressCallback(values.address, (err) => {
+            if (err)
+                errors.address = err;
+        });        
+
+        return errors;
+    }
+
+    const handleSubmit = (values) => {
+        console.log("submit : ", values);
+    }
 
     const renderContent = () => {                    
         return tosAgree ? 
@@ -49,8 +85,9 @@ export default function Register() {
             password: "",
             name: "",
             contact: "",
-            address: ""
-        }}>
+            address: "",
+            payments: []
+        }} validate={handleValidate} onSubmit={handleSubmit}>
             <React.Fragment> 
                 <div className={styles.nav}>
                     <Nav movePage={movePage} pageName={pageName} onRegister={handleRegister}/>

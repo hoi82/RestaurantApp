@@ -2,26 +2,73 @@
 @import "../../../theme/utils.scss";
 
 .profile {
-    @include relative_full;        
+    // @include relative_full;        
 
-    .panel {        
-        background-color: $primary-bg-color;
-        transform: translateX(0%);
-    }
+    // .panel {        
+    //     background-color: $primary-bg-color;
+    //     transform: translateX(0%);
+    // }
 
-    .container {        
-        @include column_flex(flex-start, flex-start);        
-        padding: 24px 32px 0px 32px;
+    // .container {        
+    //     @include column_flex(flex-start, flex-start);        
+    //     padding: 24px 32px 0px 32px;
 
-        & > div {
-            margin-top: 24px;
-            margin-bottom: 16px;            
-            max-width: 400px;
-            height: auto;
+    //     & > div {
+    //         margin-top: 24px;
+    //         margin-bottom: 16px;            
+    //         max-width: 400px;
+    //         height: auto;
+    //     }
+    // }
+
+    // .panel, .container {
+    //     @include absolute_full_stretch;
+    // }   
+    @include relative($height: 100%);
+    padding: 48px 24px;
+
+    .header_box {
+        @include row_flex;
+
+        .header_title {
+            @include input_header_text;
+            margin-left: 7px;
+        } 
+        
+        .error_title {
+            @include input_error_text;
+            margin-left: 8px;
+            @include global_transition;
+            opacity: 0;
+        }
+    
+        .error_visible {
+            opacity: 1;
+        }
+
+        &:not(:first-of-type) {
+            margin-top: 40px;
+        }
+    }    
+
+    .input {
+        @include content_input;
+        margin-top: 8px;    
+        
+        &[name="email"] {
+            width: 360px;
+        }
+
+        &[name="password"] {
+            width: 240px;
+        }
+
+        &[name="name"] {
+            width: 320px;
+        }
+
+        &[name="contact"] {
+            width: 480px;
         }
     }
-
-    .panel, .container {
-        @include absolute_full_stretch;
-    }   
 }

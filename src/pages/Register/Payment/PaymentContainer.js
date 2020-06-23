@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import Payment from './Payment';
-import { useSelector, useDispatch } from 'react-redux';
-import { deletePayment } from '../../../actions/register/payments';
 import { Payments } from '../../../types/Variables';
-import { assignCredit, newCreditCard } from '../../../actions/register/creditCard';
-import { newPaypal, assignPaypal } from '../../../actions/register/paypal';
 import styles from "./Payment.module.scss";
 import loadable from '@loadable/component';
+import { useFormikContext, Formik } from 'formik';
+import Validator from '../../../utils/Validator';
+import { ErrorMessages } from '../../../types/ErrorMessages';
 
 const PaymentList = loadable(() => import("./List/PaymentList"));
 const PaymentItem = loadable(() => import("./PaymentItem"));
@@ -15,40 +14,122 @@ const CreditCard = loadable(() => import("./Add/CreditCard"));
 const Paypal = loadable(() => import("./Add/Paypal"));
 const FintechInput = loadable(() => import("./Add/Fintech/FintechInput"));
 
-export default function PaymentContainer() {
-    const payments = useSelector((store) => store.register.payments.list); 
-    const [pageName, setPageName] = useState("list");   
-    const dispatch = useDispatch();
+export default function PaymentContainer({arrayHelper}) {    
+    const context = useFormikContext();
+    const [pageName, setPageName] = useState("list");  
+    const [editingPayment, setEditingPayment] = useState({});     
+    
+    const handleAdd = (values) => {        
+        arrayHelper.push(values);
+        setPageName("list");
+    }
+
+    const handleEdit = (values) => {
+        arrayHelper.replace(values.index, values);
+        setPageName("list");
+    }
+
+    const validateCredit = (values) => {
+        const errors = {};        
+
+        Validator.validateCreditNumberCallback(values.number, (name, error) => {
+            if (error) {
+                errors.number = error;
+            }
+        });
+
+        if (context.values.payments.find((payment) => (payment.number == values.number && payment.index != values.index))) {
+            errors.number = ErrorMessages.DUPLICATED_CARD_NUMER;
+        }
+        
+        Validator.validateExpireCallback(values.expire, (error) => {
+            if (error) {
+                errors.expire = error;
+            }
+        });
+
+        Validator.validateCVCCallback(values.cvc, (error) => {
+            if (error) {
+                errors.cvc = error;
+            }
+        })
+        
+        Validator.validateNameCallback(values.cashHolder, (error) => {
+            if (error) {
+                errors.cashHolder = error;
+            }
+        });        
+
+        return errors;
+    }    
+
+    const validatePaypal = (values) => {
+        const errors = {};
+
+        Validator.validateEmailCallback(values.email, (err) => {
+            if (err) {
+                errors.email = err;
+            }
+        });
+
+        Validator.validateExternalPasswordCallback(values.password, (err) => {
+            if (err) {
+                errors.password = err;
+            }
+        })
+
+        return errors;
+    }
 
     const renderContent = (page) => {        
         let component = null;     
         switch (page) {
             case "list":
                 component = <PaymentList>
-                    {renderPayments(payments)}
+                    {renderPayments(context.values.payments)}
                 </PaymentList>;
                 break;
             case "select":
                 component = <PaymentSelect onCreate={handleCreate} movePage={movePage}/>;
                 break;
             case "card":
-                component = <CreditCard edit={false} movePage={movePage} checkDuplicate={checkDuplicate}/>;
+                component = <Formik initialValues={{
+                    kind: Payments.CREDIT_CARD,
+                    index: context.values.payments.length,
+                    number: "",
+                    expire: "",
+                    cvc: "",
+                    cashHolder: ""
+                }} onSubmit={handleAdd} validate={validateCredit}>
+                    <CreditCard edit={false} movePage={movePage}/>
+                </Formik>;
                 break;
             case "card_edit":
-                component = <CreditCard edit={true} movePage={movePage} checkDuplicate={checkDuplicate}/>;
+                component = <Formik initialValues={editingPayment} onSubmit={handleEdit} validate={validateCredit}>
+                    <CreditCard edit={true} movePage={movePage}/>
+                </Formik>;
                 break;
             case "paypal":
-                component = <Paypal edit={false} movePage={movePage} checkDuplicate={checkDuplicate}/>;
+                component = <Formik initialValues={{
+                    kind: Payments.PAYPAL,
+                    index: context.values.payments.length,
+                    email: "",
+                    password: ""
+                }} onSubmit={handleAdd} validate={validatePaypal}>
+                    <Paypal edit={false} movePage={movePage}/>
+                </Formik>;
                 break;
             case "paypal_edit":
-                component = <Paypal edit={true} movePage={movePage} checkDuplicate={checkDuplicate}/>;
+                component = <Formik initialValues={editingPayment} onSubmit={handleEdit} validate={validatePaypal}>
+                    <Paypal edit={true} movePage={movePage}/>
+                </Formik>;
                 break;
             case "fintech":
                 component = <FintechInput/>;
                 break;
             default:
                 component = <PaymentList>
-                    {renderPayments(payments)}
+                    {renderPayments(context.values.payments)}
                 </PaymentList>;
                 break;            
         }
@@ -58,7 +139,7 @@ export default function PaymentContainer() {
         </div>
     };     
 
-    const renderPayments = () => {                
+    const renderPayments = (payments) => {                        
         return (
             payments.map((item, i) => {
                 return <PaymentItem payment={item} key={i} onEdit={onEditItem} onRemove={handleRemove}/>
@@ -66,14 +147,13 @@ export default function PaymentContainer() {
         ); 
     }   
 
-    const onEditItem = (item) => {                                  
-        switch (item.kind) {
-            case Payments.CREDIT_CARD:
-                dispatch(assignCredit(item));                                
+    const onEditItem = (item) => {
+        setEditingPayment(item);
+        switch (item.kind) {            
+            case Payments.CREDIT_CARD:                
                 setPageName("card_edit");
                 break;
-            case Payments.PAYPAL:
-                dispatch(assignPaypal(item));                
+            case Payments.PAYPAL:                
                 setPageName("paypal_edit");
             default:
                 break;
@@ -81,17 +161,15 @@ export default function PaymentContainer() {
     }
 
     const handleRemove = (index) => {
-        dispatch(deletePayment(index));        
+        arrayHelper.remove(index);
     }    
 
     const handleCreate = (kind) => {              
         switch (kind) {
-            case Payments.CREDIT_CARD:
-                dispatch(newCreditCard());
+            case Payments.CREDIT_CARD:                
                 setPageName("card");
                 break;        
-            case Payments.PAYPAL:
-                dispatch(newPaypal());
+            case Payments.PAYPAL:                
                 setPageName("paypal");
             default:
                 break;
@@ -100,22 +178,10 @@ export default function PaymentContainer() {
 
     const movePage = (name) => {
         setPageName(name);
-    }
-
-    const checkDuplicate = (payment) => {        
-        if (payment.kind == Payments.CREDIT_CARD) {
-            return payments.filter((item, i) => item.number == payment.number).length > 0;
-        }
-        else if (payment.kind == Payments.PAYPAL) {
-            return payments.filter((item, i) => item.email == payment.email).length > 0;
-        }
-        else {
-            return false;
-        }
-    }
+    }    
 
     return (
-        <Payment payments={payments} pageName={pageName} movePage={movePage} movePage={movePage}>            
+        <Payment pageName={pageName} movePage={movePage}>
             {renderContent(pageName)}
         </Payment>
     );

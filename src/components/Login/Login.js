@@ -7,8 +7,6 @@ import { LOG_IN_SUCCESS, LOG_IN_FAILED, resetAuth, processLogIn } from '../../ac
 import NavPanel from "../NavPanel"
 import { endpoint } from '../../config/url';
 import StyledCheckBox from '../StyledCheckBox';
-import EmailInput from '../InputWithHeader/EmailInput';
-import PasswordInput from '../InputWithHeader/PasswordInput';
 import Validator from '../../utils/Validator';
 import { ErrorMessages } from '../../types/ErrorMessages';
 import { showDialog, closeDialog } from '../../actions/common/dialog';

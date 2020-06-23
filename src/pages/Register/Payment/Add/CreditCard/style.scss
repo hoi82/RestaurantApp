@@ -66,4 +66,33 @@
     .add_btn {        
         @include large_button;                                     
     }
+
+    .header_box {
+        @include row_flex;
+
+        .header_title {
+            @include input_header_text;
+            margin-left: 7px;
+        } 
+        
+        .error_title {
+            @include input_error_text;
+            margin-left: 8px;
+            @include global_transition;
+            opacity: 0;
+        }
+    
+        .error_visible {
+            opacity: 1;
+        }
+
+        &:not(:first-of-type) {
+            margin-top: 40px;
+        }
+    }    
+
+    .input {
+        @include content_input;
+        margin-top: 8px;            
+    }
 }
