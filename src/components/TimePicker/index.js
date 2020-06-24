@@ -43,7 +43,7 @@ export default function TimePicker({begin = "", interval = {hour:1, minute: 0}, 
         const arr = [];
         for (let i = 0; i < 25; i++) {            
             arr.push(
-                <button key={i} disabled>{moment({hour: i, minute: 0}).format("HH:mm")}</button>
+                <button type="button" key={i} disabled>{moment({hour: i, minute: 0}).format("HH:mm")}</button>
             )
         }
 
@@ -69,12 +69,12 @@ export default function TimePicker({begin = "", interval = {hour:1, minute: 0}, 
             if (reservedTimes.filter((res, j) => {
                 return time.isBetween(moment(res.start), moment(res.end), undefined, "[]");                
             }).length > 0) {
-                return <button key={i} disabled>{time.locale(moment.locale()).format("HH:mm")}</button>                
+                return <button type="button" key={i} disabled>{time.locale(moment.locale()).format("HH:mm")}</button>                
             }
             else {                
                 const className = time.isSame(start) ? styles.start : (time.isSame(end) ? styles.end : null);
                 timezone ? time.tz(timezone) : null;
-                return <button className={className} key={i} data-value={time.valueOf()} onClick={handleTimeClick}>{time.locale(moment.locale()).format("HH:mm")}</button>
+                return <button type="button" className={className} key={i} data-value={time.valueOf()} onClick={handleTimeClick}>{time.locale(moment.locale()).format("HH:mm")}</button>
             }            
         });        
     }

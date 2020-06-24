@@ -9,7 +9,7 @@ function Menu({id, thumbnail, name, price}) {
     const history = useHistory();    
 
     const handleMenuClick = (e) => {
-        history.push(`${endpoint.menuDetails}/${id}`, {menu});
+        history.push(`${endpoint.menuDetails}/${id}`);
     }
 
     return (

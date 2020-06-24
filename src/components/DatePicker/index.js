@@ -22,7 +22,7 @@ function DatePicker({date, onChange}) {
 
     return (
         <div className={styles.datepicker}>
-            <button id={btnID} ref={btnRef} className={styles.date_button}>
+            <button type="button" id={btnID} ref={btnRef} className={styles.date_button}>
                 <div>
                     <span>{date ? date.toLocaleDateString() : null}</span>
                 </div>

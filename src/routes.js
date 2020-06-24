@@ -19,7 +19,7 @@ export default [
         component: App,
         routes: [
             {
-                path: [endpoint.searchMain, endpoint.restaurantMain, endpoint.searchResultMain, endpoint.reviewMain, endpoint.reservationMain],
+                path: [endpoint.searchMain, endpoint.restaurantMain, endpoint.searchResultMain, endpoint.reviewMain, endpoint.reservationMain, endpoint.menuMain],
                 component: asyncMain,                     
                 routes: [                    
                     {

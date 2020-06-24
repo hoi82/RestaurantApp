@@ -37,7 +37,7 @@ export default (props) => {
                 <span className={styles.email}>{auth.email}</span>
             </div>       
             <div className={styles.toolbox}>  
-                <Link to={endpoint.options}>
+                <Link to={endpoint.options} style={{height: "28px"}}>
                     <img className={styles.icon} src={settingIcon}/>
                 </Link>                
                 <img className={styles.icon} src={logoutIcon} onClick={handleLogOut}/>

@@ -32,9 +32,7 @@ export default function Reservation({}) {
             setCalculatedReserves(calculateReserved(res));
         });
           
-    }, [restaurant.status == LOADED_RESTAURANT && date]);
-
-    
+    }, [restaurant.status == LOADED_RESTAURANT && date]);    
 
     const handleForm = (e) => {
         e.preventDefault();        
@@ -155,7 +153,7 @@ export default function Reservation({}) {
         return result;
     }    
 
-    return (        
+    return (                
         <form className={styles.reservation} onSubmit={handleForm}>
             <span className={styles.main_title}>Reservation</span>
             <header className={styles.res_profile}>

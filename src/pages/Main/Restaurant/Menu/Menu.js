@@ -8,18 +8,11 @@ import favorite from "../../../../image/addfav.svg";
 import share from "../../../../image/share.svg";
 
 export default function Menu() {    
-    const [menu, setMenu] = useState({});
-    const history = useHistory();  
-    const params = useParams();
-    const location = useLocation();    
+    const [menu, setMenu] = useState({});    
+    const params = useParams();      
     
     useEffect(() => {
-        if (location.state && location.state.menu) {
-            setMenu(location.state.menu);
-        }
-        else {
-            fetchMenu(params.id).then((data) => setMenu(data));            
-        }
+        fetchMenu(params.id).then((data) => setMenu(data));
     },[]);        
     
     return (
@@ -32,7 +25,7 @@ export default function Menu() {
                         <img src={favorite} className={styles.header_btn}/>
                         <img src={share} className={styles.header_btn}/>
                     </div>
-                    <div style={{marginTop: "24px"}}>
+                    <div>
                         <span className={styles.price_title}>Price : </span>
                         <span className={styles.price_content}>{`${menu.price ? menu.price.currency : null} ${menu.price ? menu.price.value : null}`}</span>
                     </div>

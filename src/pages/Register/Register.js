@@ -8,11 +8,11 @@ import { showDialog } from '../../actions/common/dialog';
 import TOS from "./TOS/TOS";
 import NavPanel from "../../components/NavPanel";
 import Nav from "./Nav";
-import { FetchRegister, REGISTER_FETCHED, REGISTER_FAILED } from '../../actions/register/status';
 import { useHistory } from 'react-router';
-import { endpoint } from '../../config/url';
+import { endpoint, axiosConfig } from '../../config/url';
 import { Formik } from 'formik';
 import Validator from '../../utils/Validator';
+import axios from 'axios';
 
 export default function Register() {       
     const [tosAgree, setTOSAgree] = useState(false);    
@@ -75,7 +75,18 @@ export default function Register() {
     }
 
     const handleSubmit = (values) => {
-        console.log("submit : ", values);
+        axios.post("http://localhost:3005/api/users", values, axiosConfig).then((res) => {
+            dispatch(showDialog({
+                mode: DialogMode.SUCCESS,
+                content: "가입을 축하드립니다. \r\n 닫기를 누르시면 로그인 화면으로 이동합니다.",
+                onClose: () => history.replace(endpoint.home)
+            }));
+        }).catch((err) => {
+            dispatch(showDialog({
+                mode: DialogMode.ALERT,
+                content: `에러가 발생했습니다.(${err.message})`,
+            }))
+        });
     }
 
     const renderContent = () => {                    
@@ -90,7 +101,7 @@ export default function Register() {
         }} validate={handleValidate} onSubmit={handleSubmit}>
             <React.Fragment> 
                 <div className={styles.nav}>
-                    <Nav movePage={movePage} pageName={pageName} onRegister={handleRegister}/>
+                    <Nav movePage={movePage} pageName={pageName}/>
                 </div>
                 <div className={styles.content}>
                     <Content pageName={pageName}></Content>
@@ -99,10 +110,6 @@ export default function Register() {
         </Formik>
         :
         <TOS onConfirm={tosConfirm}/>;
-    }
-
-    const handleRegister = () => {                  
-        dispatch(FetchRegister(profile, payments));                     
     }    
 
     const tosConfirm = (agreed) => {

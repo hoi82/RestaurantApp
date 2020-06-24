@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurantIfNeed } from '../../../../actions/main/restaurant/details';
 import { getFullAddress } from '../../../../utils/getStrings';
-import styles from "./style.scss";
+import styles from "./Details.module.scss";
 import addFavIcon from "../../../../image/addfav.svg";
 import removeFavIcon from "../../../../image/removefav.svg";
 import share from "../../../../image/share.svg";
@@ -21,9 +21,8 @@ import GoogleMapReact from "google-map-react";
 import close from "../../../../image/close.svg";
 import marker from "../../../../image/marker.svg";
 import { DialogMode } from '../../../../types/Variables';
-import { fetchFavoritesIfNeed, removeFavorite, addFavorite, FAVORITES_FETCHED } from '../../../../actions/main/favorite/restaurant';
+import { fetchFavoritesIfNeed, removeFavorite, addFavorite, FAVORITE_RESTAURANTS_FETCHED } from '../../../../actions/main/favorite/restaurant';
 import { fetchMenusIfNeed } from '../../../../actions/main/menu';
-import { renderRoutes } from 'react-router-config';
 
 function Marker({name}) {
     return (
@@ -77,7 +76,7 @@ function Details({route, match}) {
     const handleFavorite = (e) => {
         if (isFavorite()) {
             dispatch(removeFavorite(param.id)).then(() => {
-                if (favorites.status == FAVORITES_FETCHED) {
+                if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
                         dispatch(showDialog({
                         mode: DialogMode.SUCCESS,
                         bgimg: false,
@@ -88,7 +87,7 @@ function Details({route, match}) {
         }
         else {
             dispatch(addFavorite(param.id)).then(() => {
-                if (favorites.status == FAVORITES_FETCHED) {
+                if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
                     dispatch(showDialog({
                         mode: DialogMode.SUCCESS,
                         bgimg: false,
