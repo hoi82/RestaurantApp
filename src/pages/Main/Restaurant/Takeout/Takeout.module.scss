@@ -3,4 +3,20 @@
 
 .takeout {
     @include relative_full;
+    padding: 72px;
+
+    .title {        
+        font-size: $h1-size;
+        font-weight: 600;
+        color: $title-color;
+
+        &::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: $grade5-bg-color;
+            margin: 17px auto 18px 0;
+        }
+    }   
 }

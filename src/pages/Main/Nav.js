@@ -8,12 +8,12 @@ export default (props) => {
     return (
         <div className={styles.nav}>
             <Profile/>
-            <div className={styles.acco}>
+            <div className={styles.acco}>                
                 <div className={styles.acco_item}>
                     <label className={styles.acco_header} htmlFor="cbRes">                        
                         Restaurant
                     </label>                    
-                    <input className={styles.acco_idc} type="checkbox" id="cbRes" hidden/>
+                    <input className={styles.acco_idc} type="checkbox" id="cbRes" hidden defaultChecked={true}/>
                     <div className={styles.acco_content}>
                         <Link className={styles.acco_button} to="/">                                
                             Top Related                                
@@ -24,13 +24,13 @@ export default (props) => {
                         <Link className={styles.acco_button} to={endpoint.favoriteRestaurants}>
                             Favorites
                         </Link>                                              
-                    </div>
-                </div>
+                    </div>                    
+                </div>    
                 <div className={styles.acco_item}>
-                    <label className={styles.acco_header} htmlFor="cbSearch">
+                    <label className={styles.acco_header} htmlFor="cbResSearch">
                         Search
                     </label>
-                    <input className={styles.acco_idc} type="checkbox" id="cbSearch" hidden/>
+                    <input className={styles.acco_idc} type="checkbox" id="cbResSearch" hidden/>
                     <div className={styles.acco_content}>
                         <Link className={styles.acco_button} to={endpoint.searchRestaurantByName}>
                             By Name
@@ -42,7 +42,43 @@ export default (props) => {
                             By Location
                         </Link>
                     </div>
-                </div>   
+                </div>     
+                {/* <div className={styles.acco_item}>
+                    <label className={styles.acco_header} htmlFor="cbFood">                        
+                        Food
+                    </label>                    
+                    <input className={styles.acco_idc} type="checkbox" id="cbFood" hidden defaultChecked={true}/>
+                    <div className={styles.acco_content}>
+                        <Link className={styles.acco_button} to="/">                                
+                            Top Related                                
+                        </Link>                            
+                        <Link className={styles.acco_button} to="/">                                
+                            Hot!                                
+                        </Link>  
+                        <Link className={styles.acco_button} to={endpoint.favoriteRestaurants}>
+                            Favorites
+                        </Link>                                              
+                    </div>
+                    <div className={styles.sub_acco}>
+                        <div className={styles.acco_item}>
+                            <label className={styles.acco_header} htmlFor="cbFoodSearch">
+                                Search
+                            </label>
+                            <input className={styles.acco_idc} type="checkbox" id="cbFoodSearch" hidden/>
+                            <div className={styles.acco_content}>
+                                <Link className={styles.acco_button} to={endpoint.searchRestaurantByName}>
+                                    By Name
+                                </Link>
+                                <Link className={styles.acco_button} to={endpoint.searchRestaurantByCategory}>
+                                    By Category
+                                </Link>
+                                <Link className={styles.acco_button} to={endpoint.searchRestaurantByLocation}>
+                                    By Location
+                                </Link>
+                            </div>
+                        </div>   
+                    </div>                    
+                </div>             */}
                 <div className={styles.acco_item}>
                     <label className={styles.acco_header} htmlFor="cbReserve">
                         My Reservations
@@ -55,9 +91,9 @@ export default (props) => {
                         <Link className={styles.acco_button} to={""}>
                             Takeouts
                         </Link>
-                        <Link className={styles.acco_button} to={""}>
+                        {/* <Link className={styles.acco_button} to={""}>
                             Menu Orders
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>             
                 <div className={styles.acco_item}>

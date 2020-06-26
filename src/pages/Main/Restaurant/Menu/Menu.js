@@ -22,8 +22,8 @@ export default function Menu() {
                 <div className={styles.header_content}>
                     <div>
                         <span className={styles.name}>{menu.name}</span>
-                        <img src={favorite} className={styles.header_btn}/>
-                        <img src={share} className={styles.header_btn}/>
+                        {/* <img src={favorite} className={styles.header_btn}/>
+                        <img src={share} className={styles.header_btn}/> */}
                     </div>
                     <div>
                         <span className={styles.price_title}>Price : </span>

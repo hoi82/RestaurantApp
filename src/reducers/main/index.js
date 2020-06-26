@@ -4,6 +4,7 @@ import reservation from "./reservation";
 import restaurant from "./restaurant";
 import favorite from "./favorite";
 import menu from "./menu";
+import takeout from "./takeout";
 
 export default combineReducers({
     search: search,
@@ -11,4 +12,5 @@ export default combineReducers({
     reservation: reservation,
     favorite: favorite,
     menu: menu,    
+    takeout: takeout
 })

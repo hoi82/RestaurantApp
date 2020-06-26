@@ -11,6 +11,7 @@ import { asyncReviewForm } from "./pages/Main/Restaurant/Review";
 import { asyncReservation } from "./pages/Main/Restaurant/Reservation";
 import { asyncReservationResult } from "./pages/Main/Restaurant/ReservationResult";
 import { asyncTakeout } from "./pages/Main/Restaurant/Takeout";
+import { asyncTakeoutResult } from "./pages/Main/TakeoutResult";
 import { asyncFavoriteRestaurants } from "./pages/Main/Favorites";
 import { asyncOptions } from "./pages/Options";
 
@@ -19,7 +20,8 @@ export default [
         component: App,
         routes: [
             {
-                path: [endpoint.searchMain, endpoint.restaurantMain, endpoint.searchResultMain, endpoint.reviewMain, endpoint.reservationMain, endpoint.menuMain],
+                path: [endpoint.searchMain, endpoint.restaurantMain, endpoint.searchResultMain, 
+                    endpoint.reviewMain, endpoint.reservationMain, endpoint.menuMain, endpoint.takeoutMain],
                 component: asyncMain,                     
                 routes: [                    
                     {
@@ -93,7 +95,11 @@ export default [
                         component: asyncFavoriteRestaurants,
                         exact: true
                     },
-                    
+                    {
+                        path: endpoint.takeoutResult,
+                        component: asyncTakeoutResult,
+                        exact: true
+                    }
                 ]
             },
             {

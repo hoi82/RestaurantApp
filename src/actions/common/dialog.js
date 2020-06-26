@@ -1,3 +1,5 @@
+import { DialogMode } from "../../types/Variables";
+
 export const SHOW_DIALOG = "SHOW_DIALOG";
 export const CLOSE_DIALOG = "CLOSD_DIALOG";
 

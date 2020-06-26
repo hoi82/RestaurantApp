@@ -9,7 +9,8 @@
 }
 
 .content_panel {            
-    @include relative(calc(100% - #{$main-nav_width}), auto);       
+    @include relative(calc(100% - #{$main-nav_width}), auto);   
+    min-height: 1024px;    
     background-color: $grade1-bg-color;
     border-radius: 8px;
     margin-top: 16px;

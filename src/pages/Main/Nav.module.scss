@@ -2,7 +2,7 @@
 @import "../../theme/utils.scss";
 
 .nav {    
-    @include relative(calc(#{$main-nav_width} - 8px));
+    @include relative(calc(#{$main-nav_width} - 8px), 1024px);
     @include column_flex;    
     margin-right: 8px;
     margin-bottom: 8px;    
