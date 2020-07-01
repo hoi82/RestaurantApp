@@ -5,7 +5,7 @@ import { renderRoutes } from "react-router-config";
 import { hot } from "react-hot-loader";
 import ErrorBoundary from "../components/ErrorBoundary";
 
-const App = ({route}) => {       
+const App = ({route}) => {    
     return (
         <ErrorBoundary>            
             <div className={styles.box}>                

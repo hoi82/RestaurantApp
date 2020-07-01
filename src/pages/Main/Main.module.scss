@@ -29,7 +29,8 @@
     min-width: 960px;
     margin: 16px auto auto auto;
     border-radius: 8px;
-    background-color: $grade2-bg-color;
+    // background-color: $grade2-bg-color;
+    background-color: var(--grade2-bg-color);
     // box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.5);   
 }
 

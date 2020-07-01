@@ -74,12 +74,13 @@
             }
         }
 
-        & > img {
+        .menu_btn {
             @include absolute(8px, 8px, auto, auto);
             @include set_size(24px, 24px);
             cursor: pointer;
             user-select: none;
-            background-color: $grade2-bg-color;
+            background-color: transparent;
+            fill: $deep-title-color;
             border-radius: 3px;
             padding: 4px;
         }  

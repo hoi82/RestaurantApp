@@ -85,10 +85,10 @@ export default (props) => {
                     </label>
                     <input className={styles.acco_idc} type="checkbox" id="cbReserve" hidden/>
                     <div className={styles.acco_content}>
-                        <Link className={styles.acco_button} to={""}>
+                        <Link className={styles.acco_button} to={endpoint.myReservations}>
                             Restaurants
                         </Link>
-                        <Link className={styles.acco_button} to={""}>
+                        <Link className={styles.acco_button} to={endpoint.myTakeouts}>
                             Takeouts
                         </Link>
                         {/* <Link className={styles.acco_button} to={""}>

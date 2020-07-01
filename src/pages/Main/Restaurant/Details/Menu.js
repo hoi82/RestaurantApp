@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styles from "./Menu.module.scss";
-import { fetchMenu } from '../utils';
 import { useHistory } from 'react-router';
 import { IMAGE_URL, endpoint } from '../../../../config/url';
 import noImage from '../../../../types/noImage';

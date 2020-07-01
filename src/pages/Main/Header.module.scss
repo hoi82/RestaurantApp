@@ -10,13 +10,14 @@
     .trans_btn {
         @include set_size(32px, 32px);         
         padding: 4px;
-        border-radius: 4px;        
-        cursor: pointer;
+        border-radius: 4px;   
+        fill: $deep-title-color;     
+        cursor: pointer;        
     }
 
     .language_btn {
         @include row_flex(space-between, center);
-        @include set_size(120px, 40px);
+        @include set_size(136px, 40px);
         background-color: $grade2-bg-color;   
         padding: 0 12px;     
         margin: 0;
@@ -32,9 +33,12 @@
         }
 
         span {
-            display: block;
+            // display: block;
+            display: inline-block;
+            width: 72px;
             font-size: $h3-size;
             color: $content-color;
+            text-align: center;            
             font-weight: 600;
         }
     }    
@@ -42,4 +46,8 @@
     .flag {
         @include set_size(40px, 32px);
     }
+}
+
+.test_btn {
+    background-color: var(--grade5-bg-color);
 }

@@ -57,13 +57,11 @@ export default function Takeout(props) {
     const combineToOrder = (userInfo, resid, formValue) => {
         const v = { 
             userid: userInfo.id,
-            resid: resid,
-            order: formValue.map((order) => ({ 
+            resid: resid,            
+            orders: formValue.map((order) => ({
                 menuid: order.id,
-                quantity: order.quantity,                
-            })),
-            price: formValue.map((order) => ({
-                menuid: order.id,
+                name: order.name,
+                thumbnail: order.thumbnail,
                 quantity: order.quantity,
                 priceperunit: order.price.value,
                 menutotalprice: order.quantity * order.price.value                
@@ -72,7 +70,7 @@ export default function Takeout(props) {
                 return acc + (cur.quantity * cur.price.value)
             }, 0)
         }
-
+                
         return v;
     }
 

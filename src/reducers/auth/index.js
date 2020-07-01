@@ -22,6 +22,7 @@ export const auth = (state = initialAuth, action) => {
         case LOG_IN_SUCCESS:
             return produce(state, draft => {
                 draft.state = LOG_IN_SUCCESS;
+                draft.id = payload.id;
                 draft.email = payload.email;
                 draft.name = payload.name;
                 draft.lastAccess = Date.parse(payload.lastAccess);
@@ -30,6 +31,7 @@ export const auth = (state = initialAuth, action) => {
         case LOG_IN_FAILED:
             return produce(state, draft => {
                 draft.state = LOG_IN_FAILED;
+                draft.id = "";
                 draft.email = "";
                 draft.name = "";
                 draft.lastAccess = new Date(0),

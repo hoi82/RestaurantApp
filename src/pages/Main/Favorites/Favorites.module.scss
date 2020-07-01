@@ -129,12 +129,12 @@
         
     }  
 
-    .menu {
-        // @include absolute(16px, 16px, auto, auto);
+    .menu {        
         @include set_size(24px, 24px);
         cursor: pointer;
         user-select: none;
-        background-color: $grade2-bg-color;
+        background-color: transparent;
+        fill: $deep-title-color;
         border-radius: 3px;
         padding: 4px;
         margin-left: 8px;

@@ -9,12 +9,12 @@ import { useHistory } from 'react-router';
 import PanelGrid from '../../../components/PanelGrid';
 import { fetchRestaurantIfNeed } from '../../../actions/main/restaurant/details';
 import StyledCheckBox from "../../../components/StyledCheckBox";
-import menu from "../../../image/menu.svg";
 import Popup from '../../../components/Popup';
 import { Link } from 'react-router-dom';
 import { SESSION_FOUND, LOG_IN_SUCCESS } from '../../../actions/auth';
 import { showDialog } from '../../../actions/common/dialog';
 import { DialogMode } from '../../../types/Variables';
+import MenuButton from '../../../components/MenuButton/MenuButton';
 
 const Restaurant = ({id, name, address, thumbnail, selected, index}) => {    
     const history = useHistory();
@@ -55,7 +55,8 @@ const Restaurant = ({id, name, address, thumbnail, selected, index}) => {
                 <span>{getFullAddress(address)}</span>                
             </div>               
             <StyledCheckBox checked={selected} onChange={handleToggle}/>
-            <img className={styles.menu} src={menu} id={btnID}/>
+            {/* <img className={styles.menu} src={menu} id={btnID}/> */}
+            <MenuButton id={btnID} className={styles.menu}/>
             <Popup triggerID={btnID} position={{top: "16px", right: "64px"}}>
                 <div className={styles.menu_panel}>
                     <button onClick={handleRemove}>Remove from favorite list</button>

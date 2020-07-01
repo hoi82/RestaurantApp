@@ -1,7 +1,7 @@
 import { endpoint } from "./config/url";
 import path from "path";
 import App from "./app";
-import { asyncMain, asyncLogin, asyncRegister, asyncSearchByName, asyncSearchByCategory, NotFound } from "./pages";
+import { asyncMain, asyncRegister, asyncSearchByName, asyncSearchByCategory, NotFound } from "./pages";
 import { asyncSearchByLocation } from "./pages/Main/Restaurant/Search";
 import { GetAllCategories } from "./actions/main/search";
 import { asyncSearchResult } from "./pages/Main/Restaurant/SearchResult";
@@ -14,6 +14,7 @@ import { asyncTakeout } from "./pages/Main/Restaurant/Takeout";
 import { asyncTakeoutResult } from "./pages/Main/TakeoutResult";
 import { asyncFavoriteRestaurants } from "./pages/Main/Favorites";
 import { asyncOptions } from "./pages/Options";
+import { asyncMyReservations, asyncMyTakeouts } from "./pages/Main/My";
 
 export default [
     {
@@ -21,7 +22,7 @@ export default [
         routes: [
             {
                 path: [endpoint.searchMain, endpoint.restaurantMain, endpoint.searchResultMain, 
-                    endpoint.reviewMain, endpoint.reservationMain, endpoint.menuMain, endpoint.takeoutMain],
+                    endpoint.reviewMain, endpoint.reservationMain, endpoint.menuMain, endpoint.takeoutMain, endpoint.myMain],
                 component: asyncMain,                     
                 routes: [                    
                     {
@@ -98,6 +99,16 @@ export default [
                     {
                         path: endpoint.takeoutResult,
                         component: asyncTakeoutResult,
+                        exact: true
+                    },
+                    {
+                        path: endpoint.myReservations,
+                        component: asyncMyReservations,
+                        exact: true
+                    },
+                    {
+                        path: endpoint.myTakeouts,
+                        component: asyncMyTakeouts,
                         exact: true
                     }
                 ]

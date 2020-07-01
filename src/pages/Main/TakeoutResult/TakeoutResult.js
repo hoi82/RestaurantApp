@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Popup from "../../../components/Popup";
 import styles from "./TakeoutResult.module.scss";
+import axios from "axios";
+import { useParams } from 'react-router';
+import { getFullAddress } from "../../../utils/getStrings";
 
 function TakeoutResult(props) {
+    const [takeout, setTakeout] = useState(null);
+    const param = useParams();
+
+    useEffect(() => {
+        axios.get(`http://localhost:3005/api/takeout/${param.id}`).then((res) => {
+            setTakeout(res.data);            
+        });        
+    }, []);
+
+    const renderOrders = (orders) => {
+        return orders.map((order, i) => (
+            <div className={styles.order} key={order.menuid}>
+                <span className={styles.name}>{order.name}</span>
+                <span className={styles.quantity}>{order.quantity}</span>                
+                <span className={styles.price}>{order.menutotalprice}</span>                
+            </div>
+        ))
+    }
+
     return (
         <div className={styles.takeout_result}>
             <div className={styles.title_box}>
@@ -23,17 +45,19 @@ function TakeoutResult(props) {
             </div>   
             <div className={styles.content_box}>
                 <span className={styles.section_title}>Name</span>
-                <span className={styles.name}>aaa</span>
+                <span className={styles.large_content}>{takeout ? takeout.username : null}</span>
             </div>
             <div className={styles.content_box}>
                 <span className={styles.section_title}>Restaurant</span>
-                <span>aaaa</span>
+                <span className={styles.large_content}>{takeout ? takeout.restaurantname : null}</span>
+                <span className={styles.small_content}>{takeout ? getFullAddress(takeout.restaurantaddress) : null}</span>
             </div>
             <div className={styles.content_box}>
                 <span className={styles.section_title}>Orders</span>
-                <span>aaa</span>
-                <span>bbb</span>
-                <span>total</span>
+                <div className={styles.orders}>                    
+                    {takeout ? renderOrders(takeout.orders) : null}
+                </div>
+                <span className={styles.total_price}>{takeout ? `Total : ${takeout.totalprice}` : null}</span>
             </div>            
         </div>
     );

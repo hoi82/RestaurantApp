@@ -8,6 +8,7 @@ import menu from "../../../../image/menu.svg";
 import { useSelector, useDispatch } from 'react-redux';
 import { endpoint } from '../../../../config/url';
 import Popup from '../../../../components/Popup';
+import MenuButton from '../../../../components/MenuButton/MenuButton';
 
 function Review({id, rating, created, title, comment, userID, resID, userName, onDelete}) {
     const auth = useSelector((store) => store.auth);    
@@ -77,7 +78,7 @@ function Review({id, rating, created, title, comment, userID, resID, userName, o
                 </div>
                 <span className={styles.review_title}>{title}</span>
                 <p className={styles.comment}>{injectFold(comment)}</p>
-                <img src={menu} id={btnID}/>
+                <MenuButton id={btnID} className={styles.menu_btn}/>
             </div>               
             <Popup triggerID={btnID} position={{top: "24px", right: "64px"}}>
                 <div className={styles.menu}>

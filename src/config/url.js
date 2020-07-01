@@ -33,7 +33,9 @@ export const endpoint = {
     takeoutResult: "/takeout/:id",  
     favoriteRestaurants: "/restaurants/favorite",
     recentSearchedRestaurants: "/restaurants/recent",
+    myMain: "/my",
     myReservations: "/my/reservation", 
+    myTakeouts: "/my/takeout",
     options: "/options",   
 }
 

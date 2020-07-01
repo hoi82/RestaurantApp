@@ -1,6 +1,6 @@
 import axios from "axios";
 import { axiosConfig, endpoint } from "../../config/url";
-import { SESSION_FOUND } from "../auth";
+import { SESSION_FOUND, LOG_IN_SUCCESS } from "../auth";
 import { push } from "connected-react-router";
 
 export const READY_TO_REGISTER_RESERVATION = "READY_TO_REGISTER_RESERVATION";
@@ -28,12 +28,13 @@ export const updateMessage = (message = "") => {
 export const registerReservation = () => (dispatch, getState) => {
     const {auth, main} = getState();
     dispatch({ type: PROCESSING_RESERVATION });    
-    if (auth.state == SESSION_FOUND) {
+    if (auth.state == SESSION_FOUND || auth.state == LOG_IN_SUCCESS) {
         const info = {
             resid: main.restaurant.details.id,
             userid: auth.id,
             start: main.reservation.start,
             end: main.reservation.end,
+            timezone: main.restaurant.details.opens.timezone,
             member: main.reservation.member,
             message: main.reservation.message,
         };        

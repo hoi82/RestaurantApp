@@ -17,7 +17,8 @@
     }
 
     .calendar {        
-        background-color: $grade1-bg-color; 
+        // background-color: $grade1-bg-color; 
+        background-color: var(--grade1-bg-color); 
         
         button {
             font-family: inherit;
@@ -27,7 +28,8 @@
             @include set_size(32px, 32px);
             box-sizing: border-box;
             padding: 0;
-            background-color: $grade2-bg-color;
+            // background-color: $grade2-bg-color;
+            background-color: var(--grade2-bg-color);
             border-radius: 5px;
 
             &:not(:first-child) {
@@ -67,7 +69,8 @@
 
             button[class ~= "react-calendar__month-view__days__day"] {
                 @include set_size(40px, 40px);
-                background-color: $grade1-bg-color;                
+                // background-color: $grade1-bg-color;
+                background-color: var(--grade1-bg-color);
                 padding: 0;                
                 padding: 2px;
 
@@ -75,8 +78,10 @@
                     display: table-cell;
                     @include set_size(36px, 36px);
                     border-radius: 4px;
-                    background-color: $content-button-bg;
-                    color: $highlight-highlight-color;
+                    // background-color: $content-button-bg;
+                    // color: $highlight-highlight-color;
+                    background-color: var(--content-button-bg);
+                    color: var(--highlight-highlight-color);
                     font-size: $h3-size;
                     vertical-align: middle;
                 }
@@ -84,15 +89,19 @@
 
             button[class ~= "react-calendar__month-view__days__day--neighboringMonth"] {
                 abbr {
-                    background-color: $grade5-bg-color;
-                    color: $content-color;
+                    // background-color: $grade5-bg-color;
+                    // color: $content-color;
+                    background-color: var(--grade5-bg-color);
+                    color: var(--content-color);
                 }
             }
 
             button[class ~= "react-calendar__month-view__days__day"]:disabled {
                 abbr {
-                    background-color: $grade2-bg-color;
-                    color: $grade1-bg-color
+                    // background-color: $grade2-bg-color;
+                    // color: $grade1-bg-color
+                    background-color: var(--grade2-bg-color);
+                    color: var(--grade1-bg-color);
                 }
             }
         } 
@@ -103,22 +112,27 @@
             button[class ~= "react-calendar__year-view__months__month"] {
                 @include set_size(100%, 48px);
                 padding: 0;
-                background-color: $grade1-bg-color;
+                // background-color: $grade1-bg-color;
+                background-color: var(--grade1-bg-color);
                 padding: 2px;
 
                 abbr {
                     display: table-cell;
                     @include set_size(96px, 44px);
                     border-radius: 4px;
-                    background-color: $content-button-bg;
-                    color: $highlight-highlight-color;
+                    // background-color: $content-button-bg;
+                    // color: $highlight-highlight-color;
+                    background-color: var(--content-button-bg);
+                    color: var(--highlight-highlight-color);
                     font-size: $h3-size;
                     vertical-align: middle;
                 }
 
                 &:disabled > abbr {
-                    background-color: $grade2-bg-color;
-                    color: $grade1-bg-color;
+                    // background-color: $grade2-bg-color;
+                    // color: $grade1-bg-color;
+                    background-color: var(--grade2-bg-color);
+                    color: var(--grade1-bg-color);
                 }
             }            
         }

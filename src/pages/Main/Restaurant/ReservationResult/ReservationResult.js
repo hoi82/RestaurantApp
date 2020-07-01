@@ -19,7 +19,7 @@ export default function ReservationResult({}) {
     },[]);    
 
     const handleExit = (e) => {
-        histroy.replace(`${endpoint.restaurantDetail.replace(":id", restaurantThumbnail.id)}`);
+        histroy.replace(`${endpoint.restaurantDetail.replace(":id", resInfo.resid)}`);
     }
     
     return (

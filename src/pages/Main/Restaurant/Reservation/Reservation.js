@@ -46,7 +46,7 @@ export default function Reservation({}) {
         setDate(value);        
     }
 
-    const handleTime = (sTime, eTime) => {
+    const handleTime = (sTime, eTime) => {        
         dispatch(updateTime({start: sTime, end: eTime}));
     }
 

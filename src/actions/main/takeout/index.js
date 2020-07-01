@@ -6,7 +6,7 @@ export const FETCHING_TAKEOUTS = "FETCHING_TAKEOUTS";
 export const TAKEOUTS_FETCHED = "TAKEOUT_FETCHED";
 export const TAKEOUTS_FETCH_FAILED = "TAKEOUTS_FETCH_FAILED";
 
-const TAKEOUT_LIST = "http://localhost:3005/api/takeouts";
+const TAKEOUT_LIST = "http://localhost:3005/api/menus/takeout";
 
 export const fetchTakeouts = (resid) => (dispatch) => {     
     dispatch({type: FETCHING_TAKEOUTS, payload: resid});

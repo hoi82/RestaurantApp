@@ -11,6 +11,9 @@ const RESERVATION_URL = "http://localhost:3005/api/reservation";
 const FAVORITE_URL = "http://localhost:3005/api/favorite/restaurant";
 const FAVORITE_LIST = "http://localhost:3005/api/favorite/restaurants";
 
+const CancelToken = axios.CancelToken;
+let cancel;
+
 export const fetchReviews = (resID, errcb) => {
     return new Promise((resolve, reject) => {
         axios.get(REVIEW_URL.replace("_ID", resID), axiosConfig).then((res) => {        
@@ -19,14 +22,6 @@ export const fetchReviews = (resID, errcb) => {
             reject(err);
         })
     })    
-}
-
-export const fetchUserName = (userID, errcb) => {
-    return axios.get(USER_NAME_URL.replace("_ID", userID), axiosConfig).then((res) => {
-        return res.data;
-    }).catch((err) => {
-        errcb(err);
-    });
 }
 
 export const fetchMenu = (menuID) => {
@@ -101,7 +96,7 @@ export const isInTime = (date) => {
 
 export const fetchRestaurantThumbnail = (id) => {
     return new Promise((resolve, reject) => {
-        axios.get(`${RESTAURANT_THUMBNAIL_URL}/${id}`, axiosConfig).then((res) => {
+        axios.get(`${RESTAURANT_THUMBNAIL_URL}/${id}`, {cancelToken : new CancelToken((c) => cancel = c) ,...axiosConfig}).then((res) => {
             resolve(res.data);
         }).catch((err) => {
             reject(err);
@@ -109,50 +104,10 @@ export const fetchRestaurantThumbnail = (id) => {
     })    
 }
 
-export const uploadReview = (review) => {    
-    return new Promise((resolve, reject) => {
-        axios.post(REVIEW_ACTION_URL, review, axiosConfig).then((res) => {
-            resolve(res);
-        }).catch((err) => {
-            reject(err);
-        })
-    })
-}
-
-export const editReview = (review) => {
-    return new Promise((resolve, reject) => {
-        axios.patch(REVIEW_ACTION_URL, review, axiosConfig).then((res) => {
-            resolve(res);
-        }).catch((err) => {
-            reject(err);
-        })
-    });
-}
-
-export const deleteReview = (id) => {
-    return new Promise((resolve, reject) => {
-        axios.delete(REVIEW_ACTION_URL, Object.assign({}, axiosConfig, {data: { id }})).then((res) => {
-            resolve(res);
-        }).catch((err) => {
-            reject(err);
-        })
-    })
-}
-
 export const fetchReservationInfo = (resid, date) => {    
     return new Promise((resolve, reject) => {                
         axios.get(`${RESERVATION_URL}/${resid}/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`, 
         axiosConfig).then((res) => {
-            resolve(res.data);
-        }).catch((err) => {
-            reject(err);
-        })
-    })
-}
-
-export const createReservation = (info) => {
-    return new Promise((resolve, reject) => {
-        axios.post(RESERVATION_URL, info, axiosConfig).then((res) => {
             resolve(res.data);
         }).catch((err) => {
             reject(err);
@@ -170,48 +125,6 @@ export const fetchReservation = (id) => {
     })
 }
 
-export const addFavorite = (resid) => {
-    return new Promise((resolve, reject) => {
-        axios.post(`${FAVORITE_URL}`, {
-            resid: resid
-        }, axiosConfig).then((res) => {
-            resolve(res.data);
-        }).catch((err) => {                        
-            reject(err.response.data);
-        });
-    })
-}
-
-export const removeFavorite = (resid) => {
-    return new Promise((resolve, reject) => {
-        axios.delete(`${FAVORITE_URL}/${resid}`, axiosConfig).then((res) => {
-            resolve(res.data);
-        }).catch((err) => {
-            reject(err);
-        })
-    })
-}
-
-export const getRestaurantIsFavorite = (resid) => {
-    return new Promise((resolve, reject) => {
-        axios.get(`${FAVORITE_URL}/${resid}`, axiosConfig).then((res) => {
-            resolve(res.data);
-        }).catch((err) => {
-            reject(err);
-        })
-    })
-}
-
-export const getFavoriteRestaurants = () => {
-    return new Promise((resolve, reject) => {
-        axios.get(FAVORITE_LIST, axiosConfig).then((res) => {
-            resolve(res.data);
-        }).catch((err) => {
-            reject(err);
-        })
-    })
-}
-
 export const fetchReview = (id) => {
     return new Promise((resolve, reject) => {
         axios.get(`${REVIEW_URL}/${id}`).then((res) => {
@@ -220,4 +133,9 @@ export const fetchReview = (id) => {
             reject(err);
         })
     })
+}
+
+export const cancelFetch = () => {
+    if (cancel != undefined)
+        cancel();
 }

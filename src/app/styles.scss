@@ -57,10 +57,10 @@ div, button, form {
 }
 
 .box {    
-    overflow: auto;
-    background-color: $grade1-bg-color;        
+    overflow: auto;    
+    background-color: var(--grade1-bg-color);
 }
 
 .bgimg, .box {
-    @include absolute_full_stretch;
+    @include absolute_full_stretch;    
 }  
