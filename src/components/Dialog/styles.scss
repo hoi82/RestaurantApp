@@ -19,7 +19,7 @@
     .box {
         @include relative;
         @include column_flex;        
-        background-color: $bg-color;            
+        background-color: $grade1-bg-color;            
         overflow: hidden;
         border: none;            
         border-radius: 8px;

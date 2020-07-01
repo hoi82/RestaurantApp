@@ -8,7 +8,7 @@
     .container {        
         @include absolute($left: 0, $top: 0);      
         @include set_size(410px, 100%);
-        background-color: $nav-bg-color;        
+        background-color: $grade2-bg-color;        
         padding: 40px;        
         min-height: 620px;
         box-shadow: 2px 0px 10px 0 rgba(0,0,0,0.5);

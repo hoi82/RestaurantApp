@@ -1,26 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styles from "./Nav.module.scss";
-import { endpoint } from "../../config/url";
 import { useDispatch } from 'react-redux';
-import { ResetRegisterStatus } from '../../actions/register/status';
 import { useFormikContext } from 'formik';
 
 export default function Nav({pageName, movePage, onRegister}) {
     const dispatch = useDispatch();
     const context = useFormikContext();
+    const history = useHistory();
 
     const handleClick = (e) => {
         movePage(e.target.value);
     }
 
-    const handleRegister = (e) => {
-        // onRegister();
+    const handleRegister = (e) => {        
         context.submitForm();
     }
 
     const handleBacktoLogin = (e) => {
-        dispatch(ResetRegisterStatus());
+        
     }     
 
     return (        
@@ -41,9 +39,9 @@ export default function Nav({pageName, movePage, onRegister}) {
                 </button>
                 <div className={styles.button_box}>
                     <span className={styles.small_text}>계정이 있으신가요?</span>
-                    <Link className={styles.link_btn} to={endpoint.login} onClick={handleBacktoLogin}>                        
+                    <button type="button" className={styles.link_btn} onClick={handleBacktoLogin}>
                         <div className={styles.link_text}>로그인</div>
-                    </Link>                                
+                    </button>                                
                 </div>   
             </div>
         </div>        

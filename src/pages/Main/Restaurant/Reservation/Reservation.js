@@ -12,7 +12,7 @@ import { DialogMode } from '../../../../types/Variables';
 import moment from "moment-timezone";
 import { registerReservation, updateMember, updateTime, updateMessage } from '../../../../actions/main/reservation';
 import { fetchRestaurantIfNeed, LOADED_RESTAURANT } from '../../../../actions/main/restaurant/details';
-import { fetchReservationInfo } from '../utils';
+import { fetchReservationInfo, cancelFetch } from '../utils';
 import noImage from '../../../../types/noImage';
 
 export default function Reservation({}) {
@@ -32,6 +32,7 @@ export default function Reservation({}) {
             setCalculatedReserves(calculateReserved(res));
         });
           
+        return () => cancelFetch();
     }, [restaurant.status == LOADED_RESTAURANT && date]);    
 
     const handleForm = (e) => {

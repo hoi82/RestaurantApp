@@ -29,7 +29,7 @@
     .content_box {        
         overflow: scroll;        
         padding: 16px; 
-        background-color: $primary-bg-color;
+        background-color: $grade1-bg-color;
         //NOTE:flex-grow : flex container 안에서 item 각각이 차지하는 비율. 0 = 비활성, 숫자 = 비율
         flex-grow: 1;       
 

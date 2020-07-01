@@ -60,8 +60,8 @@
 
     button {                
         @include set_size(32px, 32px);        
-        background-color: $grade2-bg-color;    
-        color: $title-color;    
+        background-color: $grade2-bg-color;
+        color: $title-color;
         border-radius: 5px;
         padding: 0;     
         margin: 0px 4px;
@@ -87,7 +87,7 @@
             @include set_size(24px, 24px);
             line-height: 24px;
             margin: 4px;
-            font-size: $h3-size;                                    
+            font-size: $h3-size;                
         }
 
         img {

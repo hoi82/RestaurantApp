@@ -11,12 +11,7 @@ import theme from "../../theme/theme.scss";
 
 const cx = classNames.bind(theme);
 
-function Header(props) {
-
-    useEffect(() => {
-        document.documentElement.classList.toggle(cx("light_theme"));
-    }, []);
-    
+function Header(props) {        
     const handleClick = (e) => {         
         document.documentElement.classList.toggle(cx("light_theme"));
         document.documentElement.classList.toggle(cx("dark_theme"));
