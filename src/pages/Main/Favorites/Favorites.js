@@ -72,21 +72,17 @@ const Restaurant = ({id, name, address, thumbnail, selected, index}) => {
 export default function Favorites({}) {
     const [selectState, setSelectState] = useState(true);    
     const restaurants = useSelector((store) => store.main.favorite.restaurant);  
-    const authStatus = useSelector((store) => store.auth.state);  
+    const auth = useSelector((store) => store.auth);  
     const dispatch = useDispatch();        
 
     useEffect(() => {
-        if (isLogIn())        
+        if (auth.isLogIn)        
             dispatch(fetchFavorites());
-    }, [authStatus]);
+    }, [auth]);
 
     const renderRestaurant = (item, index) => {
         return <Restaurant {...item} key={item.id} index={index}/>;
-    }    
-
-    const isLogIn = () => {
-        return (authStatus == SESSION_FOUND) || (authStatus == LOG_IN_SUCCESS);
-    }
+    }        
 
     const handleToggleAll = (e) => {           
         dispatch(toggleAll(selectState));

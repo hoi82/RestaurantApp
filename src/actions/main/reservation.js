@@ -28,7 +28,7 @@ export const updateMessage = (message = "") => {
 export const registerReservation = () => (dispatch, getState) => {
     const {auth, main} = getState();
     dispatch({ type: PROCESSING_RESERVATION });    
-    if (auth.state == SESSION_FOUND || auth.state == LOG_IN_SUCCESS) {
+    if (auth.isLogin) {
         const info = {
             resid: main.restaurant.details.id,
             userid: auth.id,

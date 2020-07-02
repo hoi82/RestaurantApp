@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router';
 import styles from "./Review.module.scss";
 import { ISODateToString } from '../utils';
@@ -12,13 +12,13 @@ import MenuButton from '../../../../components/MenuButton/MenuButton';
 
 function Review({id, rating, created, title, comment, userID, resID, userName, onDelete}) {
     const auth = useSelector((store) => store.auth);    
-    const [fold, setFold] = useState(true);
-    const [btnID, setBtnID] = useState(`review${new Date().getTime()}`);
+    const [fold, setFold] = useState(true);    
     const history = useHistory();    
     const dispatch = useDispatch(); 
+    const btnRef = useRef();
 
     const handleUnfold = () => {
-        setFold(false);
+        setFold(false);        
     };
 
     const handleFold = () => {
@@ -78,9 +78,9 @@ function Review({id, rating, created, title, comment, userID, resID, userName, o
                 </div>
                 <span className={styles.review_title}>{title}</span>
                 <p className={styles.comment}>{injectFold(comment)}</p>
-                <MenuButton id={btnID} className={styles.menu_btn}/>
+                <MenuButton ref={btnRef} className={styles.menu_btn}/>
             </div>               
-            <Popup triggerID={btnID} position={{top: "24px", right: "64px"}}>
+            <Popup trigger={btnRef} position={{top: "24px", right: "64px"}}>
                 <div className={styles.menu}>
                     {auth.id == userID ? <React.Fragment>
                         <button onClick={handleEdit}>Edit</button>

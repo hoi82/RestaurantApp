@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { fetchRestaurantIfNeed } from '../../../../actions/main/restaurant/details';
 import { getFullAddress } from '../../../../utils/getStrings';
 import styles from "./Details.module.scss";
@@ -15,7 +15,7 @@ import { IMAGE_URL, endpoint } from '../../../../config/url';
 import Reviews from './Reviews';
 import Menus from './Menus';
 import { HashLink } from "react-router-hash-link";
-import { useParams, useLocation } from 'react-router';
+import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import GoogleMapReact from "google-map-react";
 import close from "../../../../image/close.svg";
@@ -37,8 +37,8 @@ function Details({route, match}) {
     const details = useSelector((store) => store.main.restaurant.details); 
     const reviews = useSelector((store) => store.main.restaurant.reviews);
     const favorites = useSelector((store) => store.main.favorite.restaurant);
-    const param = useParams(); 
-    const location = useLocation();
+    const store = useStore();
+    const param = useParams();     
     const dispatch = useDispatch();    
 
     useEffect(() => {
@@ -72,28 +72,32 @@ function Details({route, match}) {
     const isFavorite = () => {        
         return favorites.list.filter((v) => v.id == param.id).length > 0;
     }
-
+    //TODO: 여기부터 해야됨
     const handleFavorite = (e) => {
         if (isFavorite()) {
             dispatch(removeFavorite(param.id)).then(() => {
-                if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
-                        dispatch(showDialog({
-                        mode: DialogMode.SUCCESS,
-                        bgimg: false,
-                        content: "This restaurant is removed from your favorite list",                        
-                    }));
-                }
+                const { main: {favorite: {restaurant: status }} } = store.getState();
+                console.log("status : ",status);
+                // if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
+                //         dispatch(showDialog({
+                //         mode: DialogMode.SUCCESS,
+                //         bgimg: false,
+                //         content: "This restaurant is removed from your favorite list",                        
+                //     }));
+                // }
             });            
         }
         else {
             dispatch(addFavorite(param.id)).then(() => {
-                if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
-                    dispatch(showDialog({
-                        mode: DialogMode.SUCCESS,
-                        bgimg: false,
-                        content: "Sucessfully added to your favorite list",                        
-                    }));        
-                }
+                const { main: {favorite: {restaurant: status }} } = store.getState();
+                console.log("status : ",status);
+                // if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
+                //     dispatch(showDialog({
+                //         mode: DialogMode.SUCCESS,
+                //         bgimg: false,
+                //         content: "Sucessfully added to your favorite list",                        
+                //     }));        
+                // }
             });            
         }        
     }

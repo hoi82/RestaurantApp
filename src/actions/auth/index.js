@@ -16,34 +16,44 @@ const SESSION_URL = "http://localhost:3005/api/users/session/";
 const LOG_IN_URL = "http://localhost:3005/api/users/login/";
 const LOG_OUT_URL = "http://localhost:3005/api/users/logout/";
 
-export const SessionCheck = () => {    
-    return (dispatch) => {    
-        dispatch({type: AUTH_PROCESSING});            
-        return axios.get(SESSION_URL, axiosConfig).then((res) => {    
-            setTimeout(() => {
-                dispatch({ type: SESSION_VALIDATING, payload: res.data });
-            }, 300);                                
-        }).catch((err) => {
-            dispatch({ type: SESSION_VALIDATING, payload: { error: err } });
-        });
-    };    
+export const SessionCheck = () => async (dispatch) => {    
+    dispatch({type: AUTH_PROCESSING});
+    try {
+        const { data } = await axios.get(SESSION_URL, axiosConfig);
+        if (data.session) {
+            dispatch({type: SESSION_FOUND, payload: data});
+        }
+        else {
+            dispatch({type: SESSION_LOST, payload: data});
+        }            
+    } catch (error) {
+        dispatch({ type: SESSION_LOST, payload: { error: error } });
+    }            
 };
 
-export const processLogIn = (email, password) => {           
-    return (dispatch) => {        
+export const SessionCheckIfNeed = () => (dispatch, getState) => {
+    const { auth: {state} } = getState();    
+    if (state == AUTH_READY) {              
+        return dispatch(SessionCheck());
+    }    
+    return new Promise((resolve, reject) => {
+        resolve(null);
+    });
+}
+
+export const processLogIn = (email, password) => {
+    return async (dispatch) => {        
         dispatch({type: AUTH_PROCESSING});
-        return axios.post(LOG_IN_URL, 
-            {
+        try {
+            const { data } = await axios.post(LOG_IN_URL, {
                 email: email,
                 password: password
-            },
-            axiosConfig).then((res) => {            
-            dispatch({ type: LOG_IN_SUCCESS, payload: res.data }); 
-        }).catch((err) => {                        
-            dispatch({ type: LOG_IN_FAILED, payload: {code: err.response.status, message: err.response.data}});
-            dispatch({ type: RESET_AUTH });
-        });                       
-    }        
+            }, axiosConfig);
+            dispatch({type: LOG_IN_SUCCESS, payload: data});        
+        } catch (error) {        
+            dispatch({type: LOG_IN_FAILED, payload: {code: error.response.status, message: error.response.data}});    
+        }        
+    }
 }
 
 export const LogOut = () => {
@@ -52,14 +62,7 @@ export const LogOut = () => {
         return axios.get(LOG_OUT_URL, axiosConfig).then((res) => {
             dispatch({ type: LOG_OUT, payload: res.data }); 
         }).catch((err) => {
-            dispatch({ type: LOG_IN_FAILED, payload: { code: err.response.status, message: err.response.data }});
-            dispatch({ type: RESET_AUTH });
+            dispatch({ type: LOG_IN_FAILED, payload: { code: err.response.status, message: err.response.data }});            
         });   
-    }
-}
-
-export const resetAuth = () => {
-    return {
-        type: RESET_AUTH
     }
 }

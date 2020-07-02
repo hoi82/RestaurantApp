@@ -10,8 +10,8 @@ import theme from "../theme/theme.scss";
 const cx = classNames.bind(theme);
 
 const App = ({route}) => {    
-    useEffect(() => {
-        document.documentElement.classList.toggle(cx("light_theme"));
+    useEffect(() => {        
+        document.documentElement.classList.toggle(cx("light_theme"));        
     }, []);
 
     return (

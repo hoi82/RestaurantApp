@@ -64,8 +64,7 @@
             }
 
             .acco_header, .acco_button {
-                @include set_size(100%, 40px);
-                @include global_transition; 
+                @include set_size(100%, 40px);                                
                 text-align: left;
                 user-select: none;                                                                    
             }
@@ -76,8 +75,8 @@
 
             .acco_content {
                 @include column_flex();                
-                @include set_size($height: 100%);
-                @include global_transition;
+                @include set_size($height: 100%);                
+                transition: max-height 0.2s ease;                    
                 max-height: 0;                
                 overflow: hidden;                
             }

@@ -41,16 +41,12 @@ function Takeouts(props) {
     const auth = useSelector((store) => store.auth);
 
     useEffect(() => {        
-        if (isLogin()) {                        
+        if (auth.isLogin) {                        
             axios.get(`http://localhost:3005/api/takeouts/${auth.id}`).then((res) => {                
                 setTakeouts(res.data);
             })
         }
-    }, [auth.state]);
-
-    const isLogin = () => {
-        return auth.state == LOG_IN_SUCCESS || auth.state == SESSION_FOUND;
-    }
+    }, [auth]);    
 
     const renderTakeouts = (takeouts) => {
         return takeouts.map((takeout) => (

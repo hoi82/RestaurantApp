@@ -23,14 +23,10 @@ export default (props) => {
             buttons: true,            
             content: <Login/>
         }))
-    }    
-    
-    const isLogin = () => {        
-        return (auth.state == LOG_IN_SUCCESS) || (auth.state == SESSION_FOUND);
-    }
+    }        
 
     return (
-        isLogin() ? 
+        auth.isLogin ? 
         <div className={styles.profile}>                        
             <div className={styles.nameplate}>
                 <span className={styles.name}>{auth.name}</span>

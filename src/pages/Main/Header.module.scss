@@ -7,6 +7,12 @@
     max-width: 1280px;
     margin: auto;
 
+    .theme_btn {
+        @include set_size(32px, 32px);
+        cursor: pointer;
+        margin-right: 16px;
+    }
+
     .trans_btn {
         @include set_size(32px, 32px);         
         padding: 4px;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { forwardRef, useRef, useState } from 'react';
 import styles from "./Header.module.scss";
 import Popup from '../../components/Popup';
 import uk from "../../image/uk.svg";
@@ -8,21 +8,27 @@ import ch from "../../image/china.svg";
 import HeaderProfile from './HeaderProfile';
 import classNames from "classnames/bind";
 import theme from "../../theme/theme.scss";
+import lightIcon from "../../image/lightmode.svg";
+import darkIcon from "../../image/darkmode.svg";
 
 const cx = classNames.bind(theme);
 
 function Header(props) {        
+    const btnRef = useRef();
+    const [theme, setTheme] = useState("light");
+
     const handleClick = (e) => {         
         document.documentElement.classList.toggle(cx("light_theme"));
         document.documentElement.classList.toggle(cx("dark_theme"));
-    }
+        setTheme(prev => prev == "light" ? "dark" : "light");
+    }    
 
     return (
         <div className={styles.header}>
-            <button className={styles.test_btn} onClick={handleClick}>Theme</button>
+            <img className={styles.theme_btn} src={theme == "light" ? lightIcon : darkIcon} onClick={handleClick}/>
             <HeaderProfile/>            
-            <TranslateButton id="btnTranslate" className={styles.trans_btn}/>
-            <Popup triggerID="btnTranslate" position={{right: "0", top: "60px"}}>
+            <RefTranslateButton ref={btnRef} className={styles.trans_btn}/>
+            <Popup trigger={btnRef} position={{right: "0", top: "60px"}}>
                 <div>
                     <button data-closebutton={true} className={styles.language_btn}>
                         <img className={styles.flag} src={kr}/>
@@ -46,9 +52,9 @@ function Header(props) {
     );
 }
 
-function TranslateButton({id, className}) {
+function TranslateButton({className}, ref) {
     return (
-        <svg id={id} className={className} enableBackground="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg">
+        <svg ref={ref} className={className} enableBackground="new 0 0 512 512" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg">
             <g>
                 <path d="m207.386 280.048c0-4.142-3.358-7.5-7.5-7.5h-168.338c-9.125 0-16.548-7.423-16.548-16.548v-224.452c0-9.125 7.423-16.548 16.548-16.548h224.452c9.125 0 16.548 7.423 16.548 16.548v168.338c0 4.142 3.358 7.5 7.5 7.5s7.5-3.358 7.5-7.5v-168.338c0-17.396-14.152-31.548-31.548-31.548h-224.452c-17.396 0-31.548 14.152-31.548 31.548v224.452c0 17.396 14.152 31.548 31.548 31.548h168.338c4.142 0 7.5-3.358 7.5-7.5z"/>
                 <path d="m480.452 224.452h-64.129c-4.142 0-7.5 3.358-7.5 7.5s3.358 7.5 7.5 7.5h64.129c9.125 0 16.548 7.423 16.548 16.548v224.452c0 9.125-7.423 16.548-16.548 16.548h-224.452c-9.125 0-16.548-7.423-16.548-16.548v-224.452c0-9.125 7.423-16.548 16.548-16.548h128.259c4.142 0 7.5-3.358 7.5-7.5s-3.358-7.5-7.5-7.5h-128.259c-17.396 0-31.548 14.152-31.548 31.548v224.452c0 17.396 14.152 31.548 31.548 31.548h224.452c17.396 0 31.548-14.152 31.548-31.548v-224.452c0-17.396-14.152-31.548-31.548-31.548z"/>
@@ -60,5 +66,7 @@ function TranslateButton({id, className}) {
         </svg>
     )
 }
+
+const RefTranslateButton = forwardRef(TranslateButton);
 
 export default Header;

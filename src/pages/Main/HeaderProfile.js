@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import styles from "./HeaderProfile.module.scss";
 import { useSelector, useDispatch } from 'react-redux';
-import { SESSION_LOST, LOG_IN_FAILED, LogOut } from '../../actions/auth';
+import { LogOut } from '../../actions/auth';
 import { showDialog } from '../../actions/common/dialog';
 import Login from '../../components/Login';
 import Popup from '../../components/Popup';
@@ -9,10 +9,7 @@ import Popup from '../../components/Popup';
 function HeaderProfile(props) {
     const auth = useSelector((store) => store.auth);    
     const dispatch = useDispatch();
-
-    const isLogIn = () => {
-        return auth.state != SESSION_LOST && auth.state != LOG_IN_FAILED;
-    }
+    const btnRef = useRef();    
 
     const handleLogin = (e) => {
         dispatch(showDialog({
@@ -27,16 +24,16 @@ function HeaderProfile(props) {
     }
 
     return (
-        isLogIn() ?
+        auth.isLogin ?
         <React.Fragment>
-            <button id="headerprofilebtn" className={styles.logged_btn}>            
+            <button ref={btnRef} className={styles.logged_btn}>            
                 <div className={styles.name_plate}>
                     <span className={styles.name}>{auth.name}</span>
                     <span className={styles.email}>{auth.email}</span>
                     <img/>
                 </div>
             </button>
-            <Popup triggerID="headerprofilebtn" position={{top: "64px", right: "0"}}>
+            <Popup trigger={btnRef} position={{top: "64px", right: "0"}}>
                 <div className={styles.profile_popup}>
                     <div className={styles.profile}>
                         <div className={styles.name_plate}>

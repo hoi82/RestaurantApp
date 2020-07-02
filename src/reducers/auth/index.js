@@ -3,7 +3,8 @@ import { AUTH_PROCESSING, LOG_IN_FAILED, LOG_IN_SUCCESS, SESSION_FOUND, SESSION_
 
 
 export const initialAuth = {    
-    state: "",    
+    state: AUTH_READY,
+    isLogin: false,    
     id: "",
     email: "",
     name: "",
@@ -22,6 +23,7 @@ export const auth = (state = initialAuth, action) => {
         case LOG_IN_SUCCESS:
             return produce(state, draft => {
                 draft.state = LOG_IN_SUCCESS;
+                draft.isLogin = true;
                 draft.id = payload.id;
                 draft.email = payload.email;
                 draft.name = payload.name;
@@ -29,57 +31,45 @@ export const auth = (state = initialAuth, action) => {
                 draft.error = 200;
             });
         case LOG_IN_FAILED:
-            return produce(state, draft => {
+            return produce(state, draft => {                
                 draft.state = LOG_IN_FAILED;
+                draft.isLogin = false;
                 draft.id = "";
                 draft.email = "";
                 draft.name = "";
                 draft.lastAccess = new Date(0),
                 draft.error = payload.code;
-            });
+            });            
         case LOG_OUT:
             return produce(state, draft => {
                 draft.state = SESSION_LOST;
+                draft.isLogin = false;
+                draft.id = "";
                 draft.email = "";
                 draft.name = "";
                 draft.lastAccess = new Date(0),
                 draft.error = 0;
             })
-        case SESSION_VALIDATING: 
-            {
-                if (payload.error) {
-                    return {
-                        state: SESSION_LOST,
-                        id: "",
-                        email: "",
-                        name: "",
-                        lastAccess: new Date(0),
-                        error: payload.error
-                    }
-                }
-                else {
-                    if (payload.session) {
-                        return {
-                            state: SESSION_FOUND,
-                            id: payload.id,
-                            email: payload.email,
-                            name: payload.name,
-                            lastAccess: state.lastAccess,
-                            error: ""
-                        }
-                    }
-                    else {
-                        return {
-                            state: SESSION_LOST,
-                            id: "",
-                            email: "",
-                            name: "",
-                            lastAccess: new Date(0),
-                            error: ""
-                        }
-                    }
-                }
-            }
+        case SESSION_FOUND:
+            return produce(state, draft => {
+                draft.state = type;
+                draft.isLogin = true;
+                draft.id = payload.id;
+                draft.email = payload.email;
+                draft.name = payload.name;
+                draft.lastAccess = payload.lastAccess;
+                draft.error = 0;
+            })
+        case SESSION_LOST:
+            return produce(state, draft => {
+                draft.state = type;
+                draft.isLogin = false;
+                draft.id = "";
+                draft.email = "";
+                draft.name = "";
+                draft.lastAccess = new Date(0);
+                draft.error = 0;
+            })        
         case RESET_AUTH:
             return produce(state, draft => {
                 Object.assign(draft, initialAuth);

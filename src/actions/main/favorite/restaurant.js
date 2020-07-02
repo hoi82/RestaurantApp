@@ -1,5 +1,6 @@
 import axios from "axios";
 import { axiosConfig } from "../../../config/url";
+import { LOG_IN_SUCCESS, SESSION_FOUND, SessionCheckIfNeed } from "../../auth";
 
 export const READY_TO_FETCH_FAVORITE_RESTAURANTS = "READY_TO_FETCH_FAVORITE_RESTAURANTS";
 export const FETCHING_FAVORITE_RESTAURANTS = "FETCHING_FAVORITE_RESTAURANTS";
@@ -14,28 +15,32 @@ export const REMOVE_SELECTED_FAVORITE_RESTAURANTS = "REMOVE_SELECTED_FAVORITE_RE
 const FAVORITE_LIST = "http://localhost:3005/api/favorite/restaurants";
 const FAVORITE_URL = "http://localhost:3005/api/favorite/restaurant";
 
-export const fetchFavorites = () => (dispatch, getState) => {
-    const { auth } = getState();
+export const fetchFavorites = () => async (dispatch, getState) => {
+    const { auth } = getState();    
     dispatch({type: FETCHING_FAVORITE_RESTAURANTS, payload: auth.id});
-    return axios.get(FAVORITE_LIST, axiosConfig).then((res) => {
-        dispatch({type: FAVORITE_RESTAURANTS_FETCHED, payload: res.data});
-    }).catch((err) => {
-        dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: err});
-    })
+    try {
+        const { data } = await axios.get(FAVORITE_LIST, axiosConfig);
+        dispatch({type: FAVORITE_RESTAURANTS_FETCHED, payload: data});
+    } catch (error) {
+        dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: error.response.data});
+    }    
 }
 
 const shouldFetch = (getState) => {
     const { auth } = getState();
-    const { main: { favorite: { restaurant }}} = getState();
+    const { main: { favorite: { restaurant }}} = getState();    
 
     return (restaurant.status == READY_TO_FETCH_FAVORITE_RESTAURANTS) ||
-        ((restaurant.status != FETCHING_FAVORITE_RESTAURANTS) && (restaurant.userid != "") && (restaurant.userid != auth.id));    
+        ((restaurant.status != FETCHING_FAVORITE_RESTAURANTS) && (restaurant.userid != "") && (restaurant.userid != auth.id) && auth.isLogin);    
 }
 
-export const fetchFavoritesIfNeed = () => (dispatch, getState) => {
-    if (shouldFetch(getState)) {
-        return dispatch(fetchFavorites());
-    }
+export const fetchFavoritesIfNeed = () => (dispatch, getState) => {    
+    dispatch(SessionCheckIfNeed()).then(() => {
+        const { auth } = getState();        
+        if (shouldFetch(getState) && auth.isLogin) {     
+            return dispatch(fetchFavorites());
+        }    
+    })
 
     return null;
 }

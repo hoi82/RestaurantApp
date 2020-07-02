@@ -34,7 +34,7 @@ export default function Takeout(props) {
     const processTakeout = (orders = []) => {
         const data = combineToOrder(auth, param.id, orders);
 
-        if (isLogin()) {
+        if (auth.isLogin) {
             fetchTakeoutOrder(data);
         }
         else {
@@ -72,11 +72,7 @@ export default function Takeout(props) {
         }
                 
         return v;
-    }
-
-    const isLogin = () => {
-        return auth.state == SESSION_FOUND || auth.state == LOG_IN_SUCCESS;
-    }
+    }    
 
     return (
         <Formik initialValues={{

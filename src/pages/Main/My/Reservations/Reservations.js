@@ -38,16 +38,12 @@ function Reservations(props) {
     const auth = useSelector((store) => store.auth);
 
     useEffect(() => {           
-        if (isLogin()) {                                                
+        if (auth.isLogin) {                                                
             axios.get(`http://localhost:3005/api/reservations/${auth.id}`).then((res) => {
                 setReservations(res.data);
             })
         }
-    }, [auth.state]);
-
-    const isLogin = () => {
-        return auth.state == LOG_IN_SUCCESS || auth.state == SESSION_FOUND;
-    }
+    }, [auth]);    
 
     const renderReservations = (reservations) => {        
         return reservations.map((reservation) => (

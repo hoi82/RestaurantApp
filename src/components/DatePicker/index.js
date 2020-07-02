@@ -4,8 +4,7 @@ import Popup from '../Popup';
 import Calendar from 'react-calendar';
 import moment from "moment";
 
-function DatePicker({date, onChange}) {    
-    const [btnID, setBtnID] = useState(`datepic${new Date().getTime()}`);    
+function DatePicker({date, onChange}) {        
     const btnRef = useRef();
 
     const isSame = (date1 = new Date(), date2 = new Date()) => {
@@ -18,16 +17,17 @@ function DatePicker({date, onChange}) {
         }
 
         btnRef.current.click();
+        
     }    
 
     return (
         <div className={styles.datepicker}>
-            <button type="button" id={btnID} ref={btnRef} className={styles.date_button}>
+            <button type="button" ref={btnRef} className={styles.date_button}>
                 <div>
                     <span>{date ? date.toLocaleDateString() : null}</span>
                 </div>
             </button>
-            <Popup triggerID={btnID} position={{top: "48px"}}>
+            <Popup trigger={btnRef} position={{top: "48px"}}>
                 <Calendar value={date} next2Label={<div>v</div>} minDetail={"year"} minDate={new Date()} className={styles.calendar} onChange={handleDateChange}/>
             </Popup>
         </div>
