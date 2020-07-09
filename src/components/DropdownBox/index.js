@@ -11,16 +11,25 @@ const Item = ({className, onClick, item}) => {
     );
 };
 
-export default ({items=[], onChange, value, width, onBlur = null, editable}) => {   
+export default ({items=[], onChange, value, width, editable, onFocus, onBlur}) => {   
     //TODO: 두개가 있을 경우 하나가 열려있는 상태에서 다른걸 클릭하면 원래 열려있던게 닫히지 않음. 
     //blur에서 relatedTarget에 다른 dropbox일때도 추가함(name으로 판별했는데 좀더 안전한 방법으로 해야할듯).
     const [boxOpen, setBoxOpen] = useState(false);         
     const [selected, setSelected] = useState({index: -1});            
 
     useEffect(() => {
-        if (!boxOpen)
-            setSelected({ index: -1 });            
+        if (boxOpen) {
+            
+        }
+        else {            
+            setSelected({ index: -1 });
+        }            
     }, [boxOpen]);
+
+    const fireBlur = (e) => {
+        if (typeof onBlur == "function")
+            onBlur(e);
+    }
 
     const renderContents = () => {                
         if (boxOpen && items.length > 0) {
@@ -38,7 +47,7 @@ export default ({items=[], onChange, value, width, onBlur = null, editable}) => 
     const handleChange = (e) => {
         onChange(e.target.value);            
         if (!boxOpen) {
-            setBoxOpen(true);
+            setBoxOpen(true);            
         }                      
     }    
 
@@ -56,11 +65,13 @@ export default ({items=[], onChange, value, width, onBlur = null, editable}) => 
         //e.currentTarget.textContent        
         setBoxOpen(false);
         onChange(item);
+        fireBlur();
     }
 
     const handleBlur = (e) => {               
         if (e.relatedTarget == null || e.relatedTarget.name == "input") {
-            setBoxOpen(false);            
+            setBoxOpen(false);    
+            fireBlur(e);              
         }        
     }    
 
@@ -86,7 +97,7 @@ export default ({items=[], onChange, value, width, onBlur = null, editable}) => 
             })
         }  
         else if (e.key == "Escape") {
-            setBoxOpen(false);
+            setBoxOpen(false);            
         }
         else if (e.key == "Enter") {
             if (e.target.name == "input") {
@@ -98,23 +109,24 @@ export default ({items=[], onChange, value, width, onBlur = null, editable}) => 
         }        
     };
 
-    const handleInputClick = (e) => {        
+    const handleInputClick = (e) => {
+        if (boxOpen) {
+            fireBlur(e);
+        }
+        else if (typeof onFocus == "function") {
+            onFocus(e);
+        }
         setBoxOpen(!boxOpen);
-    }  
-    
-    const handleInputBlur = (e) => {
-        if (onBlur)
-            onBlur(e);
-    }
+    }      
 
     return (
         <div onBlur={handleBlur} className={styles.dropdown} onKeyDown={handleNavigation} style={{maxWidth: width}}>
             { editable ? 
-                <input type="text" name="input" autoComplete="off" className={styles.input} value={value} onChange={handleChange} onClick={handleInputClick} onBlur={handleInputBlur}/>
+                <input type="text" name="input" autoComplete="off" className={styles.input} value={value} onFocus={onFocus} onChange={handleChange} onClick={handleInputClick}/>
                 :
                 <div className={styles.display} style={{maxWidth: width}}>
                     <span>{value}</span>
-                    <button onClick={handleInputClick}><img src={arrow} style={{transform: boxOpen ? "rotate(0.5turn)" : "rotate(0turn)"}}/></button>
+                    <button type="button" onClick={handleInputClick}><img src={arrow} style={{transform: boxOpen ? "rotate(0.5turn)" : "rotate(0turn)"}}/></button>
                 </div>
             }            
             {renderContents()}                                   

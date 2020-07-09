@@ -42,7 +42,7 @@ export default function Reviews({id, resid}) {
     const handlePageChange = (pageNumber) => {
         setPage(pageNumber);
         dispatch(fetchReviewsIfNeed(resid, pageNumber, pageLength));        
-    }    
+    }        
 
     return (
         <React.Fragment>

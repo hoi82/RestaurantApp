@@ -120,7 +120,7 @@ export default function Favorites({}) {
         <div className={styles.favorites}>
             <span className={styles.title}>Favorite Restaurants</span>                                      
             {
-                isLogIn() ? 
+                auth.isLogin ?
                 renderUserFavorite()                
                 :                
                 <div className={styles.no_result}>   

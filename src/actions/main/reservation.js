@@ -1,53 +1,78 @@
 import axios from "axios";
 import { axiosConfig, endpoint } from "../../config/url";
-import { SESSION_FOUND, LOG_IN_SUCCESS } from "../auth";
 import { push } from "connected-react-router";
 
 export const READY_TO_REGISTER_RESERVATION = "READY_TO_REGISTER_RESERVATION";
 export const PROCESSING_RESERVATION = "PROCESSING_RESERVATION";
 export const RESERVATION_COMPLETE = "RESERVATION_COMPLETE";
-export const RESERVATION_FAILED = "RESERVATION_FAILED";
 export const UPDATE_RESERVATION_TIME = "UPDATE_RESERVATION_TIME";
 export const UPDATE_RESERVATION_MEMBER = "UPDATE_RESERVATION_MEMBER";
 export const UPDATE_RESERVATION_MESSAGE = "UPDATE_RESERVATION_MESSAGE";
 
+export const READY_RESERVATION = "READY_RESERVATION";
+export const FETCHING_RESERVATION = "FETCHING_RESERVATION";
+export const RESERVATION_FETCHED = "RESERVATION_FETCHED";
+export const RESERVATION_FETCH_FAILED = "RESERVATION_FETCH_FAILED";
+export const REGISTERING_RESERVATION = "REGISTERING_RESERVATION";
+export const RESERVAITON_SUCCESS = "RESERVAITON_REGISTERED";
+export const RESERVATION_FAILED = "RESERVATION_FAILED";
+
 const RESERVATION_URL = "http://localhost:3005/api/reservation";
 
-export const updateTime = (time = {start: null, end: null}) => {    
-    return {type: UPDATE_RESERVATION_TIME, payload: time};
-}
-
-export const updateMember = (count = 0) => {
-    return {type: UPDATE_RESERVATION_MEMBER, payload: count};
-}
-
-export const updateMessage = (message = "") => {
-    return {type: UPDATE_RESERVATION_MESSAGE, payload: message};
-}
-
-export const registerReservation = () => (dispatch, getState) => {
+export const registerReservation = (formInfo) => async (dispatch, getState) => {
     const {auth, main} = getState();
     dispatch({ type: PROCESSING_RESERVATION });    
     if (auth.isLogin) {
         const info = {
             resid: main.restaurant.details.id,
             userid: auth.id,
-            start: main.reservation.start,
-            end: main.reservation.end,
+            name: formInfo.name,
+            time: formInfo.time,            
             timezone: main.restaurant.details.opens.timezone,
-            member: main.reservation.member,
-            message: main.reservation.message,
-        };        
-                
-        return axios.post(RESERVATION_URL, info, axiosConfig).then((res) => {            
-            dispatch({ type: RESERVATION_COMPLETE, payload: res.data });            
-            dispatch(push(`${endpoint.restaurantReservationResult}/${res.data}`));
-        }).catch((err) => {
-            dispatch({ type: RESERVATION_FAILED, payload: err });            
-        }); 
+            member: formInfo.member,
+            message: formInfo.message,
+        };           
+
+        try {
+            const { data } = await axios.post(RESERVATION_URL, info, axiosConfig);
+            
+            if (data.error) {
+                dispatch({ type: RESERVATION_FAILED, payload: data.error.code });
+            }
+            else {
+                // dispatch({ type: RESERVATION_COMPLETE, payload: data });                 
+                dispatch(push(`${endpoint.restaurantReservationResult}/${data}`));
+            }
+        } catch (error) {
+            if (error.response) {
+                dispatch({ type: RESERVATION_FAILED, payload: error.response.status });   
+            }
+            else {
+                dispatch({ type: RESERVATION_FAILED, payload: "NETWORK_ERROR" });
+            }            
+        }                    
     }
     else {
-        dispatch({ type: RESERVATION_FAILED, payload: "You must login first" });
-        return { err: "You must login first" };
+        dispatch({ type: RESERVATION_FAILED, payload: "NO_USER" });        
+    }    
+}
+
+export const fetchReservation = (resid, date = new Date()) => async (dispatch, getState) => {
+    dispatch({type: FETCHING_RESERVATION, payload: date});
+    try {
+        const { data } = await axios.get(`${RESERVATION_URL}/${resid}/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`, axiosConfig);        
+        if (data.error) {
+            dispatch({type: RESERVATION_FETCH_FAILED, payload: data.error.code});
+        }
+        else {            
+            dispatch({type: RESERVATION_FETCHED, payload: data});
+        }
+    } catch (error) {
+        if (error.response) {
+            dispatch({type: RESERVATION_FETCH_FAILED, payload: error.response.status});
+        }
+        else {
+            dispatch({type: RESERVATION_FETCH_FAILED, payload: "NETWORK_ERROR"});
+        }
     }    
 }

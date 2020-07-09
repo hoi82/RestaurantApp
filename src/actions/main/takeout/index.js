@@ -8,13 +8,24 @@ export const TAKEOUTS_FETCH_FAILED = "TAKEOUTS_FETCH_FAILED";
 
 const TAKEOUT_LIST = "http://localhost:3005/api/menus/takeout";
 
-export const fetchTakeouts = (resid) => (dispatch) => {     
+export const fetchTakeouts = (resid) => async (dispatch) => {     
     dispatch({type: FETCHING_TAKEOUTS, payload: resid});
-    return axios.get(`${TAKEOUT_LIST}/${resid}`, axiosConfig).then((res) => {
-        dispatch({type: TAKEOUTS_FETCHED, payload: res.data});
-    }).catch((err) => {
-        dispatch({type: TAKEOUTS_FETCH_FAILED, payload: err});
-    });
+    try {
+        const { data } = await axios.get(`${TAKEOUT_LIST}/${resid}`, axiosConfig);
+        if (data.error) {
+            dispatch({type: TAKEOUTS_FETCH_FAILED, payload: data.error.code});
+        }
+        else {
+            dispatch({type: TAKEOUTS_FETCHED, payload: data});
+        }   
+    } catch (error) {
+        if (error.response) {
+            dispatch({type: TAKEOUTS_FETCH_FAILED, payload: error.response.status});
+        }
+        else {
+            dispatch({type: TAKEOUTS_FETCH_FAILED, payload: "NETWORK_ERROR"});
+        }        
+    }    
 }
 
 const shouldFetch = (getState, resid) => {

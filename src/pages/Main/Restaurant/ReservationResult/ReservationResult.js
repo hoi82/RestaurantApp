@@ -11,7 +11,8 @@ export default function ReservationResult({}) {
     const [resInfo, setResInfo] = useState({});    
 
     useEffect(() => {        
-        fetchReservation(param.id).then((reservation) => {                        
+        fetchReservation(param.id).then((reservation) => {
+            console.log(reservation);
             setResInfo(reservation);            
         }).catch((err) => {
             console.log(err);
@@ -35,9 +36,9 @@ export default function ReservationResult({}) {
             <div className={styles.content_box}>
                 <span className={styles.title}>Reservation Info</span>
                 <span className={styles.sub_title}>Name</span>
-                <span className={styles.content}>John Doe</span>
+                <span className={styles.content}>{resInfo.username}</span>
                 <span className={styles.sub_title}>Time</span>
-                <span className={styles.content}>{`${new Date(resInfo.start).toLocaleString()} ~ ${new Date(resInfo.end).toLocaleString()}`}</span>
+                <span className={styles.content}>{`${new Date(resInfo.time).toLocaleString()}`}</span>
                 <span className={styles.sub_title}>Member</span>
                 <span className={styles.content}>{resInfo.member}</span>
                 <span className={styles.sub_title}>Message</span>

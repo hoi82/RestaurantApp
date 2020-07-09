@@ -1,52 +1,41 @@
-import { UPDATE_RESERVATION_TIME, UPDATE_RESERVATION_MEMBER, UPDATE_RESERVATION_MESSAGE, READY_TO_REGISTER_RESERVATION, PROCESSING_RESERVATION, RESERVATION_COMPLETE, RESERVATION_FAILED } from "../../../actions/main/reservation";
+import { READY_RESERVATION, FETCHING_RESERVATION, RESERVATION_FETCHED, RESERVATION_FETCH_FAILED } from "../../../actions/main/reservation";
 import { produce } from "immer";
 
 const initState = {
-    status: READY_TO_REGISTER_RESERVATION,    
-    start: null,
-    end: null,
-    member: 0,
-    message: "",    
-    error: "",        
+    status: READY_RESERVATION,
+    date: new Date(0),
+    available: [],
+    reserved: [],
+    error: ""            
 }
 
 export default (state = initState, action) => {    
     const {type, payload} = action;    
-    switch (type) {
-        case UPDATE_RESERVATION_TIME:
-            return produce(state, draft => {
-                draft.start = payload.start;
-                draft.end = payload.end;
-            })                  
-        case UPDATE_RESERVATION_MEMBER:
-            return produce(state, draft => {
-                draft.member = payload;
-            })            
-        case UPDATE_RESERVATION_MESSAGE:
-            return produce(state, draft => {
-                draft.message = payload;
-            })            
-
-        // Reservation to Server
-        case PROCESSING_RESERVATION:            
+    switch (type) {        
+        case FETCHING_RESERVATION:
             return produce(state, draft => {
                 draft.status = type;
-                draft.sessionID = null;
-            })
-        case RESERVATION_COMPLETE:
-            return produce(state, draft => {
-                draft.status = READY_TO_REGISTER_RESERVATION;                                
-                draft.start = null;
-                draft.end = null;
-                draft.member = 0;
-                draft.message = "";
+                draft.date = payload;
+                draft.availabe = state.available;
+                draft.reserved = state.reserved;
                 draft.error = "";
-            })                       
-        case RESERVATION_FAILED:
+            });
+        case RESERVATION_FETCHED:
             return produce(state, draft => {
                 draft.status = type;
-                draft.error = payload;                
-            })                            
+                draft.date = state.date;
+                draft.available = payload.available;
+                draft.reserved = payload.reservations;
+                draft.error = "";
+            });
+        case RESERVATION_FETCH_FAILED:
+            return produce(state, draft => {
+                draft.status = type;
+                draft.date = state.date;
+                draft.available = [];
+                draft.reserved = [];
+                draft.error = payload;
+            })
         default:
             return state;
     }

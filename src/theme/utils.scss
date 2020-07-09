@@ -247,18 +247,13 @@
     font-size: $h4-size;
     line-height: 24px;        
 
-    &:hover {
+    &:not(:disabled):hover {
         background-color: $content-button-hover-bg;
     }
 
-    &:active {
+    &:not(:disabled):active {
         background-color: $content-button-active-bg;
-    }   
-    
-    &:disabled {
-        cursor: default;
-        background-color: $grade5-bg-color;
-    }
+    }       
 }
 
 @mixin tool_btn($width: auto, $height: auto) {                

@@ -1,44 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styles from "./styles.scss";
 import reload from "../../image/reload.svg";
 import moment from "moment-timezone";
 
-export default function TimePicker({begin = "", interval = {hour:1, minute: 0}, close = "",
-    start="", end="",
-    reservedTimes = [], timezone = "America/Havana",
-    display={maxWidth: "640px", height: "auto"}, onTimeChange}) {        
-
-    const validatedSetStart = (time) => {
-        if (close && reservedTimes.filter((r, i) => {
-            const rStart = moment(r.start);
-            const rEnd = moment(r.end);
-            return rStart.isSameOrBefore(time) && rEnd.isSameOrBefore(end);            
-        }).length == 0) {
-            onTimeChange(moment(time).format(), end);
-        } 
-        else if (!close) {
-            onTimeChange(moment(time).format(), end);
-        } 
-        else {
-            onTimeChange(null, end);
-        }
-    }
-
-    const validatedSetEnd = (time) => {
-        if (start && reservedTimes.filter((r, i) => {
-            const rStart = moment(r.start);
-            const rEnd = moment(r.end);
-            return rStart.isSameOrAfter(start) && rEnd.isSameOrBefore(time);            
-        }).length == 0) {            
-            onTimeChange(start, (moment(time).format()));
-        } else if (!start) {
-            onTimeChange(start, moment(time).format());
-        }
-        else {            
-            onTimeChange(start, null);
-        }
-    }        
-
+export default function TimePicker({available = [], interval = {hour:1, minute: 0},
+    time = "", reserved = [], timezone = "America/Havana",
+    display={maxWidth: "640px", height: "auto"}, onTimeChange, onFocus, onBlur}) {    
     const fillAllEmpty = () => {
         const arr = [];
         for (let i = 0; i < 25; i++) {            
@@ -50,14 +17,14 @@ export default function TimePicker({begin = "", interval = {hour:1, minute: 0}, 
         return arr;
     }
 
-    const renderTimeTable = () => {
-        if (begin == null || close == null) 
+    const renderTimeTable = () => {        
+        if (available.length == 0)
             return fillAllEmpty();
 
-        const tables = [];           
-        
-        const s = moment(begin).set({second: 0, millisecond: 0});
-        const e = moment(close).set({second: 0, millisecond: 0});
+        const tables = [];                   
+
+        const s = moment(available[0].start).tz(timezone);
+        const e = moment(available[available.length - 1].end).tz(timezone);
 
         for (let i = s.valueOf();
             i <= e.valueOf(); 
@@ -65,74 +32,63 @@ export default function TimePicker({begin = "", interval = {hour:1, minute: 0}, 
             tables.push(moment(i));
         }        
 
-        return tables.map((time, i) => {
-            if (reservedTimes.filter((res, j) => {
-                return time.isBetween(moment(res.start), moment(res.end), undefined, "[]");                
-            }).length > 0) {
-                return <button type="button" key={i} disabled>{time.locale(moment.locale()).format("HH:mm")}</button>                
+        return tables.map((t, i) => {
+            const timeStr = t.locale(moment.locale()).format("HH:mm");  
+            //available 이외는 비활성화          
+            if (!available.find((item, j) => {
+                let inclusivity = "[]";                
+                if (j == 0) {
+                    inclusivity = "[)";
+                } 
+                else if (j == available.length - 1) {
+                    inclusivity = "(]";
+                }
+                else {
+                    inclusivity = "()";
+                }
+                return t.isBetween(moment(item.start), moment(item.end), undefined, inclusivity);
+            })) {
+                return <button type="button" key={i} className={styles.disabled} disabled>{timeStr}</button>
             }
-            else {                
-                const className = time.isSame(start) ? styles.start : (time.isSame(end) ? styles.end : null);
-                timezone ? time.tz(timezone) : null;
-                return <button type="button" className={className} key={i} data-value={time.valueOf()} onClick={handleTimeClick}>{time.locale(moment.locale()).format("HH:mm")}</button>
+            //현재 시간 전은 모두 비활성화
+            else if (t.isSameOrBefore(Date.now())) {
+                return <button type="button" key={i} className={styles.disabled} disabled>{timeStr}</button>
+            }
+            //reserved에 걸리면 비활성화 + 경고색
+            else if (reserved.filter((res) => {                                
+                return t.isSame(moment(res.time));
+            }).length > 0) {                
+                return <button type="button" key={i} className={styles.reserved} disabled>{timeStr}</button>
+            }            
+            else {                                
+                const className = t.isSame(time) ? styles.selected : null;
+                return  <button type="button" className={className} key={i} data-value={t.valueOf()} onClick={handleTimeClick}>{timeStr}</button>
             }            
         });        
     }
 
     const handleTimeClick = (e) => {
-        const selected = moment(Number(e.target.dataset.value));        
-        if (!start) {
-            if (selected.isSame(end)) {
-                onTimeChange(start, null);
-            }
-            else {
-                validatedSetStart(selected);
-            }            
-        } else {
-            if (selected.isSame(start)) {
-                onTimeChange(null, end);
-            }
-            else {
-                if (!close) {
-                    if (selected.isBefore(start)) {
-                        validatedSetEnd(start);
-                        validatedSetStart(selected);
-                    } 
-                    else {
-                        validatedSetEnd(selected);
-                    }                    
-                } 
-                else {
-                    if (selected.isSame(end)) {
-                        onTimeChange(start, null);
-                    }
-                    else {                        
-                        if (selected.isBefore(start)) {
-                            validatedSetEnd(start);
-                            validatedSetStart(selected);
-                        } 
-                        else {
-                            validatedSetEnd(selected);
-                        }
-                    }
-                }
-            }            
-        }
+        const selected = moment(Number(e.target.dataset.value));
+        onTimeChange(moment(selected).format());       
     }
 
     const handleReset = () => {
         onTimeChange(null, null);
-    }    
+    }        
+
+    const handleBlur = (e) => {        
+        if ((!e.relatedTarget || !(e.currentTarget.contains(e.relatedTarget))) && (typeof onBlur == "function")) {
+            onBlur(e);
+        }        
+    }
 
     return (
         <div className={styles.container} style={{maxWidth: display.maxWidth, height: display.height}}>
-            <div className={styles.indicator}>
-                <span>{start ? moment(start).tz(timezone).locale(moment.locale()).format("HH:mm") : "--:--"}</span>
-                <span> ~ </span>
-                <span>{end ? moment(end).tz(timezone).locale(moment.locale()).format("HH:mm") : "--:--"}</span>
+            <div className={styles.indicator}>                
+                <span>{time ? moment(time).tz(timezone).locale(moment.locale()).format("HH:mm") : "--:--"}</span>
                 <img onClick={handleReset} src={reload} className={styles.reload}/>
             </div>            
-            <div className={styles.time_table}>
+            <div className={styles.time_table} onFocus={onFocus} onBlur={handleBlur}>
                 {renderTimeTable()}
             </div>            
         </div>

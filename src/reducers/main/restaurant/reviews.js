@@ -24,7 +24,7 @@ export default (state = initState, action) => {
                 reviewRating: state.reviewRating,
                 error: ""
             }
-        case REVIEWS_LOADED:
+        case REVIEWS_LOADED:            
             return {
                 status: type,
                 resid: state.resid,
@@ -34,7 +34,7 @@ export default (state = initState, action) => {
                 reviewRating: payload.reviewRating,
                 error: ""
             }
-        case FAIL_TO_LOAD_REVIEWS:
+        case FAIL_TO_LOAD_REVIEWS:            
             return {
                 status: type,
                 resid: state.resid,

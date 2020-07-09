@@ -17,7 +17,7 @@ export default () => {
     const history = useHistory();
 
     useEffect(() => {
-        if (status == READY_TO_LOAD || status == NAME_FAILED)
+        // if (status == READY_TO_LOAD || status == NAME_FAILED)
             dispatch(GetNames(name));
     }, []);
 

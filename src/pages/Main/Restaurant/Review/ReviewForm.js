@@ -16,9 +16,7 @@ export default ({route, match}) => {
     const param = useParams();        
     const dispatch = useDispatch();
     const restaurant = useSelector((store) => store.main.restaurant.details);        
-    const [initialReview, setInitialReview] = useState(null);    
-
-    //TODO:rating과 input에 블러 이벤트 구현해볼것.    
+    const [initialReview, setInitialReview] = useState(null);        
 
     useEffect(() => {        
         dispatch(fetchRestaurantIfNeed(param.resid));  

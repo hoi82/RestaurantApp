@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from "./style.scss";
 import { string } from 'prop-types';
 
-export default function Popup({children, trigger, position={top: "auto", right: "auto", bottom: "auto", left: "auto"}}) {
+export default function Popup({children, trigger, position={top: "auto", right: "auto", bottom: "auto", left: "auto"}, onOpen, onClose}) {
     const contextRef = useRef();
     const [open, setOpen] = useState(false);        
 
@@ -24,7 +24,16 @@ export default function Popup({children, trigger, position={top: "auto", right: 
                 document.removeEventListener("click", detectContextElement);
             }                 
         } 
-    }, []);        
+    }, []);
+
+    useEffect(() => {
+        if (open && (typeof onOpen == "function")) {
+            onOpen();
+        }
+        else if (typeof onClose == "function") {
+            onClose();
+        }
+    }, [open])
 
     const detectContextElement = (e) => {        
         if (contextRef.current && (!contextRef.current.contains(e.target)) && (trigger && !trigger.current.contains(e.target))) {            
@@ -34,7 +43,7 @@ export default function Popup({children, trigger, position={top: "auto", right: 
                 setOpen(false);
             }            
         }
-    }
+    }    
 
     const toggleOpen = (e) => {        
         setOpen(prev => !prev);

@@ -2,7 +2,7 @@
 @import "../../theme/utils.scss";
 
 .panel {
-    @include relative_full;
+    @include relative(100%, 1024px);    
     @include column_flex(center, center);    
 
     .title {
@@ -13,6 +13,7 @@
 
         span {
             @include big_content_title;
+            color: $title-color;
             margin-left: 24px;            
         }
     }    
@@ -22,6 +23,7 @@
 
         p, span {
             font-size: $h3-size;  
+            color: $content-color;
             font-weight: 600;  
         }
     }

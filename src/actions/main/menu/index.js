@@ -8,13 +8,24 @@ export const MENUS_FETCH_FAILED = "MENu_FETCH_FAILED";
 
 const MENU_URL = "http://localhost:3005/api/menus";
 
-export const fetchMenus = (restaurantID) => (dispatch) => {
+export const fetchMenus = (restaurantID) => async (dispatch) => {
     dispatch({type: FETCHING_MENUS, payload: restaurantID});
-    return axios.get(`${MENU_URL}/${restaurantID}`, axiosConfig).then((res) => {
-        dispatch({type: MENUS_FETCHED, payload: res.data});
-    }).catch((err) => {
-        dispatch({type: MENUS_FETCH_FAILED, payload: err});
-    })
+    try {
+        const { data } = await axios.get(`${MENU_URL}/${restaurantID}`, axiosConfig);
+        if (data.error) {
+            dispatch({type: MENUS_FETCH_FAILED, payload: data.error.code});    
+        }
+        else {
+            dispatch({type: MENUS_FETCHED, payload: data});    
+        }
+    } catch (error) {
+        if (error.response) {
+            dispatch({type: MENUS_FETCH_FAILED, payload: error.response.status});
+        }
+        else {
+            dispatch({type: MENUS_FETCH_FAILED, payload: "NETWORK_ERROR"});
+        }        
+    }    
 }
 
 const shouldFetch = (restaurantID, getState) => {

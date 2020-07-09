@@ -8,7 +8,6 @@ import styles from "./Takeout.module.scss";
 import BucketList from './BucketList';
 import { showDialog } from "../../../../actions/common/dialog";
 import { DialogMode } from "../../../../types/Variables";
-import { SESSION_FOUND, LOG_IN_SUCCESS } from '../../../../actions/auth';
 import Axios from 'axios';
 import { axiosConfig, endpoint } from '../../../../config/url';
 

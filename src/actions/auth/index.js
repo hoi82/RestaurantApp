@@ -27,7 +27,12 @@ export const SessionCheck = () => async (dispatch) => {
             dispatch({type: SESSION_LOST, payload: data});
         }            
     } catch (error) {
-        dispatch({ type: SESSION_LOST, payload: { error: error } });
+        if (error.response) {
+            dispatch({ type: SESSION_LOST, payload: error.response.status });
+        }        
+        else {
+            dispatch({ type: SESSION_LOST, payload: "NETWORK_ERROR" });
+        }
     }            
 };
 
@@ -49,20 +54,35 @@ export const processLogIn = (email, password) => {
                 email: email,
                 password: password
             }, axiosConfig);
-            dispatch({type: LOG_IN_SUCCESS, payload: data});        
-        } catch (error) {        
-            dispatch({type: LOG_IN_FAILED, payload: {code: error.response.status, message: error.response.data}});    
+
+            if (data.error) {
+                dispatch({type: LOG_IN_FAILED, payload: data.error.code});
+            }
+            else {
+                dispatch({type: LOG_IN_SUCCESS, payload: data});
+            }            
+        } catch (error) {
+            if (error.response) {
+                dispatch({type: LOG_IN_FAILED, payload: error.response.status});
+            }
+            else {
+                dispatch({type: LOG_IN_FAILED, payload: "NETWORK_ERROR"});
+            }
         }        
     }
 }
 
-export const LogOut = () => {
-    return (dispatch) => {
-        dispatch({type: AUTH_PROCESSING});
-        return axios.get(LOG_OUT_URL, axiosConfig).then((res) => {
-            dispatch({ type: LOG_OUT, payload: res.data }); 
-        }).catch((err) => {
-            dispatch({ type: LOG_IN_FAILED, payload: { code: err.response.status, message: err.response.data }});            
-        });   
-    }
+export const LogOut = () => async (dispatch) => {
+    dispatch({type: AUTH_PROCESSING});
+    try {
+        const { data } = await axios.get(LOG_OUT_URL, axiosConfig);        
+        dispatch({ type: LOG_OUT, payload: res.data }); 
+    } catch (error) {
+        if (error.response) {
+            dispatch({type: LOG_IN_FAILED, payload: error.response.status});
+        }
+        else {
+            dispatch({type: LOG_IN_FAILED, payload: "NETWORK_ERROR"});
+        }
+    }    
 }

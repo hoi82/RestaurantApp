@@ -43,10 +43,9 @@ export default () => {
     }    
 
     const handleStateChange = (value) => {        
-        setState(value.name);  
-        setDisplayedStates(states.filter((state) => {
-            const v = value.name ? value.name : "";
-            return state.name.toLowerCase().indexOf(v.toLowerCase()) > -1
+        setState(value);  
+        setDisplayedStates(states.filter((state) => {            
+            return state.name.toLowerCase().indexOf(value.toLowerCase()) > -1
         }));
     }
 

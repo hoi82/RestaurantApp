@@ -20,21 +20,25 @@ export default function LogIn() {
            if (auth.isLogin) {
                 dispatch(closeDialog());
            }
-           else {
+           else {                
                 switch (auth.error) {
-                    case 404: 
+                    case "NO_USER": 
                         setErrors({
                             email: "사용자를 찾을수 없습니다.",
                             password: undefined
                         });                                           
                         break;
-                    case 403:
+                    case "WRONG_PASSWORD":
                         setErrors({
                             email: undefined,
                             password: "비밀번호가 일치하지 않습니다."
                         })   
                         break;
                     default:
+                        setErrors({
+                            email: `에러가 발생했습니다. 관리자에게 문의해주세요.\r\nCode: ${auth.error}`,
+                            password: undefined
+                        })
                         break;
                 }
            }
@@ -51,7 +55,7 @@ export default function LogIn() {
 const Input = ({field, form : { touched, errors, setFieldTouched }, type, header}) => {    
     const handleFocus = (e) => {
         setFieldTouched(field.name, false);
-    }
+    }    
 
     return (
         <div className={styles.item_container}>

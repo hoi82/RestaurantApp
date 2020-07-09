@@ -38,23 +38,23 @@ export default function Dialog(props) {
     const renderBtn = () => {        
         switch (dialog.mode) {
             case DialogMode.ALERT:
-                return <button className={styles.alert_btn} onClick={handleClose}>
+                return <button type="button" className={styles.alert_btn} onClick={handleClose}>
                     <span>
                         닫기
                     </span>
                 </button>
             case DialogMode.SUCCESS:
-                return <button className={styles.success_btn} onClick={handleClose}>
+                return <button type="button" className={styles.success_btn} onClick={handleClose}>
                     <span>
                         닫기
                     </span>
                 </button>
             case DialogMode.CONFIRM:
                 return <React.Fragment>
-                    <button className={styles.confirm_btn} onClick={handleConfirm}>
+                    <button type="button" className={styles.confirm_btn} onClick={handleConfirm}>
                         <span>예</span>
                     </button>
-                    <button className={styles.confirm_btn} onClick={handleCancel}>
+                    <button type="button" className={styles.confirm_btn} onClick={handleCancel}>
                         <span>아니오</span>
                     </button>
                 </React.Fragment>

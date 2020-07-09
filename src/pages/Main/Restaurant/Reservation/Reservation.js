@@ -6,156 +6,67 @@ import styles from "./Reservation.module.scss";
 import DatePicker from "../../../../components/DatePicker";
 import TimePicker from "../../../../components/TimePicker";
 import DropdownBox from '../../../../components/DropdownBox';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { showDialog } from "../../../../actions/common/dialog";
 import { DialogMode } from '../../../../types/Variables';
-import moment from "moment-timezone";
-import { registerReservation, updateMember, updateTime, updateMessage } from '../../../../actions/main/reservation';
-import { fetchRestaurantIfNeed, LOADED_RESTAURANT } from '../../../../actions/main/restaurant/details';
-import { fetchReservationInfo, cancelFetch } from '../utils';
+import { registerReservation, fetchReservation } from '../../../../actions/main/reservation';
+import { fetchRestaurantIfNeed } from '../../../../actions/main/restaurant/details';
 import noImage from '../../../../types/noImage';
+import { Form, Formik } from 'formik';
+import { ErrorMessages } from '../../../../types/ErrorMessages';
+import classnames from "classnames";
 
-export default function Reservation({}) {
+function ReservationUI(props) {
     const restaurant = useSelector((store) => store.main.restaurant.details);    
     const reservation = useSelector((store) => store.main.reservation);
-    const [calculatedReserves, setCalculatedReserves] = useState([]);
+    const auth = useSelector((store) => store.auth);
     const [date, setDate] = useState(new Date());
     const dispatch = useDispatch();    
-    const param = useParams();    
+    const param = useParams();  
+    const store = useStore();      
 
     useEffect(() => {        
         dispatch(fetchRestaurantIfNeed(param.id));        
-    },[]);    
+    },[]);        
 
-    useEffect(() => {                        
-        fetchReservationInfo(param.id, date).then((res) => {            
-            setCalculatedReserves(calculateReserved(res));
-        });
-          
-        return () => cancelFetch();
-    }, [restaurant.status == LOADED_RESTAURANT && date]);    
+    useEffect(() => {                                
+        dispatch(fetchReservation(param.id, date));
+    }, [date]);                                
 
-    const handleForm = (e) => {
-        e.preventDefault();        
-    }
-
-    const handleMember = (value) => {
-        dispatch(updateMember(value));
+    const handleMember = (value) => {              
+        props.setFieldValue("member", value);
     } 
     
     const handleDate = (value) => {
         setDate(value);        
     }
 
-    const handleTime = (sTime, eTime) => {        
-        dispatch(updateTime({start: sTime, end: eTime}));
-    }
-
-    const handleMessage = (e) => {
-        dispatch(updateMessage(e.target.value));
-    }    
-
-    const handleSubmit = (e) => {                
-        if (restaurant.reservation && restaurant.reservation.fee && restaurant.reservation.fee.value) {
-            dispatch(showDialog({
-                mode: DialogMode.CONFIRM,
-                bgimg: false,
-                buttons: false,
-                content: "The cancellation fee will be paid.\r\nDo you want to continue reservation?",
-                onConfirm: requestReservation
-            }))            
-        } 
-        else {
-            requestReservation();
-        }
-    } 
+    const handleTime = (time) => {                
+        props.setFieldValue("time", time);
+    }     
     
-    const requestReservation = () => {        
-        dispatch(registerReservation());        
+    const dropdownFocus = (e) => {
+        props.setFieldTouched("member", false);
+    }
+
+    const dropdownBlur = (e) => {
+        props.setFieldTouched("member", true);
+    }
+
+    const timePickerFocus = (e) => {
+        props.setFieldTouched("time", false);
+    }
+
+    const timePickerBlur = (e) => {        
+        props.setFieldTouched("time", true);
     }    
 
-    const getDateMoment = () => {
-        return restaurant.opens.timezone ? moment.tz(date, restaurant.opens.timezone) : moment(date);
+    const handleLoggedName = (e) => {
+        props.setFieldValue("name", auth.name);
     }
 
-    const getOpenTime = () => {        
-        const time = getDateMoment();
-        const schedule = getRestaurantSchedule();
-        if (schedule.length > 0) {
-            return time.set({hour: schedule[0].open.hour, minute: schedule[0].open.minute, second: 0, millisecond: 0}).format();            
-        }
-        else {
-            return null;
-        }
-    }
-
-    const getCloseTime = () => {
-        const time = getDateMoment();        
-        const schedule = getRestaurantSchedule();
-        if (schedule.length > 0) {
-            return time.set({hour: schedule[schedule.length - 1].close.hour, minute: schedule[schedule.length - 1].close.minute, second: 0, millisecond: 0}).format();            
-        }
-        else {
-            return null;
-        }
-    }
-
-    const getRestaurantSchedule = () => {
-        const time = getDateMoment();              
-        return restaurant.opens.time[time.weekday()].slice().sort((a, b) => {            
-            return Number(a.open.hour) - Number(b.open.hour) != 0 ? Number(a.open.hour) - Number(b.open.hour) : Number(a.open.minute) - Number(b.open.mminute);
-        }) || [];
-    }
-
-    const calculateReserved = (reservations = []) => {        
-        const schedule = getRestaurantSchedule();        
-        
-        const result = [];        
-
-        //Fill with Reservations
-        reservations.forEach((reservation) => {
-            result.push({
-                start: moment(reservation.start).format(), 
-                end: moment(reservation.end).format()
-            });
-        });             
-
-        //Fill with Restaurant's Rest Time
-        for (let i = 1; i < schedule.length; i++) {            
-            result.push({
-                start: getDateMoment().set({
-                    hour: schedule[i-1].close.hour, minute: schedule[i-1].close.minute, second: 0, millisecond: 0
-                }).format(),
-                end: getDateMoment().set({
-                    hour: schedule[i].open.hour, minute: schedule[i].open.minute, second:0, millisecond: 0
-                }).format()
-            })
-        };
-        
-        //Fill with the gap between Current Time and Restaurant Open
-        if (schedule.length > 0) {            
-            const now = moment();
-            const open = moment.tz(restaurant.opens.timezone).set({
-                year: date.getFullYear(),
-                month: date.getMonth(),
-                date: date.getDate()
-            }).set(schedule[0].open).set({
-                second: 0, 
-                millisecond: 0
-            });
-            if (open.isBefore(now)) {
-                result.push({
-                    start: open.format(),
-                    end: now.format()
-                })
-            }
-        }                
-
-        return result;
-    }    
-
-    return (                
-        <form className={styles.reservation} onSubmit={handleForm}>
+    return (
+        <Form className={styles.reservation}>
             <span className={styles.main_title}>Reservation</span>
             <header className={styles.res_profile}>
                 <img src={restaurant.thumbnail? `${IMAGE_URL}/${restaurant.thumbnail}` : noImage}/>
@@ -164,16 +75,30 @@ export default function Reservation({}) {
                     <span className={styles.address}>{getFullAddress(restaurant.address)}</span>
                 </div>
             </header>    
-            <div className={styles.info_panel}>                    
+            <div className={styles.info_panel}>    
+                <div className={styles.header_box}>
+                    <span className={styles.content_header}>Name</span>                    
+                    <span className={classnames(styles.error_title, {[`${styles.error_visible}`] : props.touched["name"]})}>{props.errors["name"]}</span>
+                </div>
+                <div className={styles.name_panel}>
+                    <input type="text" name="name" className={styles.name_input} value={props.values.name} onChange={props.handleChange} onBlur={props.handleBlur}/>
+                    <button type="button" onClick={handleLoggedName} className={styles.name_btn} disabled={!auth.isLogin}>로그인 이름 사용하기</button>
+                </div>                
                 <span className={styles.content_header}>Date</span>
                 <DatePicker date={date} onChange={handleDate}/>
-                <span className={styles.content_header}>Time</span>
-                <TimePicker begin={getOpenTime()} close={getCloseTime()} start={reservation.start} end={reservation.end}
-                reservedTimes={calculatedReserves} timezone={restaurant.opens.timezone} onTimeChange={handleTime}/>
-                <span className={styles.content_header}>Member</span>
-                <DropdownBox value={reservation.member} onChange={handleMember} items={[1,2,3,4,5,6,7,8]} width="160px"/>
+                <div className={styles.header_box}>
+                    <span className={styles.content_header}>Time</span>
+                    <span className={classnames(styles.error_title, {[`${styles.error_visible}`] : props.touched["time"]})}>{props.errors["time"]}</span>
+                </div>                
+                <TimePicker available={reservation.available} reserved={reservation.reserved} time={props.values.time} timezone={restaurant.opens.timezone} onTimeChange={handleTime}
+                onFocus={timePickerFocus} onBlur={timePickerBlur}/>
+                <div className={styles.header_box}>
+                    <span className={styles.content_header}>Member</span>
+                    <span className={classnames(styles.error_title, {[`${styles.error_visible}`] : props.touched["member"]})}>{props.errors["member"]}</span>
+                </div>                
+                <DropdownBox value={props.values.member} onChange={handleMember} items={[1,2,3,4,5,6,7,8]} width="160px"/>
                 <span className={styles.content_header}>Personal Message</span>
-                <textarea value={reservation.message} className={styles.message} onChange={handleMessage}/>
+                <textarea name="message" value={props.values.message} className={styles.message} onChange={props.handleChange} onBlur={props.handleBlur}/>
             </div>                            
             {
                 restaurant.reservation ? <div className={styles.cf_panel}>
@@ -196,7 +121,50 @@ export default function Reservation({}) {
                 </div>
                 : null
             }                
-            <button className={styles.submit_btn} onClick={handleSubmit}>Submit</button>
-        </form>        
+            <button type="submit" className={styles.submit_btn}>Submit</button>
+        </Form> 
+    )
+}
+
+function Reservation() {  
+    const restaurant = useSelector((store) => store.main.restaurant.details);   
+    const dispatch = useDispatch(); 
+
+    const handleSubmit = (values) => {                  
+        if (restaurant.reservation && restaurant.reservation.fee && restaurant.reservation.fee.value) {
+            dispatch(showDialog({
+                mode: DialogMode.CONFIRM,
+                bgimg: false,
+                buttons: false,
+                content: "The cancellation fee will be paid.\r\nDo you want to continue reservation?",
+                onConfirm: () => dispatch(registerReservation(values))
+            }))            
+        } 
+        else {
+            dispatch(registerReservation(values));
+        }
+    }         
+
+    const handleValidate = (values) => {        
+        const errors = {};        
+
+        if (values.name == "") 
+            errors.name = ErrorMessages.EMPTY_TEXT;
+
+        if (values.time == null || values.time == "")
+            errors.time = ErrorMessages.EMPTY_TEXT;
+
+        if (values.member == 0) 
+            errors.member = ErrorMessages.EMPTY_TEXT;        
+
+        return errors;
+    }
+
+    return (                    
+        <Formik initialValues={{name: "", time: null, member: 0, message: ""}} onSubmit={handleSubmit} validate={handleValidate}>
+            {(props) => <ReservationUI {...props}/>}            
+        </Formik>               
     );
 }
+
+export default Reservation;

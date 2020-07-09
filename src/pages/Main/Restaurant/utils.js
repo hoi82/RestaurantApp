@@ -3,26 +3,12 @@ import { axiosConfig } from "../../../config/url";
 import moment from "moment-timezone";
 
 const REVIEW_URL = "http://localhost:3005/api/review";
-const USER_NAME_URL = "http://localhost:3005/api/user/_ID/name";
 const MENU_URL = "http://localhost:3005/api/menu";
 const RESTAURANT_THUMBNAIL_URL = "http://localhost:3005/api/restaurant/thumbnail";
-const REVIEW_ACTION_URL = "http://localhost:3005/api/review";
 const RESERVATION_URL = "http://localhost:3005/api/reservation";
-const FAVORITE_URL = "http://localhost:3005/api/favorite/restaurant";
-const FAVORITE_LIST = "http://localhost:3005/api/favorite/restaurants";
 
 const CancelToken = axios.CancelToken;
 let cancel;
-
-export const fetchReviews = (resID, errcb) => {
-    return new Promise((resolve, reject) => {
-        axios.get(REVIEW_URL.replace("_ID", resID), axiosConfig).then((res) => {        
-            resolve(res.data);
-        }).catch((err) => {
-            reject(err);
-        })
-    })    
-}
 
 export const fetchMenu = (menuID) => {
     return axios.get(`${MENU_URL}/${menuID}`, axiosConfig).then((res) => {

@@ -72,32 +72,51 @@ function Details({route, match}) {
     const isFavorite = () => {        
         return favorites.list.filter((v) => v.id == param.id).length > 0;
     }
-    //TODO: 여기부터 해야됨
+
     const handleFavorite = (e) => {
         if (isFavorite()) {
             dispatch(removeFavorite(param.id)).then(() => {
-                const { main: {favorite: {restaurant: status }} } = store.getState();
-                console.log("status : ",status);
-                // if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
-                //         dispatch(showDialog({
-                //         mode: DialogMode.SUCCESS,
-                //         bgimg: false,
-                //         content: "This restaurant is removed from your favorite list",                        
-                //     }));
-                // }
+                const { main: {favorite: {restaurant: status }} } = store.getState();                
+                if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
+                    dispatch(showDialog({
+                        mode: DialogMode.SUCCESS,
+                        bgimg: false,
+                        content: "This restaurant is removed from your favorite list",
+                    }));
+                }
+                else {
+                    dispatch(showDialog({
+                        mode: DialogMode.ALERT,
+                        content: favorites.error.response.data
+                    }))
+                }
             });            
         }
         else {
             dispatch(addFavorite(param.id)).then(() => {
-                const { main: {favorite: {restaurant: status }} } = store.getState();
-                console.log("status : ",status);
-                // if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
-                //     dispatch(showDialog({
-                //         mode: DialogMode.SUCCESS,
-                //         bgimg: false,
-                //         content: "Sucessfully added to your favorite list",                        
-                //     }));        
-                // }
+                const { main: {favorite: {restaurant: {status, error}}}} = store.getState();                
+                if (status == FAVORITE_RESTAURANTS_FETCHED) {
+                    dispatch(showDialog({
+                        mode: DialogMode.SUCCESS,
+                        bgimg: false,
+                        content: "Sucessfully added to your favorite list",                        
+                    }));
+                }
+                else {
+                    let message = "";                    
+                    switch (error) {
+                        case "NOT_LOGIN":
+                            message = "먼저 로그인 해주세요.";                            
+                            break;                    
+                        default:
+                            message = `에러가 발생했습니다. 관리자에게 문의해주세요.\r\nCode:${error}`;
+                            break;
+                    }
+                    dispatch(showDialog({
+                        mode: DialogMode.ALERT,
+                        content: message
+                    }))
+                }
             });            
         }        
     }

@@ -20,9 +20,19 @@ export const fetchFavorites = () => async (dispatch, getState) => {
     dispatch({type: FETCHING_FAVORITE_RESTAURANTS, payload: auth.id});
     try {
         const { data } = await axios.get(FAVORITE_LIST, axiosConfig);
-        dispatch({type: FAVORITE_RESTAURANTS_FETCHED, payload: data});
+        if (data.error) {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: data.error.code});
+        }
+        else {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCHED, payload: data});
+        }        
     } catch (error) {
-        dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: error.response.data});
+        if (error.response) {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: error.response.status});
+        }        
+        else {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: "NETWORK_ERROR"});
+        }
     }    
 }
 
@@ -42,29 +52,51 @@ export const fetchFavoritesIfNeed = () => (dispatch, getState) => {
         }    
     })
 
-    return null;
-}
-
-export const addFavorite = (id) => (dispatch, getState) => {
-    const { auth } = getState();    
-    dispatch({type: FETCHING_FAVORITE_RESTAURANTS, payload: auth.id});
-    return axios.post(`${FAVORITE_URL}`, {
-        resid: id
-    }, axiosConfig).then((res) => {
-        dispatch({type: ADD_FAVORITE_RESTAURANT, payload: res.data});
-    }).catch((err) => {                        
-        dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: err});
+    return new Promise((resolve, reject) => {
+        resolve(null);
     });
 }
 
-export const removeFavorite = (id) => (dispatch, getState) => {
+export const addFavorite = (id) => async (dispatch, getState) => {
+    const { auth } = getState();    
+    dispatch({type: FETCHING_FAVORITE_RESTAURANTS, payload: auth.id});
+    try {
+        const { data } = await axios.post(`${FAVORITE_URL}`, {resid: id}, axiosConfig);
+        if (data.error) {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: data.error.code});
+        }
+        else {
+            dispatch({type: ADD_FAVORITE_RESTAURANT, payload: res.data});
+        }
+    } catch (error) {
+        if (error.response) {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: error.response.status});
+        }        
+        else {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: "NETWORK_ERROR"});
+        }        
+    }    
+}
+
+export const removeFavorite = (id) => async (dispatch, getState) => {
     const { auth } = getState();
     dispatch({type: FETCHING_FAVORITE_RESTAURANTS, payload: auth.id});
-    return axios.delete(`${FAVORITE_URL}/${id}`, axiosConfig).then((res) => {
-        dispatch({type: DELETE_FAVORITE_RESTAURANT, payload: id});
-    }).catch((err) => {
-        dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: err});
-    })
+    try {
+        const { data } = await axios.delete(`${FAVORITE_URL}/${id}`, axiosConfig);
+        if (data.error) {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: data.error.code});
+        }
+        else {
+            dispatch({type: DELETE_FAVORITE_RESTAURANT, payload: id});
+        }
+    } catch (error) {
+        if (error.response) {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: error.response.status});
+        }        
+        else {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: "NETWORK_ERROR"});
+        }
+    }    
 }
 
 export const toggleFavorite = (index) => (dispatch) => {
@@ -76,14 +108,25 @@ export const toggleAll = (state) => (dispatch) => {
     return null;
 }
 
-export const removeSelectedFavorites = () => (dispatch, getState) => {
+export const removeSelectedFavorites = () => async (dispatch, getState) => {
     const { auth, main : { favorite: { restaurant: { list } } }} = getState();    
-    const filtered = list.filter((item) => item.selected == true).map((item) => item.id);    
+    const filtered = list.filter((item) => item.selected == true).map((item) => item.id);        
 
     dispatch({type: FETCHING_FAVORITE_RESTAURANTS, payload: auth.id});
-    return axios.put(FAVORITE_LIST, filtered, axiosConfig).then((res) => {        
-        dispatch({type: REMOVE_SELECTED_FAVORITE_RESTAURANTS, payload: res.data});
-    }).catch((err) => {
-        dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: err});
-    })
+    try {
+        const { data } = await axios.put(FAVORITE_LIST, filtered, axiosConfig);
+        if (data.error) {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: data.error.code});
+        }
+        else {
+            dispatch({type: REMOVE_SELECTED_FAVORITE_RESTAURANTS, payload: res.data});
+        }
+    } catch (error) {
+        if (error.response) {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: error.response.status});
+        }        
+        else {
+            dispatch({type: FAVORITE_RESTAURANTS_FETCH_FAILED, payload: "NETWORK_ERROR"});
+        }        
+    }    
 }

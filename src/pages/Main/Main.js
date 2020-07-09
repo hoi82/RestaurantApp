@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Nav from "./Nav";
 import styles from "./Main.module.scss";
 import { renderRoutes } from "react-router-config";
 import { endpoint } from "../../config/url";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useDispatch } from "react-redux";
+import { SessionCheck } from "../../actions/auth";
 
-export default function Main({route, location}) {        
+export default function Main({route, location}) { 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(SessionCheck());
+    }, [location.pathname]);
+
     return (         
         <div className={styles.main}>
             <header className={styles.header_menu}>

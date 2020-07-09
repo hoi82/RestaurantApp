@@ -1,5 +1,7 @@
 import axios from "axios";
 import { axiosConfig } from "../../../config/url";
+import { fetchFavoritesIfNeed } from "../favorite/restaurant";
+import { fetchMenusIfNeed } from "../menu";
 
 export const READY_TO_LOAD_RESTAURANT = "READY_TO_LOAD_RESTAURANT";
 export const LOADING_RESTAURANT = "LOADING_RESTAURANT";
@@ -22,13 +24,35 @@ const shouldFetch = (getState, id) => {
         (status != LOADING_RESTAURANT && oriID != id);  
 };
 
-export const fetchRestaurant = (id) => {        
-    return (dispatch) => {
-        dispatch({type: LOADING_RESTAURANT, payload: id});
-        return axios.get(`${RESTAURANT_DETAIL_URL}/${id}`, axiosConfig).then((res) => {
-            dispatch({type: LOADED_RESTAURANT, payload: res.data})
-        }).catch((err) => {
-            dispatch({type: FAIL_TO_LOAD_RESTAURANT, payload: err});
-        })
-    };
+export const fetchRestaurant = (id) => async (dispatch) => {
+    dispatch({type: LOADING_RESTAURANT, payload: id});
+    try {
+        const { data } = await axios.get(`${RESTAURANT_DETAIL_URL}/${id}`, axiosConfig);
+        if (data.error) {
+            dispatch({type: FAIL_TO_LOAD_RESTAURANT, payload: data.error.code});
+        }        
+        else {            
+            dispatch({type: LOADED_RESTAURANT, payload: data});
+        }
+    } catch (error) {
+        if (error.response) {
+            dispatch({type: FAIL_TO_LOAD_RESTAURANT, payload: error.response.status});
+        }   
+        else {
+            dispatch({type: FAIL_TO_LOAD_RESTAURANT, payload: "NETWORK_ERROR"});
+        }             
+    }    
+};
+
+export const fetchDetailsOnce = (id) => async (dispatch, getState) => {
+    dispatch(fetchRestaurantIfNeed(id)).then(() => {
+        const { main: {restaurant: {details: { status: detailStatus }}}} = getState();
+        if (detailStatus == LOADED_RESTAURANT) {
+            dispatch(fetchFavoritesIfNeed()).then(() => {
+                const { main: { favorite: { restaurant: { status }}}} = getState();
+                dispatch(fetchMenusIfNeed(id));
+            })
+        }
+    })
 }
+

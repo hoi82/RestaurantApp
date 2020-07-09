@@ -2,7 +2,7 @@
 @import "../../../../theme/utils.scss";
 
 .reservation {
-    @include relative(100%);
+    @include relative(100%);    
     padding: 72px;    
 
     .main_title {
@@ -78,21 +78,60 @@
             background-color: $grade5-bg-color;
             margin: 17px auto 18px auto;
         }
+
+        & > .content_header {
+            &:not(:first-child) {
+                margin-top: 24px;
+            }
+    
+            & + * {
+                margin-top: 8px;
+            }
+        }
     }
 
     .content_header {
         display: block;
         font-size: $h4-size;
         color: $title-color;
-        font-weight: 600;            
+        font-weight: 600;               
+    }       
 
-        &:not(:first-of-type) {
-            margin-top: 36px;
+    .name_panel {
+        @include column_flex(center, flex-start);
+
+        .name_input {
+            @include content_input(320px);        
+        }
+
+        .name_btn {
+            @include content_medium_button(auto);
+            padding: 0 8px;            
+            margin-top: 8px;
+        }
+    }
+
+    .header_box {        
+        @include row_flex(flex-start, center);       
+
+        &:not(:first-child) {
+            margin-top: 24px;
         }
 
         & + * {
-            margin-top: 24px;
+            margin-top: 8px;
         }
+    }    
+
+    .error_title {
+        @include input_error_text;
+        margin-left: 8px;
+        @include global_transition;
+        opacity: 0;
+    }
+
+    .error_visible {
+        opacity: 1;
     }
 
     .cf_panel {

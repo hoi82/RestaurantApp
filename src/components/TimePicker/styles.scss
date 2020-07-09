@@ -47,30 +47,34 @@
 
         button {
             @include content_small_btn;
+
+            &:disabled {
+                cursor: default;
+            }
+        }        
+
+        .disabled {
+            background-color: $grade5-bg-color;
         }
 
-        .start {
-            background-color: rgb(144,238,144);
+        .reserved {
+            background-color: $alert-color;
+        }
+
+        .selected {
+            background-color: $success-color;
 
             &:hover {
-                background-color: rgb(164, 255, 164);
+                background-color: $success-hover-color;
             }
 
             &:active {
-                background-color: rgb(124, 218, 124);
+                background-color: $success-active-color;
             }
         }
-
-        .end {
-            background-color: rgb(32, 178, 170);
-
-            &:hover {
-                background-color: rgb(62, 198, 200);
-            }
-
-            &:active {
-                background-color: rgb(2, 148, 140);
-            }
+        
+        .reserved {
+            background-color: $alert-color;
         }
     }
 }

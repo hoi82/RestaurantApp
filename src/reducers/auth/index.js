@@ -38,7 +38,7 @@ export const auth = (state = initialAuth, action) => {
                 draft.email = "";
                 draft.name = "";
                 draft.lastAccess = new Date(0),
-                draft.error = payload.code;
+                draft.error = payload;
             });            
         case LOG_OUT:
             return produce(state, draft => {
