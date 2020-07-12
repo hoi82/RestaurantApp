@@ -1,36 +1,47 @@
-import { READY_TO_FETCH_MENUS, FETCHING_MENUS, MENUS_FETCHED, MENUS_FETCH_FAILED } from "../../../actions/main/menu";
+import produce from "immer";
+
+const { READY_TO_FETCH_MENU, FETCHING_MENU, MENU_FETCHED, MENU_FETCH_FAILED } = require("../../../actions/main/menu");
 
 const initState = {
-    status: READY_TO_FETCH_MENUS,
-    resid: "",
-    list: [],
+    status: READY_TO_FETCH_MENU,    
+    menuID: "",
+    restaurantID: "",
+    name: "",
+    thumbnail: "",
+    ingredients: "",
+    description: "",
+    takeoutEnable : false,
+    price: null,
     error: ""
 }
 
 export default (state = initState, action) => {
-    const {type, payload} = action;
+    const { type, payload } = action;
     switch (type) {
-        case FETCHING_MENUS:
-            return {
-                status: type,
-                resid: payload,
-                list: state.list,
-                error: ""
-            }
-        case MENUS_FETCHED:
-            return {
-                status: type,
-                resid: state.resid,
-                list: payload,
-                error: ""
-            }
-        case MENUS_FETCH_FAILED:
-            return {
-                status: type,
-                resid: state.resid,
-                list: [],
-                error: payload
-            }
+        case FETCHING_MENU:
+            return produce(state, draft => {
+                draft.status = type;
+                draft.menuID = payload;
+                draft.error = "";
+            });
+        case MENU_FETCHED:            
+            return produce(state, draft => {
+                draft.status = type;
+                draft.menuID = payload.id;
+                draft.restaurantID = payload.restaurantID;
+                draft.name = payload.name;
+                draft.thumbnail = payload.thumbnail;
+                draft.ingredients = payload.ingredients;
+                draft.description = payload.description;
+                draft.takeoutEnable = payload.takeout;
+                draft.price = payload.price;
+                draft.error = "";
+            })
+        case MENU_FETCH_FAILED:
+            return produce(state, draft => {
+                draft.status = type;
+                draft.error = payload;
+            })
         default:
             return state;
     }

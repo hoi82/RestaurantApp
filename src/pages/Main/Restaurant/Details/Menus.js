@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from "./Menus.module.scss";
 import plan from "../../../../image/plan.svg";
 import Menu from './Menu';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchMenusIfNeed } from '../../../../actions/main/menu';
+import { useSelector } from 'react-redux';
 
 export default function Menus({restaurantID}) {
-    const menus = useSelector((store) => store.main.menu);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        fetchMenusIfNeed(restaurantID);
-    }, []);
+    const menus = useSelector((store) => store.main.restaurant.menus);        
 
     const renderMenus = (menus) => {
         if (!menus || menus.length == 0)

@@ -1,5 +1,8 @@
-import initialPaypal from "../../stores/register/paypal";
 import { UPDATE_PAYPAL_EMAIL, UPDATE_PAYPAL_PASSWORD, ASSIGN_PAYPAL, NEW_PAYPAL } from "../../actions/register/paypal";
+
+const initialPaypal = {
+
+};
 
 const paypal = (state = initialPaypal, action) => {
     const {type, payload} = action;

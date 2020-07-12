@@ -22,7 +22,7 @@ import close from "../../../../image/close.svg";
 import marker from "../../../../image/marker.svg";
 import { DialogMode } from '../../../../types/Variables';
 import { fetchFavoritesIfNeed, removeFavorite, addFavorite, FAVORITE_RESTAURANTS_FETCHED } from '../../../../actions/main/favorite/restaurant';
-import { fetchMenusIfNeed } from '../../../../actions/main/menu';
+import { fetchMenusIfNeed } from '../../../../actions/main/restaurant/menus';
 
 function Marker({name}) {
     return (

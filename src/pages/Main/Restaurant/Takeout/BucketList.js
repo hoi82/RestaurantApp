@@ -30,7 +30,7 @@ function BucketList({helper}) {
 
     const renderItems = () => {
         const { values: { items}} = context;        
-        return items.map((item, i) => <BucketItem key={item.id} item={item} index={i} helper={helper}/>)
+        return items.map((item, i) => <BucketItem key={item.menuID} item={item} index={i} helper={helper}/>)
     }
 
     const getTotalPrice = () => {

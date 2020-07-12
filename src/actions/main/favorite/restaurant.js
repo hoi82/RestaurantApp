@@ -17,6 +17,7 @@ const FAVORITE_URL = "http://localhost:3005/api/favorite/restaurant";
 
 export const fetchFavorites = () => async (dispatch, getState) => {
     const { auth } = getState();    
+    
     dispatch({type: FETCHING_FAVORITE_RESTAURANTS, payload: auth.id});
     try {
         const { data } = await axios.get(FAVORITE_LIST, axiosConfig);

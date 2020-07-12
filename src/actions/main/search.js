@@ -21,7 +21,6 @@ export const LOCATION_FAILED = "LOCATION_FAILED";
 export const RESULT_LOADING = "RESULT_LOADING";
 export const RESULT_LOADED = "RESULT_LOADED";
 export const RESULT_FAILED = "RESULT_FAILED";
-export const RESULT_RESET = "RESULT_RESET";
 
 const SEARCH_NAMES_URL = "http://localhost:3005/api/filter/names";
 const CATEGORIES_URL = "http://localhost:3005/api/filter/categories";

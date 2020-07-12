@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { fetchTakeoutsIfNeed } from '../../../../actions/main/takeout';
-import { useParams, useHistory } from 'react-router';
+import { useParams, useHistory, useLocation } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import Menu from './Menu';
 import { Formik, Form, FieldArray } from 'formik';
@@ -17,6 +17,7 @@ export default function Takeout(props) {
     const auth = useSelector((store) => store.auth);    
     const dispatch = useDispatch();    
     const history = useHistory();
+    const location = useLocation();    
 
     useEffect(() => {
         dispatch(fetchTakeoutsIfNeed(param.id));
@@ -75,7 +76,7 @@ export default function Takeout(props) {
 
     return (
         <Formik initialValues={{
-            items: []
+            items: location.state ? [{...location.state, quantity: 1}] : []
         }} onSubmit={handleSubmit}>
             <Form className={styles.takeout}>                          
                 <span className={styles.title}>Takeout</span>                

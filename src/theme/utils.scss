@@ -194,7 +194,8 @@
     }
 
     &:disabled {
-        background-color: rgb(105,107,109);
+        background-color: $grade5-bg-color;
+        cursor: default;
     }
 }
 

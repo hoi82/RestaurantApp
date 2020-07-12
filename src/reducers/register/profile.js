@@ -1,5 +1,8 @@
-import initialProfile from "../../stores/register/profile";
 import { UPDATE_PROFILE_EMAIL, UPDATE_PROFILE_PASSWORD, UPDATE_NAME, UPDATE_CONTACT, UPDATE_ADDRESS } from "../../actions/register/profile";
+
+const initialProfile = {
+
+};
 
 const profile = (state = initialProfile, action) => {    
     switch (action.type) {        

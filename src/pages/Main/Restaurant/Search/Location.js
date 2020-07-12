@@ -45,7 +45,7 @@ export default () => {
     const handleStateChange = (value) => {        
         setState(value);  
         setDisplayedStates(states.filter((state) => {            
-            return state.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+            return state.toLowerCase().indexOf(value.toLowerCase()) > -1
         }));
     }
 

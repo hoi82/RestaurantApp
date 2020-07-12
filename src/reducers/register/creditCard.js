@@ -1,5 +1,8 @@
-import initialCreditCard from "../../stores/register/creditCard";
 import { UPDATE_NUMBER, UPDATE_EXPIRE, UPDATE_CVC, UPDATE_CASHHOLDER, ASSIGN_CREDIT_CARD, NEW_CREDIT_CARD } from "../../actions/register/creditCard";
+
+const initialCreditCard = {
+
+};
 
 const creditCard = (state = initialCreditCard, action) => {   
     const {type, payload} = action; 

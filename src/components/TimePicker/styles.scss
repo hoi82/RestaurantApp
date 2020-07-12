@@ -10,15 +10,20 @@
 
         .reload {
             margin-left: 8px;            
-            @include set_size(32px, 32px);
+            @include set_size(40px, 40px);
+            padding: 8px;
             cursor: pointer;
+            box-sizing: border-box;
+            fill: $highlight-highlight-color;
+            background-color: $content-button-bg;
+            border-radius: 4px;
         }
 
         span:not(:nth-child(2)) {
             padding: 4px 16px 0 16px;
             background-color: $content-button-bg;            
             display: inline-block;
-            @include set_size(44px, 30px);
+            @include set_size(54px, 30px);
             text-align: center;
             padding-top: 10px;
             padding-left: 14px;

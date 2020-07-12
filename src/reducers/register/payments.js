@@ -1,6 +1,9 @@
-import initialPayments from "../../stores/register/payments";
 import { CREATE_PAYMENT, UPDATE_PAYMENT, DELETE_PAYMENT, SELECT_PAYMENT } from "../../actions/register/payments";
 import { Payments } from "../../types/Variables";
+
+const initialPayments = {
+    
+}
 
 const payments = (state = initialPayments, action) => {    
     const { type, payload } = action;

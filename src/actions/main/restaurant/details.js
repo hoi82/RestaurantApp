@@ -1,7 +1,7 @@
 import axios from "axios";
 import { axiosConfig } from "../../../config/url";
 import { fetchFavoritesIfNeed } from "../favorite/restaurant";
-import { fetchMenusIfNeed } from "../menu";
+import { fetchMenusIfNeed } from "./menus";
 
 export const READY_TO_LOAD_RESTAURANT = "READY_TO_LOAD_RESTAURANT";
 export const LOADING_RESTAURANT = "LOADING_RESTAURANT";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styles from "./Favorites.module.scss";
 import { getFullAddress } from '../../../utils/getStrings';
 import { IMAGE_URL, endpoint } from '../../../config/url';
@@ -11,7 +11,6 @@ import { fetchRestaurantIfNeed } from '../../../actions/main/restaurant/details'
 import StyledCheckBox from "../../../components/StyledCheckBox";
 import Popup from '../../../components/Popup';
 import { Link } from 'react-router-dom';
-import { SESSION_FOUND, LOG_IN_SUCCESS } from '../../../actions/auth';
 import { showDialog } from '../../../actions/common/dialog';
 import { DialogMode } from '../../../types/Variables';
 import MenuButton from '../../../components/MenuButton/MenuButton';
@@ -19,7 +18,7 @@ import MenuButton from '../../../components/MenuButton/MenuButton';
 const Restaurant = ({id, name, address, thumbnail, selected, index}) => {    
     const history = useHistory();
     const dispatch = useDispatch();
-    const [btnID, setBtnID] = useState(`review${new Date().getTime()}`);
+    const btnRef = useRef();
 
     const handleRemove = (e) => {
         dispatch(showDialog({
@@ -56,8 +55,8 @@ const Restaurant = ({id, name, address, thumbnail, selected, index}) => {
             </div>               
             <StyledCheckBox checked={selected} onChange={handleToggle}/>
             {/* <img className={styles.menu} src={menu} id={btnID}/> */}
-            <MenuButton id={btnID} className={styles.menu}/>
-            <Popup triggerID={btnID} position={{top: "16px", right: "64px"}}>
+            <MenuButton ref={btnRef} className={styles.menu}/>
+            <Popup trigger={btnRef} position={{top: "16px", right: "64px"}}>
                 <div className={styles.menu_panel}>
                     <button onClick={handleRemove}>Remove from favorite list</button>
                     <Link to={`${endpoint.restaurantDetail.replace(":id", id)}`} onClick={handleDetail}>Details</Link>
@@ -75,10 +74,11 @@ export default function Favorites({}) {
     const auth = useSelector((store) => store.auth);  
     const dispatch = useDispatch();        
 
-    useEffect(() => {
-        if (auth.isLogIn)        
+    useEffect(() => {        
+        if (auth.isLogin) {            
             dispatch(fetchFavorites());
-    }, [auth]);
+        }                 
+    }, [auth]);    
 
     const renderRestaurant = (item, index) => {
         return <Restaurant {...item} key={item.id} index={index}/>;

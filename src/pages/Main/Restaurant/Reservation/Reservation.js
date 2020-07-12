@@ -65,6 +65,14 @@ function ReservationUI(props) {
         props.setFieldValue("name", auth.name);
     }
 
+    const handleRefresh = () => {
+        dispatch(fetchReservation(param.id, date));
+    }
+    
+    const nameFocus = (e) => {
+        props.setFieldTouched("name", false);
+    }
+
     return (
         <Form className={styles.reservation}>
             <span className={styles.main_title}>Reservation</span>
@@ -81,7 +89,7 @@ function ReservationUI(props) {
                     <span className={classnames(styles.error_title, {[`${styles.error_visible}`] : props.touched["name"]})}>{props.errors["name"]}</span>
                 </div>
                 <div className={styles.name_panel}>
-                    <input type="text" name="name" className={styles.name_input} value={props.values.name} onChange={props.handleChange} onBlur={props.handleBlur}/>
+                    <input type="text" name="name" className={styles.name_input} value={props.values.name} onChange={props.handleChange} onFocus={nameFocus} onBlur={props.handleBlur}/>
                     <button type="button" onClick={handleLoggedName} className={styles.name_btn} disabled={!auth.isLogin}>로그인 이름 사용하기</button>
                 </div>                
                 <span className={styles.content_header}>Date</span>
@@ -91,12 +99,12 @@ function ReservationUI(props) {
                     <span className={classnames(styles.error_title, {[`${styles.error_visible}`] : props.touched["time"]})}>{props.errors["time"]}</span>
                 </div>                
                 <TimePicker available={reservation.available} reserved={reservation.reserved} time={props.values.time} timezone={restaurant.opens.timezone} onTimeChange={handleTime}
-                onFocus={timePickerFocus} onBlur={timePickerBlur}/>
+                onFocus={timePickerFocus} onBlur={timePickerBlur} onRefresh={handleRefresh}/>
                 <div className={styles.header_box}>
                     <span className={styles.content_header}>Member</span>
                     <span className={classnames(styles.error_title, {[`${styles.error_visible}`] : props.touched["member"]})}>{props.errors["member"]}</span>
                 </div>                
-                <DropdownBox value={props.values.member} onChange={handleMember} items={[1,2,3,4,5,6,7,8]} width="160px"/>
+                <DropdownBox value={props.values.member} onChange={handleMember} items={[1,2,3,4,5,6,7,8]} width="160px" onFocus={dropdownFocus} onBlur={dropdownBlur}/>
                 <span className={styles.content_header}>Personal Message</span>
                 <textarea name="message" value={props.values.message} className={styles.message} onChange={props.handleChange} onBlur={props.handleBlur}/>
             </div>                            

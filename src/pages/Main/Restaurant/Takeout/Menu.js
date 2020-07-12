@@ -5,17 +5,31 @@ import noImage from '../../../../types/noImage';
 import styles from "./Menu.module.scss";
 
 export default function Menu({menu, helper}) {
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(1);        
 
     const handleAdd = (e) => {
         const { form: { values: {items}}} = helper;
-        const idx = items.findIndex((item) => item.id == menu.id);
+        const idx = items.findIndex((item) => item.menuID == menu.id);
         if (idx > -1)
         {
-            helper.replace(idx, {...menu, quantity: items[idx].quantity + quantity});
+            const replaceValue = {
+                menuID: menu.id,
+                thumbnail: menu.thumbnail,
+                name: menu.name,
+                price: menu.price,
+                quantity: items[idx].quantity + quantity
+            }            
+            helper.replace(idx, replaceValue);
         }
         else {
-            helper.push({...menu, quantity: quantity});
+            const newValue = {
+                menuID: menu.id,
+                thumbnail: menu.thumbnail,
+                name: menu.name,
+                price: menu.price,
+                quantity: quantity
+            }
+            helper.push(newValue);
         }
         setQuantity(1);
     }

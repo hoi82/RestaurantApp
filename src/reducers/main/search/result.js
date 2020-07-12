@@ -1,4 +1,4 @@
-import { READY_TO_LOAD, RESULT_LOADING, RESULT_LOADED, RESULT_FAILED, RESULT_RESET } from "../../../actions/main/search";
+import { READY_TO_LOAD, RESULT_LOADING, RESULT_LOADED, RESULT_FAILED } from "../../../actions/main/search";
 import { produce } from "immer";
 
 const initState = {
@@ -26,11 +26,7 @@ export default (state = initState, action) => {
             return produce(state, draft => {
                 draft.status = RESULT_FAILED;
                 draft.error = payload;
-            })            
-        case RESULT_RESET:
-            return produce(state, draft => {
-                Object.assign(draft, initState);
-            })            
+            })                              
         default:
             return state;
     }

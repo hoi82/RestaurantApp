@@ -33,20 +33,29 @@
         font-size: $h4-size;
         color: $title-color;
         font-weight: 600;
-        margin-top: 24px;
+        margin-top: 32px;
     }
 
     .content_box {
         @include column_flex(center, flex-start);
         @include set_size(100%);
 
-        &::after {
+        &:first-child::after {
             content: "";
             display: block;
             width: 100%;
             height: 1px;
             background-color: $grade5-bg-color;
-            margin: 17px auto 18px auto;
+            margin: 18px auto 24px auto;
+        }
+
+        &:nth-child(2)::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: $grade5-bg-color;
+            margin: 34px auto 24px auto;
         }
     }
 
@@ -58,15 +67,25 @@
     }
 
     .content {
+        font-size: $h1-size;
+        color: $content-color;
+        font-weight: 600;
+        margin-top: 16px;          
+    }     
+
+    .message {
+        font-size: $h2-size;
+        color: $content-color;
+        font-weight: 600;
+        margin-top: 24px;
+    }
+    
+    .res_address {
         font-size: $h3-size;                                        
         color: $content-color;
         font-weight: 600;
         margin-top: 8px;  
-        
-        &:last-of-type {
-            margin-bottom: 8px;
-        }
-    }        
+    }
 
     .menu_btn {
         @include content_medium_button(160px);
@@ -74,5 +93,9 @@
         &:not(:first-of-type) {
             margin-left: 8px;
         }
-    }            
+    }   
+    
+    .button_panel {
+        margin-top: 36px;
+    }
 }

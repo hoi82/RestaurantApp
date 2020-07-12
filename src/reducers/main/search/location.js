@@ -1,4 +1,5 @@
 import { READY_TO_LOAD, COUNTRY_LOADING, COUNTRY_LOADED, COUNTRY_FAILED, STATE_LOADING, STATE_LOADED, STATE_FAILED } from "../../../actions/main/search";
+import produce from "immer";
 
 const initState = {
     country: {
@@ -18,59 +19,39 @@ export default (state = initState, action) => {
 
     switch (type) {
         case COUNTRY_LOADING:
-            return {
-                country: {
-                    status: COUNTRY_LOADING,
-                    filter: state.country.filter,
-                    error: ""
-                },
-                states: state.states
-            };
+            return produce(state, draft => {
+                draft.country.status = COUNTRY_LOADING;                
+                draft.country.error = "";
+            });            
         case COUNTRY_LOADED: 
-            return {
-                country: {
-                    status: COUNTRY_LOADED,
-                    filter: payload,
-                    error: ""
-                },
-                states: state.states
-            };
+            return produce(state, draft => {
+                draft.country.status = COUNTRY_LOADED;
+                draft.country.filter = payload;
+                draft.country.error = "";
+            });            
         case COUNTRY_FAILED: 
-            return {
-                country: {
-                    status: COUNTRY_FAILED,
-                    filter: state.country.filter,
-                    error: payload
-                },
-                states: state.states
-            };
+            return produce(state, draft => {
+                draft.country.status = COUNTRY_FAILED;
+                draft.country.filter = [];
+                draft.country.error = payload;
+            })            
         case STATE_LOADING: 
-            return {
-                country: state.country,
-                states: {
-                    status: STATE_LOADING,
-                    filter: state.states.filter,
-                    error: ""
-                }
-            };
-        case STATE_LOADED: 
-            return {
-                country: state.country,
-                states: {
-                    status: STATE_LOADED,
-                    filter: payload,
-                    error: ""
-                }
-            };
+            return produce(state, draft => {
+                draft.states.status = STATE_LOADING;
+                draft.states.error = "";
+            })            
+        case STATE_LOADED:             
+            return produce(state, draft => {
+                draft.states.status = STATE_LOADED;
+                draft.states.filter = payload;
+                draft.states.error = "";
+            })            
         case STATE_FAILED:
-            return {
-                country: state.country,
-                states: {
-                    status: STATE_FAILED,
-                    filter: state.states.filter,
-                    error: payload
-                }
-            };
+            return produce(state, draft => {
+                draft.states.status = STATE_FAILED;
+                draft.states.filter = [];
+                draft.states.error = payload;
+            })            
         default:
             return state;
     }

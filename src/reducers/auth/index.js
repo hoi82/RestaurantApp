@@ -3,7 +3,7 @@ import { AUTH_PROCESSING, LOG_IN_FAILED, LOG_IN_SUCCESS, SESSION_FOUND, SESSION_
 
 
 export const initialAuth = {    
-    state: AUTH_READY,
+    status: AUTH_READY,
     isLogin: false,    
     id: "",
     email: "",
@@ -17,12 +17,12 @@ export const auth = (state = initialAuth, action) => {
     switch (type) {
         case AUTH_PROCESSING:              
             return produce(state, draft => {                
-                draft.state = state.state;
+                draft.status = state.status;
                 draft.error = 0;
             });            
         case LOG_IN_SUCCESS:
             return produce(state, draft => {
-                draft.state = LOG_IN_SUCCESS;
+                draft.status = LOG_IN_SUCCESS;
                 draft.isLogin = true;
                 draft.id = payload.id;
                 draft.email = payload.email;
@@ -32,7 +32,7 @@ export const auth = (state = initialAuth, action) => {
             });
         case LOG_IN_FAILED:
             return produce(state, draft => {                
-                draft.state = LOG_IN_FAILED;
+                draft.status = LOG_IN_FAILED;
                 draft.isLogin = false;
                 draft.id = "";
                 draft.email = "";
@@ -42,7 +42,7 @@ export const auth = (state = initialAuth, action) => {
             });            
         case LOG_OUT:
             return produce(state, draft => {
-                draft.state = SESSION_LOST;
+                draft.status = SESSION_LOST;
                 draft.isLogin = false;
                 draft.id = "";
                 draft.email = "";
@@ -52,7 +52,7 @@ export const auth = (state = initialAuth, action) => {
             })
         case SESSION_FOUND:
             return produce(state, draft => {
-                draft.state = type;
+                draft.status = type;
                 draft.isLogin = true;
                 draft.id = payload.id;
                 draft.email = payload.email;
@@ -62,7 +62,7 @@ export const auth = (state = initialAuth, action) => {
             })
         case SESSION_LOST:
             return produce(state, draft => {
-                draft.state = type;
+                draft.status = type;
                 draft.isLogin = false;
                 draft.id = "";
                 draft.email = "";

@@ -4,8 +4,7 @@ import styles from "./Review.module.scss";
 import { ISODateToString } from '../utils';
 import Ratings from "react-ratings-declarative";
 import ReactHtmlParser from "react-html-parser";
-import menu from "../../../../image/menu.svg";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { endpoint } from '../../../../config/url';
 import Popup from '../../../../components/Popup';
 import MenuButton from '../../../../components/MenuButton/MenuButton';
@@ -13,8 +12,7 @@ import MenuButton from '../../../../components/MenuButton/MenuButton';
 function Review({id, rating, created, title, comment, userID, resID, userName, onDelete}) {
     const auth = useSelector((store) => store.auth);    
     const [fold, setFold] = useState(true);    
-    const history = useHistory();    
-    const dispatch = useDispatch(); 
+    const history = useHistory();        
     const btnRef = useRef();
 
     const handleUnfold = () => {
