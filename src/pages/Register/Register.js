@@ -2,23 +2,21 @@ import React, { useState } from 'react';
 import Content from "./Content";
 import { DialogMode } from "../../types/Variables";
 import styles from "./Register.module.scss";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { showDialog } from '../../actions/common/dialog';
 import TOS from "./TOS/TOS";
 import Nav from "./Nav";
 import { useHistory } from 'react-router';
-import { endpoint, axiosConfig } from '../../config/url';
+import { endpoint } from '../../config/url';
 import { Formik } from 'formik';
 import Validator from '../../utils/Validator';
-import axios from 'axios';
+import { registerUser } from '../../actions/register';
 
 export default function Register() {       
     const [tosAgree, setTOSAgree] = useState(false);    
     const [pageName, setPageName] = useState("profile");
     const dispatch = useDispatch();
-    const profile = useSelector((store) => store.register.profile);
-    const payments = useSelector((store) => store.register.payments);
-    const status = useSelector((store) => store.register.status);
+    const store = useStore();    
     const history = useHistory();    
 
     const handleValidate = (values) => {
@@ -53,18 +51,22 @@ export default function Register() {
     }
 
     const handleSubmit = (values) => {
-        axios.post("http://localhost:3005/api/users", values, axiosConfig).then((res) => {
-            dispatch(showDialog({
-                mode: DialogMode.SUCCESS,
-                content: "가입을 축하드립니다. \r\n 닫기를 누르시면 메인 화면으로 이동합니다.",
-                onClose: () => history.replace(endpoint.home)
-            }));
-        }).catch((err) => {
-            dispatch(showDialog({
-                mode: DialogMode.ALERT,
-                content: `에러가 발생했습니다.(${err.message})`,
-            }))
-        });
+        dispatch(registerUser(values)).then(() => {
+            const { register } = store.getState();            
+            if (register.registered) {
+                dispatch(showDialog({
+                    mode: DialogMode.SUCCESS,
+                    content: "가입을 축하드립니다. \r\n 닫기를 누르시면 메인 화면으로 이동합니다.",
+                    onClose: () => history.replace(endpoint.home)
+                }));
+            }
+            else {
+                dispatch(showDialog({
+                    mode: DialogMode.ALERT,
+                    content: `에러가 발생했습니다.(${register.error})`,
+                }));
+            }
+        });        
     }
 
     const renderContent = () => {                    

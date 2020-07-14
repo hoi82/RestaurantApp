@@ -15,11 +15,11 @@ export default function Reviews({id, resid}) {
     const [page, setPage] = useState(0);
     const [pageLength, setPageLength] = useState(10);
     const dispatch = useDispatch();
-    const param = useParams();
+    const param = useParams();    
 
     useEffect(() => {
         dispatch(fetchReviewsIfNeed(resid, page, pageLength));
-    },[]);
+    }, [page]);
 
     const handleDelete = (id) => {
         dispatch(showDialog({
@@ -40,8 +40,7 @@ export default function Reviews({id, resid}) {
     }    
 
     const handlePageChange = (pageNumber) => {
-        setPage(pageNumber);
-        dispatch(fetchReviewsIfNeed(resid, pageNumber, pageLength));        
+        setPage(pageNumber);                
     }        
 
     return (

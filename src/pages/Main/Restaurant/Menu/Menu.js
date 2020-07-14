@@ -13,8 +13,7 @@ export default function Menu() {
     const param = useParams();
     const dispatch = useDispatch();
     const history = useHistory();    
-    
-    //TODO: 여기부터 해야됨.메뉴 별도로 가져오던가 아니면 리스트를 통째로 불러서 하던지 해야할듯.
+        
     useEffect(() => {
         dispatch(fetchMenu(param.id));
     },[]);        
@@ -29,6 +28,8 @@ export default function Menu() {
         }
         history.push(`${endpoint.takeout}/${menu.restaurantID}`, order);
     }
+
+    if (menu.isPending) return null;
     
     return (
         <div className={styles.menu}>        

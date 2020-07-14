@@ -3,6 +3,7 @@ import { produce } from "immer";
 
 const initState = {
     status: READY_TO_LOAD_RESTAURANT,
+    isPending: true,
     id: "",
     name: "",
     category: "",
@@ -28,20 +29,22 @@ export default (state = initState, action) => {
     const {type, payload} = action;    
     switch (type) {
         case LOADING_RESTAURANT:
-            return produce(state, draft => {
-                Object.assign(draft, initState);
+            return produce(state, draft => {                
                 draft.status = LOADING_RESTAURANT;
+                draft.isPending = true;
                 draft.id = payload;
             })            
         case LOADED_RESTAURANT:
             return produce(state, draft => {
                 Object.assign(draft, payload);
                 draft.status = LOADED_RESTAURANT;
+                draft.isPending = false;
                 draft.error = "";
             })            
         case FAIL_TO_LOAD_RESTAURANT:
             return produce(state, draft => {
                 draft.status = FAIL_TO_LOAD_RESTAURANT;
+                draft.isPending = false;
                 draft.error = payload.error;
             })            
         default:

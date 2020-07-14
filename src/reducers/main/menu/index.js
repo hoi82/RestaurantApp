@@ -4,6 +4,7 @@ const { READY_TO_FETCH_MENU, FETCHING_MENU, MENU_FETCHED, MENU_FETCH_FAILED } = 
 
 const initState = {
     status: READY_TO_FETCH_MENU,    
+    isPending: true,
     menuID: "",
     restaurantID: "",
     name: "",
@@ -21,12 +22,14 @@ export default (state = initState, action) => {
         case FETCHING_MENU:
             return produce(state, draft => {
                 draft.status = type;
+                draft.isPending = true;
                 draft.menuID = payload;
                 draft.error = "";
             });
         case MENU_FETCHED:            
             return produce(state, draft => {
                 draft.status = type;
+                draft.isPending = false;
                 draft.menuID = payload.id;
                 draft.restaurantID = payload.restaurantID;
                 draft.name = payload.name;
@@ -38,8 +41,9 @@ export default (state = initState, action) => {
                 draft.error = "";
             })
         case MENU_FETCH_FAILED:
-            return produce(state, draft => {
+            return produce(state, draft => {                
                 draft.status = type;
+                draft.isPending = false;
                 draft.error = payload;
             })
         default:

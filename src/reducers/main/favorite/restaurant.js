@@ -5,6 +5,7 @@ import { READY_TO_FETCH_FAVORITE_RESTAURANTS, FETCHING_FAVORITE_RESTAURANTS, FAV
 
 const initState = {
     status: READY_TO_FETCH_FAVORITE_RESTAURANTS,
+    isPending: true,
     userid: "",    
     list: [],
     error: ""
@@ -17,6 +18,7 @@ export default (state = initState, action) => {
         case FETCHING_FAVORITE_RESTAURANTS:
             return produce(state, draft => {
                 draft.status = type;
+                draft.isPending = true;
                 draft.userid = payload;
                 draft.list = state.list;
                 draft.error = "";
@@ -24,6 +26,7 @@ export default (state = initState, action) => {
         case FAVORITE_RESTAURANTS_FETCHED:
             return produce(state, draft => {
                 draft.status = type;
+                draft.isPending = false;
                 draft.userid = state.userid;
                 draft.list = payload.map((item) => ({...item, selected: false}));
                 draft.error = "";
@@ -31,6 +34,7 @@ export default (state = initState, action) => {
         case FAVORITE_RESTAURANTS_FETCH_FAILED:
             return produce(state, draft => {
                 draft.status = type;
+                draft.isPending = false;
                 draft.userid = state.userid;
                 draft.list = [];
                 draft.error = payload;
@@ -38,6 +42,7 @@ export default (state = initState, action) => {
         case DELETE_FAVORITE_RESTAURANT:
             return produce(state, draft => {
                 draft.status = FAVORITE_RESTAURANTS_FETCHED;
+                draft.isPending = false;
                 draft.userid = state.userid;
                 draft.list = state.list.filter((item) => item.id != payload);
                 draft.error = state.error;
@@ -45,6 +50,7 @@ export default (state = initState, action) => {
         case ADD_FAVORITE_RESTAURANT:
             return produce(state, draft => {
                 draft.status = FAVORITE_RESTAURANTS_FETCHED;
+                draft.isPending= false;
                 draft.userid = state.userid;
                 draft.list.push({...payload, selected: false});
                 draft.error = state.error;
@@ -62,6 +68,7 @@ export default (state = initState, action) => {
         case REMOVE_SELECTED_FAVORITE_RESTAURANTS:
             return produce(state, draft => {
                 draft.status = FAVORITE_RESTAURANTS_FETCHED;
+                draft.isPending = false;
                 draft.list = state.list.filter((item) => payload.includes(item.id));
             })           
         default:

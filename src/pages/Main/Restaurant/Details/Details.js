@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { fetchRestaurantIfNeed } from '../../../../actions/main/restaurant/details';
-import { getFullAddress } from '../../../../utils/getStrings';
+import { getFullAddress, getErrorMessage } from '../../../../utils/getStrings';
 import styles from "./Details.module.scss";
 import addFavIcon from "../../../../image/addfav.svg";
 import removeFavIcon from "../../../../image/removefav.svg";
@@ -22,7 +22,6 @@ import close from "../../../../image/close.svg";
 import marker from "../../../../image/marker.svg";
 import { DialogMode } from '../../../../types/Variables';
 import { fetchFavoritesIfNeed, removeFavorite, addFavorite, FAVORITE_RESTAURANTS_FETCHED } from '../../../../actions/main/favorite/restaurant';
-import { fetchMenusIfNeed } from '../../../../actions/main/restaurant/menus';
 
 function Marker({name}) {
     return (
@@ -33,18 +32,17 @@ function Marker({name}) {
     )
 }
 
-function Details({route, match}) {   
+function Details() {   
     const details = useSelector((store) => store.main.restaurant.details); 
     const reviews = useSelector((store) => store.main.restaurant.reviews);
     const favorites = useSelector((store) => store.main.favorite.restaurant);
     const store = useStore();
     const param = useParams();     
-    const dispatch = useDispatch();    
+    const dispatch = useDispatch();       
 
     useEffect(() => {
         dispatch(fetchRestaurantIfNeed(param.id));
-        dispatch(fetchFavoritesIfNeed());
-        dispatch(fetchMenusIfNeed(param.id));
+        dispatch(fetchFavoritesIfNeed());        
     }, []);      
 
     const handleDialog = (e) => {
@@ -76,18 +74,18 @@ function Details({route, match}) {
     const handleFavorite = (e) => {
         if (isFavorite()) {
             dispatch(removeFavorite(param.id)).then(() => {
-                const { main: {favorite: {restaurant: status }} } = store.getState();                
-                if (favorites.status == FAVORITE_RESTAURANTS_FETCHED) {
+                const { main: {favorite: {restaurant: status, error }} } = store.getState();                
+                if (status == FAVORITE_RESTAURANTS_FETCHED) {
                     dispatch(showDialog({
                         mode: DialogMode.SUCCESS,
                         bgimg: false,
                         content: "This restaurant is removed from your favorite list",
                     }));
                 }
-                else {
+                else {                    
                     dispatch(showDialog({
                         mode: DialogMode.ALERT,
-                        content: favorites.error.response.data
+                        content: getErrorMessage(error)
                     }))
                 }
             });            
@@ -102,19 +100,10 @@ function Details({route, match}) {
                         content: "Sucessfully added to your favorite list",                        
                     }));
                 }
-                else {
-                    let message = "";                    
-                    switch (error) {
-                        case "NOT_LOGIN":
-                            message = "먼저 로그인 해주세요.";                            
-                            break;                    
-                        default:
-                            message = `에러가 발생했습니다. 관리자에게 문의해주세요.\r\nCode:${error}`;
-                            break;
-                    }
+                else {                    
                     dispatch(showDialog({
                         mode: DialogMode.ALERT,
-                        content: message
+                        content: getErrorMessage(error)
                     }))
                 }
             });            
@@ -146,9 +135,11 @@ function Details({route, match}) {
         else {
             return null;
         }
-    };         
+    };           
+    
+    if (details.isPending) return null;
 
-    return (                
+    return (                  
         <div className={styles.details}>            
             <div className={styles.name_panel}>
                 <span className={styles.name}>{details.name}</span>

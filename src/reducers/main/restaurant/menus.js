@@ -2,6 +2,7 @@ import { READY_TO_FETCH_MENUS, FETCHING_MENUS, MENUS_FETCHED, MENUS_FETCH_FAILED
 
 const initState = {
     status: READY_TO_FETCH_MENUS,
+    isPending: true,
     resid: "",
     list: [],
     error: ""
@@ -13,6 +14,7 @@ export default (state = initState, action) => {
         case FETCHING_MENUS:
             return {
                 status: type,
+                isPending: true,
                 resid: payload,
                 list: state.list,
                 error: ""
@@ -20,6 +22,7 @@ export default (state = initState, action) => {
         case MENUS_FETCHED:
             return {
                 status: type,
+                isPending: false,
                 resid: state.resid,
                 list: payload,
                 error: ""
@@ -27,6 +30,7 @@ export default (state = initState, action) => {
         case MENUS_FETCH_FAILED:
             return {
                 status: type,
+                isPending: false,
                 resid: state.resid,
                 list: [],
                 error: payload

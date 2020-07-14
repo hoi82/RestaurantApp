@@ -1,11 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from "./style.scss";
 import close from "../../../../../image/close.svg";
-import { useSelector, useDispatch } from 'react-redux';
-import { updateEmail, updatePassword } from "../../../../../actions/register/paypal";
-import { updatePayment, createPayment } from '../../../../../actions/register/payments';
-import { DialogMode } from '../../../../../types/Variables';
-import { showDialog } from '../../../../../actions/common/dialog';
 import { Form, useFormikContext } from 'formik';
 
 const Input = ({name, header, type, extChange}) => {

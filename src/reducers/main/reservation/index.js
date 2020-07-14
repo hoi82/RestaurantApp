@@ -9,6 +9,8 @@ const initState = {
     error: ""            
 }
 
+//TODO: 여기부터 시작
+
 export default (state = initState, action) => {    
     const {type, payload} = action;    
     switch (type) {        

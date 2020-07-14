@@ -1,10 +1,11 @@
 import { produce } from "immer";
-import { AUTH_PROCESSING, LOG_IN_FAILED, LOG_IN_SUCCESS, SESSION_FOUND, SESSION_LOST, LOGIN_VALIDATING, SESSION_VALIDATING, AUTH_READY, RESET_AUTH, LOG_OUT } from "../../actions/auth";
+import { AUTH_PROCESSING, LOG_IN_FAILED, LOG_IN_SUCCESS, SESSION_FOUND, SESSION_LOST, AUTH_READY, RESET_AUTH, LOG_OUT } from "../../actions/auth";
 
 
 export const initialAuth = {    
     status: AUTH_READY,
-    isLogin: false,    
+    isLogin: false, 
+    isPending: false,   
     id: "",
     email: "",
     name: "",
@@ -18,12 +19,14 @@ export const auth = (state = initialAuth, action) => {
         case AUTH_PROCESSING:              
             return produce(state, draft => {                
                 draft.status = state.status;
+                draft.isPending = true;
                 draft.error = 0;
             });            
         case LOG_IN_SUCCESS:
             return produce(state, draft => {
                 draft.status = LOG_IN_SUCCESS;
                 draft.isLogin = true;
+                draft.isPending = false;
                 draft.id = payload.id;
                 draft.email = payload.email;
                 draft.name = payload.name;
@@ -34,6 +37,7 @@ export const auth = (state = initialAuth, action) => {
             return produce(state, draft => {                
                 draft.status = LOG_IN_FAILED;
                 draft.isLogin = false;
+                draft.isPending = false;
                 draft.id = "";
                 draft.email = "";
                 draft.name = "";
@@ -44,6 +48,7 @@ export const auth = (state = initialAuth, action) => {
             return produce(state, draft => {
                 draft.status = SESSION_LOST;
                 draft.isLogin = false;
+                draft.isPending = false;
                 draft.id = "";
                 draft.email = "";
                 draft.name = "";
@@ -54,6 +59,7 @@ export const auth = (state = initialAuth, action) => {
             return produce(state, draft => {
                 draft.status = type;
                 draft.isLogin = true;
+                draft.isPending = false;
                 draft.id = payload.id;
                 draft.email = payload.email;
                 draft.name = payload.name;
@@ -64,6 +70,7 @@ export const auth = (state = initialAuth, action) => {
             return produce(state, draft => {
                 draft.status = type;
                 draft.isLogin = false;
+                draft.isPending = false;
                 draft.id = "";
                 draft.email = "";
                 draft.name = "";

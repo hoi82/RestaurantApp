@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from "./Menus.module.scss";
 import plan from "../../../../image/plan.svg";
 import Menu from './Menu';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchMenusIfNeed } from '../../../../actions/main/restaurant/menus';
 
 export default function Menus({restaurantID}) {
-    const menus = useSelector((store) => store.main.restaurant.menus);        
+    const menus = useSelector((store) => store.main.restaurant.menus);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchMenusIfNeed(restaurantID));
+    }, []);
 
     const renderMenus = (menus) => {
         if (!menus || menus.length == 0)
@@ -20,6 +26,8 @@ export default function Menus({restaurantID}) {
             return null;
         }
     }
+    
+    if (menus.isPending) return null;
 
     return (
         <React.Fragment>

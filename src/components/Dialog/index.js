@@ -87,38 +87,33 @@ export default function Dialog(props) {
     
     //NOTE: state에 속성을 부여해 true면 컴포넌트, false면 null return
     //state 변경시 컴포넌트를 다시 render한다는 점을 이용
+
+    if (!dialog.show) return null;
          
-    return (  
-        <React.Fragment>
-            {
-                dialog.show ?
-                <div className={styles.dialog}>
-                    <div className={styles.overlay}/>
-                    <div className={styles.container} ref={overlayRef} onMouseDown={handleOverlayDown} onMouseUp={handleOverlayUp}>
-                        <div className={styles.box}>
-                            {/* {
-                                this.state.title != "" ?
-                                <div className={styles.title_bar}>
-                                    {this.state.title}
-                                </div> 
-                                :
-                                null
-                            }                     */}
-                            {dialog.bgimg ? renderBg() : null}
-                            <div className={styles.content_box}>
-                                {dialog.content}
-                            </div>        
-                            {
-                                dialog.buttons ? null : <div className={styles.button_box}>
-                                    {renderBtn()}                                
-                                </div>
-                            }                                                    
-                        </div>    
-                    </div>                        
-                </div>                                   
-                :
-                null
-            }
-        </React.Fragment>            
+    return (          
+        <div className={styles.dialog}>
+            <div className={styles.overlay}/>
+            <div className={styles.container} ref={overlayRef} onMouseDown={handleOverlayDown} onMouseUp={handleOverlayUp}>
+                <div className={styles.box}>
+                    {/* {
+                        this.state.title != "" ?
+                        <div className={styles.title_bar}>
+                            {this.state.title}
+                        </div> 
+                        :
+                        null
+                    }                     */}
+                    {dialog.bgimg ? renderBg() : null}
+                    <div className={styles.content_box}>
+                        {dialog.content}
+                    </div>
+                    {
+                        dialog.buttons ? null : <div className={styles.button_box}>
+                            {renderBtn()}
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>                
     );    
 }

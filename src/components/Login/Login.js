@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useLocation } from "react-router-dom";
 import styles from "./styles.scss";
-import { useDispatch, useSelector, useStore, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { processLogIn } from '../../actions/auth';
 import { endpoint } from '../../config/url';
 import StyledCheckBox from '../StyledCheckBox';
@@ -12,7 +12,8 @@ import { Formik, Form, Field } from 'formik';
 
 export default function LogIn() {    
     const store = useStore();    
-    const dispatch = useDispatch();    
+    const dispatch = useDispatch();
+    const location = useLocation();
 
     const handleLogIn = (values, {setStatus, setErrors}) => {        
         dispatch(processLogIn(values.email, values.password)).then(() => {
@@ -69,6 +70,7 @@ const Input = ({field, form : { touched, errors, setFieldTouched }, type, header
 }
 
 function LogInForm() {
+    const auth = useSelector((store) => store.auth);
     const [remember, setRemember] = useState(false);    
     const dispatch = useDispatch();    
 
@@ -87,6 +89,11 @@ function LogInForm() {
     const validatePassword = (value) => {
         return Validator.validatePassword(value);             
     }
+
+    const handleRegister = (e) => {
+        dispatch(closeDialog());
+        window.localStorage.setItem("restaurantApp_prevUrl", location.pathname);
+    }
     
     return (           
         <Form className={styles.login}>
@@ -102,12 +109,12 @@ function LogInForm() {
                 </button>
             </div>
             <div className={styles.item_container}>
-                <button type="submit" className={styles.login_btn}>
+                <button type="submit" className={styles.login_btn} disabled={auth.isPending}>
                     <span>로그인</span>
                 </button>
                 <div className={styles.register_container}>
                     <span className={styles.sub_title}>아직 가입하지 않으셨나요?</span>
-                    <Link className={styles.register_btn} to={{pathname: endpoint.register}} onClick={() => dispatch(closeDialog())}>
+                    <Link className={styles.register_btn} to={{pathname: endpoint.register}} onClick={handleRegister}>
                         <span>가입하기</span>    
                     </Link>                            
                 </div>

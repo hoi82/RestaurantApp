@@ -34,22 +34,24 @@ export default ({bgColor, width, hideShadow, padding, positionRelative = true, c
         minHeight: "620px",
     }   
 
-    return (
-        positionRelative 
-        ? 
+    if (positionRelative) {
+        return (
             <div style={relativeContainer}>
                 <div style={panel}/>
                 <div style={container}>
                     {children}
-                </div>            
+                </div>
             </div>
-        
-        : 
+        )
+    }
+    else {
+        return (
             <React.Fragment>
                 <div style={panel}/>
                 <div style={container}>
                     {children}
                 </div>            
-            </React.Fragment>                
-    );
+            </React.Fragment>
+        )
+    }    
 }

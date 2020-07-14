@@ -117,7 +117,7 @@ export default ({items=[], onChange, value, width, editable, onFocus, onBlur}) =
             onFocus(e);
         }
         setBoxOpen(!boxOpen);
-    }      
+    }         
 
     return (
         <div onBlur={handleBlur} className={styles.dropdown} onKeyDown={handleNavigation} style={{maxWidth: width}}>

@@ -54,10 +54,12 @@ export default function Popup({children, trigger, position={top: "auto", right: 
             setOpen(false);
         }
     }
+
+    if (!open) return null;
     
     return (
-        open ? <div className={styles.popup} style={position} ref={contextRef} onClick={handleClose}>
+        <div className={styles.popup} style={position} ref={contextRef} onClick={handleClose}>
             {children}
-        </div> : null
+        </div>
     );
 }
