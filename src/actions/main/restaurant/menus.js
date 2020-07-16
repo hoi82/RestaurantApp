@@ -30,7 +30,7 @@ export const fetchMenus = (restaurantID) => async (dispatch) => {
 
 const shouldFetch = (restaurantID, getState) => {
     const { main: { restaurant: { menus } } } = getState();
-    return (menus.status == READY_TO_FETCH_MENUS) || (menus.status != FETCHING_MENUS && menus.resid != restaurantID);
+    return (menus.status == READY_TO_FETCH_MENUS) || (menus.status != FETCHING_MENUS && menus.restaurantID != restaurantID);
 }
 
 export const fetchMenusIfNeed = (restaurantID) => (dispatch, getState) => {

@@ -1,35 +1,35 @@
-import { READY_TO_LOAD, CATEGORY_LOADING, CATEGORY_LOADED, CATEGORY_FAILED } from "../../../actions/main/search";
 import produce from "immer";
 
+const { READY_TO_FETCH_MY_TAKEOUT, FETCHING_MY_TAKEOUT, MY_TAKEOUT_FETCHED, MY_TAKEOUT_FETCH_FAILED } = require("../../../actions/main/myTakeout");
+
 const initState = {
-    status: READY_TO_LOAD,
+    status: READY_TO_FETCH_MY_TAKEOUT,
     isPending: true,
-    filter: [],
+    takeouts: [],
     error: ""
-};
+}
 
 export default (state = initState, action) => {
     const { type, payload } = action;
-
     switch (type) {
-        case CATEGORY_LOADING:
+        case FETCHING_MY_TAKEOUT:
             return produce(state, draft => {
                 draft.status = type;
-                draft.isPending = true;                
-            });            
-        case CATEGORY_LOADED:
+                draft.isPending = true;
+            })            
+        case MY_TAKEOUT_FETCHED:
             return produce(state, draft => {
                 draft.status = type;
                 draft.isPending = false;
-                draft.filter = payload;
+                draft.takeouts = payload;
                 draft.error = "";
-            });            
-        case CATEGORY_FAILED:
+            })
+        case MY_TAKEOUT_FETCH_FAILED:
             return produce(state, draft => {
                 draft.status = type;
                 draft.isPending = false;
                 draft.error = payload;
-            });            
+            })
         default:
             return state;
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from "./style.scss";
 import arrow from "../../image/down-arrow.svg";
 
@@ -15,7 +15,8 @@ export default ({items=[], onChange, value, width, editable, onFocus, onBlur}) =
     //TODO: 두개가 있을 경우 하나가 열려있는 상태에서 다른걸 클릭하면 원래 열려있던게 닫히지 않음. 
     //blur에서 relatedTarget에 다른 dropbox일때도 추가함(name으로 판별했는데 좀더 안전한 방법으로 해야할듯).
     const [boxOpen, setBoxOpen] = useState(false);         
-    const [selected, setSelected] = useState({index: -1});            
+    const [selected, setSelected] = useState({index: -1});   
+    const boxRef = useRef();         
 
     useEffect(() => {
         if (boxOpen) {
@@ -68,8 +69,8 @@ export default ({items=[], onChange, value, width, editable, onFocus, onBlur}) =
         fireBlur();
     }
 
-    const handleBlur = (e) => {               
-        if (e.relatedTarget == null || e.relatedTarget.name == "input") {
+    const handleBlur = (e) => {        
+        if (!boxRef.current.contains(e.relatedTarget) || e.relatedTarget.name == "input") {
             setBoxOpen(false);    
             fireBlur(e);              
         }        
@@ -120,7 +121,7 @@ export default ({items=[], onChange, value, width, editable, onFocus, onBlur}) =
     }         
 
     return (
-        <div onBlur={handleBlur} className={styles.dropdown} onKeyDown={handleNavigation} style={{maxWidth: width}}>
+        <div onBlur={handleBlur} ref={boxRef} className={styles.dropdown} onKeyDown={handleNavigation} style={{maxWidth: width}}>
             { editable ? 
                 <input type="text" name="input" autoComplete="off" className={styles.input} value={value} onFocus={onFocus} onChange={handleChange} onClick={handleInputClick}/>
                 :

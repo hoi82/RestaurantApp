@@ -3,6 +3,38 @@
 
 .footer {
     @include relative_full;
+    display: flex;
     max-width: 1280px;
     margin: 0 auto;
+
+    .menus {
+        @include set_size(30%);
+
+    }
+
+    ul {
+        padding-inline-start: 8px;
+    }
+
+    li {
+        list-style-type: none;
+    }
+
+    h3 {
+        font-family: inherit;
+        color: $title-color;
+        font-weight: 600;
+    }
+
+    a {
+        text-decoration: none;
+        font-size: $h3-size;
+        color: $deep-title-color;
+        line-height: 24px;
+
+        &:hover {
+            text-decoration: underline;
+            color: $highlight-color;
+        }
+    }
 }

@@ -11,7 +11,8 @@ import { useHistory } from 'react-router';
 
 const CategoryItem = ({name, thumbnail}) => { 
     const dispatch = useDispatch(); 
-    const history = useHistory();      
+    const history = useHistory();
+    const result = useSelector((store) => store.main.search.result);       
 
     const handleClick = (e) => {
         dispatch(SearchByCategory(name));
@@ -19,7 +20,7 @@ const CategoryItem = ({name, thumbnail}) => {
     }   
 
     return (
-        <button className={styles.category_item_grid} onClick={handleClick}>
+        <button className={styles.category_item_grid} disabled={result.isPending} onClick={handleClick}>
             <div className={styles.category_item_panel_grid}>
                 <img className={styles.category_thumbnail_grid} src={thumbnail ? `${IMAGE_URL}/${thumbnail}` : noImage}/>
                 <span className={styles.category_item_title_grid}>{name}</span>

@@ -1,35 +1,38 @@
-import { READY_TO_LOAD, CATEGORY_LOADING, CATEGORY_LOADED, CATEGORY_FAILED } from "../../../actions/main/search";
+import { FETCHING_REVIEW, REVIEW_FETCHED, REVIEW_FETCH_FAILED } from "../../../actions/main/restaurant/review";
 import produce from "immer";
 
 const initState = {
-    status: READY_TO_LOAD,
+    status: "",
     isPending: true,
-    filter: [],
+    rating: 0, 
+    title: "", 
+    comment: "",
     error: ""
-};
+}
 
 export default (state = initState, action) => {
-    const { type, payload } = action;
-
+    const {type, payload} = action;
     switch (type) {
-        case CATEGORY_LOADING:
+        case FETCHING_REVIEW:            
             return produce(state, draft => {
                 draft.status = type;
-                draft.isPending = true;                
-            });            
-        case CATEGORY_LOADED:
+                draft.isPending = true;
+            });
+        case REVIEW_FETCHED:
             return produce(state, draft => {
                 draft.status = type;
                 draft.isPending = false;
-                draft.filter = payload;
+                draft.rating = payload.rating;
+                draft.title = payload.title;            
+                draft.comment = payload.comment;
                 draft.error = "";
-            });            
-        case CATEGORY_FAILED:
+            });
+        case REVIEW_FETCH_FAILED:
             return produce(state, draft => {
                 draft.status = type;
                 draft.isPending = false;
                 draft.error = payload;
-            });            
+            })
         default:
             return state;
     }

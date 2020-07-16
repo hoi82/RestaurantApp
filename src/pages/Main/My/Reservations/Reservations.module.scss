@@ -36,14 +36,15 @@
     }
 }
 
-.reservation {
-    @include set_size(100%, 180px);
+.reservation {    
+    @include relative(100%, 180px);
     display: flex;    
     flex-wrap: wrap;
 
     .text_container {
         @include set_size(auto, 160px);
         @include column_flex(flex-start, flex-start);
+        flex-grow: 2;
         margin-left: 36px;
     }    
 
@@ -71,6 +72,31 @@
         border-radius: 8px;
         object-fit: cover;
     }
+
+    .menu {
+        @include set_size(24px, 24px);
+        cursor: pointer;
+        user-select: none;
+        background-color: transparent;
+        fill: $deep-title-color;
+        border-radius: 3px;
+        padding: 4px;
+        margin-left: 8px;
+    }
+
+    .menu_panel {        
+        @include column_flex(center, center);
+
+        button, a {
+            @include content_small_btn(200px);
+            text-align: center;
+            text-decoration: none;
+
+            &:not(:first-child) {
+                margin-top: 8px;
+            }
+        }
+    } 
 
     &::after {
         position: relative;

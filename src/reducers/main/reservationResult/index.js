@@ -4,6 +4,7 @@ const { READY_TO_FETCH_RESERVATION_RESULT, FETCHING_RESERVATION_RESULT, RESERVAT
 
 const initState = {
     status: READY_TO_FETCH_RESERVATION_RESULT,
+    isPending: true,
     restaurantID: "",
     restaurantName: "",
     restaurantAddress: {},
@@ -19,10 +20,13 @@ export default (state = initState, action) => {
         case FETCHING_RESERVATION_RESULT:
             return produce(state, draft => {
                 draft.status = type;
+                draft.isPending = true;
                 draft.restaurantID = payload;
             })            
         case RESERVATION_RESULT_FETCHED:            
             return produce(state, draft => {
+                draft.status = type;
+                draft.isPending = false;
                 draft.restaurantID = payload.resid;
                 draft.restaurantName = payload.resname;
                 draft.restaurantAddress = payload.resaddress;
@@ -34,6 +38,8 @@ export default (state = initState, action) => {
         case RESERVATION_RESULT_FETCH_FAILED:
             return produce(state, draft => {
                 draft.status = type;
+                draft.isPending = false;
+                draft.restaurantID = "";
                 draft.restaurantName = "";
                 draft.restaurantAddress = {};
                 draft.reservationName = "";

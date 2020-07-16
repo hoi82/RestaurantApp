@@ -34,13 +34,12 @@ export const registerReservation = (formInfo) => async (dispatch, getState) => {
         };           
 
         try {
-            const { data } = await axios.post(RESERVATION_URL, info, axiosConfig);
-            
+            const { data } = await axios.post(RESERVATION_URL, info, axiosConfig);            
             if (data.error) {
                 dispatch({ type: RESERVATION_FAILED, payload: data.error.code });
             }
             else {
-                // dispatch({ type: RESERVATION_COMPLETE, payload: data });                 
+                dispatch({ type: RESERVATION_COMPLETE, payload: data });                 
                 dispatch(push(`${endpoint.restaurantReservationResult}/${data}`));
             }
         } catch (error) {

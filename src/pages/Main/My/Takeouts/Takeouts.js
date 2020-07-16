@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
-import { useSelector } from 'react-redux';
-import { LOG_IN_SUCCESS, SESSION_FOUND } from '../../../../actions/auth';
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from "./Takeouts.module.scss";
-import { IMAGE_URL } from '../../../../config/url';
+import { IMAGE_URL, endpoint } from '../../../../config/url';
 import noImage from '../../../../types/noImage';
-import { fetchRestaurantThumbnail } from '../../Restaurant/utils';
 import { getFullAddress } from '../../../../utils/getStrings';
+import { fetchMyTakeouts } from '../../../../actions/main/myTakeout';
+import MenuButton from '../../../../components/MenuButton/MenuButton';
+import Popup from '../../../../components/Popup';
+import { Link } from 'react-router-dom';
+import { showDialog } from '../../../../actions/common/dialog';
+import TakeoutDetails from '../../../../components/TakeoutDetails';
 
-function Takeout({resid, orders, totalprice}) {
-    const [restaurantInfo, setRestaurantInfo] = useState({});
-
-    useEffect(() => {
-        fetchRestaurantThumbnail(resid).then((res) => {
-            setRestaurantInfo(res);            
-        });
-    }, []);    
+function Takeout({restaurantThumbnail, restaurantAddress, restaurantName, orders, totalprice}) {
+    const dispatch = useDispatch();
+    const btnRef = useRef();
 
     const getMenuStringFromOrders = (orders) => {
         return orders.map((item) => (
@@ -23,28 +21,43 @@ function Takeout({resid, orders, totalprice}) {
         )).join(", ");
     }
 
+    const handleDetails = (e) => {
+        dispatch(showDialog({
+            buttons: true,
+            bgimg: false,
+            content: <TakeoutDetails/>,            
+        }))
+    }
+
     return (
         <div className={styles.takeout}>
-            <img className={styles.thumb} src={restaurantInfo.thumbnail ? `${IMAGE_URL}/${restaurantInfo.thumbnail}` : noImage}/>
+            <img className={styles.thumb} src={restaurantThumbnail ? `${IMAGE_URL}/${restaurantThumbnail}` : noImage}/>
             <div className={styles.text_container}>
-                <span className={styles.title}>{restaurantInfo.name}</span>
-                <span className={styles.small_content}>{getFullAddress(restaurantInfo.address)}</span>
+                <span className={styles.title}>{restaurantName}</span>
+                <span className={styles.small_content}>{getFullAddress(restaurantAddress)}</span>
                 <span className={styles.small_content}>{getMenuStringFromOrders(orders)}</span>
                 <span className={styles.big_content}>{totalprice}</span>
-            </div>            
+            </div>                  
+            <MenuButton ref={btnRef} className={styles.menu}/>
+            <Popup trigger={btnRef} position={{right: "8px", top: "48px"}}>
+                <div className={styles.menu_panel}>                    
+                    <button onClick={handleDetails} data-closebutton={true}>Details</button>
+                    <Link to={`${endpoint.home}`}>Edit</Link>
+                    <Link to={`${endpoint.takeout}`}>Cancel Order</Link>
+                </div>
+            </Popup>      
         </div>
     )
 }
 
 function Takeouts(props) {
-    const [takeouts, setTakeouts] = useState([]);
+    const my = useSelector((store) => store.main.my.takeout);
     const auth = useSelector((store) => store.auth);
+    const dispatch = useDispatch();
 
     useEffect(() => {        
         if (auth.isLogin) {                        
-            axios.get(`http://localhost:3005/api/takeouts/${auth.id}`).then((res) => {                
-                setTakeouts(res.data);
-            })
+            dispatch(fetchMyTakeouts(auth.id));
         }
     }, [auth]);    
 
@@ -58,7 +71,7 @@ function Takeouts(props) {
         <div className={styles.takeouts}>
             <span className={styles.main_title}>Takeouts</span>
             <div className={styles.takeout_grid}>
-                {renderTakeouts(takeouts)}
+                {renderTakeouts(my.takeouts)}
             </div>            
         </div>
     );

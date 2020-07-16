@@ -9,7 +9,7 @@ import { endpoint } from '../../../../config/url';
 import NoResult from '../../../../components/NoResult';
 
 function Result({match}) {
-    const restaurants = useSelector((store) => store.main.search.result);      
+    const restaurants = useSelector((store) => store.main.search.result);
     const param = useParams();
     const dispatch = useDispatch();
     const location = useLocation();    
@@ -52,6 +52,12 @@ function Result({match}) {
                 return "";
         }           
     }
+
+    const isPending = () => {
+        return restaurants.status == READY_TO_LOAD || restaurants.isPending;
+    }
+
+    if (isPending()) return null;
 
     return (
         <div className={styles.container}>            

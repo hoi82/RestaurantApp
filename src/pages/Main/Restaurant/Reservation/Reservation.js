@@ -30,7 +30,7 @@ function ReservationUI(props) {
     },[]);        
 
     useEffect(() => {                                
-        dispatch(fetchReservation(param.id, date));
+        dispatch(fetchReservation(param.id, date));        
     }, [date]);                                
 
     const handleMember = (value) => {              
@@ -73,6 +73,8 @@ function ReservationUI(props) {
         props.setFieldTouched("name", false);
     }
 
+    if (restaurant.isPending) return null;
+
     return (
         <Form className={styles.reservation}>
             <span className={styles.main_title}>Reservation</span>
@@ -97,9 +99,13 @@ function ReservationUI(props) {
                 <div className={styles.header_box}>
                     <span className={styles.content_header}>Time</span>
                     <span className={classnames(styles.error_title, {[`${styles.error_visible}`] : props.touched["time"]})}>{props.errors["time"]}</span>
-                </div>                
-                <TimePicker available={reservation.available} reserved={reservation.reserved} time={props.values.time} timezone={restaurant.opens.timezone} onTimeChange={handleTime}
-                onFocus={timePickerFocus} onBlur={timePickerBlur} onRefresh={handleRefresh}/>
+                </div>     
+                {
+                    reservation.isPending ? null
+                    :                    
+                    <TimePicker available={reservation.available} reserved={reservation.reserved} time={props.values.time} timezone={restaurant.opens.timezone} onTimeChange={handleTime}
+                    onFocus={timePickerFocus} onBlur={timePickerBlur} onRefresh={handleRefresh}/>                    
+                }                
                 <div className={styles.header_box}>
                     <span className={styles.content_header}>Member</span>
                     <span className={classnames(styles.error_title, {[`${styles.error_visible}`] : props.touched["member"]})}>{props.errors["member"]}</span>
@@ -109,25 +115,25 @@ function ReservationUI(props) {
                 <textarea name="message" value={props.values.message} className={styles.message} onChange={props.handleChange} onBlur={props.handleBlur}/>
             </div>                            
             {
-                restaurant.reservation ? <div className={styles.cf_panel}>
-                    <span className={styles.content_header}>Cancellation Fee</span>
-                    <span className={styles.cf_content}>
-                        {
-                            restaurant.reservation.fee ? 
-                            `${restaurant.reservation.fee.currency} ${restaurant.reservation.fee.value}`
-                            : "Free"
-                        }
-                    </span>
-                    {
-                        restaurant.reservation.fee ? 
-                        <React.Fragment>
-                            <span className={styles.cf_warning}>No payment is registered.</span>
-                            <button className={styles.cf_reg_btn}>Register Payment</button>
-                        </React.Fragment>
-                        : null
-                    }                        
-                </div>
-                : null
+                // restaurant.reservation ? <div className={styles.cf_panel}>
+                //     <span className={styles.content_header}>Cancellation Fee</span>
+                //     <span className={styles.cf_content}>
+                //         {
+                //             restaurant.reservation.fee ? 
+                //             `${restaurant.reservation.fee.currency} ${restaurant.reservation.fee.value}`
+                //             : "Free"
+                //         }
+                //     </span>
+                //     {
+                //         restaurant.reservation.fee ? 
+                //         <React.Fragment>
+                //             <span className={styles.cf_warning}>No payment is registered.</span>
+                //             <button type="button" className={styles.cf_reg_btn}>Register Payment</button>
+                //         </React.Fragment>
+                //         : null
+                //     }                        
+                // </div>
+                // : null
             }                
             <button type="submit" className={styles.submit_btn}>Submit</button>
         </Form> 

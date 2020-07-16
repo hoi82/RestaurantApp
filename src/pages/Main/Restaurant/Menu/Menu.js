@@ -13,7 +13,7 @@ export default function Menu() {
     const param = useParams();
     const dispatch = useDispatch();
     const history = useHistory();    
-        
+           
     useEffect(() => {
         dispatch(fetchMenu(param.id));
     },[]);        

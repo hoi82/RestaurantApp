@@ -3,13 +3,13 @@ import { produce } from "immer";
 
 const initState = {
     status: READY_RESERVATION,
+    isPending: true,
     date: new Date(0),
     available: [],
     reserved: [],
-    error: ""            
+    error: "",
+    reservationID: ""            
 }
-
-//TODO: 여기부터 시작
 
 export default (state = initState, action) => {    
     const {type, payload} = action;    
@@ -17,15 +17,14 @@ export default (state = initState, action) => {
         case FETCHING_RESERVATION:
             return produce(state, draft => {
                 draft.status = type;
-                draft.date = payload;
-                draft.availabe = state.available;
-                draft.reserved = state.reserved;
+                draft.isPending = true;
+                draft.date = payload;                
                 draft.error = "";
             });
         case RESERVATION_FETCHED:
             return produce(state, draft => {
                 draft.status = type;
-                draft.date = state.date;
+                draft.isPending = false;
                 draft.available = payload.available;
                 draft.reserved = payload.reservations;
                 draft.error = "";
@@ -33,7 +32,7 @@ export default (state = initState, action) => {
         case RESERVATION_FETCH_FAILED:
             return produce(state, draft => {
                 draft.status = type;
-                draft.date = state.date;
+                draft.isPending = false;
                 draft.available = [];
                 draft.reserved = [];
                 draft.error = payload;

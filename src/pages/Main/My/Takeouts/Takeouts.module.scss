@@ -35,7 +35,7 @@
 }
 
 .takeout {
-    @include set_size(100%, 120px);
+    @include relative(100%, 120px);
     display: flex;    
     flex-wrap: wrap;
     background-color: $grade1-bg-color;
@@ -45,6 +45,7 @@
     .text_container {
         @include set_size(auto, 120px);
         @include column_flex(center, flex-start);
+        flex-grow: 2;
         margin-left: 24px;
     }
 
@@ -73,4 +74,31 @@
         border-radius: 8px 0 0 8px;
         object-fit: cover;
     }    
+
+    .menu {
+        @include set_size(24px, 24px);
+        cursor: pointer;
+        user-select: none;
+        background-color: transparent;
+        fill: $deep-title-color;
+        border-radius: 3px;
+        padding: 4px;
+        margin-left: 8px;
+        margin-right: 8px;
+        margin-top: 8px;
+    }
+
+    .menu_panel {        
+        @include column_flex(center, center);
+
+        button, a {
+            @include content_small_btn(200px);
+            text-align: center;
+            text-decoration: none;
+
+            &:not(:first-child) {
+                margin-top: 8px;
+            }
+        }
+    }
 }

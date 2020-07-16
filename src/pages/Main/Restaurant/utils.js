@@ -7,17 +7,6 @@ const MENU_URL = "http://localhost:3005/api/menu";
 const RESTAURANT_THUMBNAIL_URL = "http://localhost:3005/api/restaurant/thumbnail";
 const RESERVATION_URL = "http://localhost:3005/api/reservation";
 
-const CancelToken = axios.CancelToken;
-let cancel;
-
-export const fetchMenu = (menuID) => {
-    return axios.get(`${MENU_URL}/${menuID}`, axiosConfig).then((res) => {
-        return res.data;
-    }).catch((err) => {
-
-    });
-}
-
 export const ISODateToString = (iso) => {
     if (!iso) return null;
 
@@ -80,37 +69,6 @@ export const isInTime = (date) => {
     return false;
 }
 
-export const fetchRestaurantThumbnail = (id) => {
-    return new Promise((resolve, reject) => {
-        axios.get(`${RESTAURANT_THUMBNAIL_URL}/${id}`, {cancelToken : new CancelToken((c) => cancel = c) ,...axiosConfig}).then((res) => {
-            resolve(res.data);
-        }).catch((err) => {
-            reject(err);
-        })
-    })    
-}
-
-export const fetchReservationInfo = (resid, date) => {    
-    return new Promise((resolve, reject) => {                
-        axios.get(`${RESERVATION_URL}/${resid}/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`, 
-        {cancelToken : new CancelToken((c) => cancel = c) ,...axiosConfig}).then((res) => {
-            resolve(res.data);
-        }).catch((err) => {
-            reject(err);
-        })
-    })
-}
-
-export const fetchReservation = (id) => {
-    return new Promise((resolve, reject) => {
-        axios.get(`${RESERVATION_URL}/${id}`, axiosConfig).then((res) => {
-            resolve(res.data);
-        }).catch((err) => {
-            reject(err);
-        })
-    })
-}
-
 export const fetchReview = (id) => {
     return new Promise((resolve, reject) => {
         axios.get(`${REVIEW_URL}/${id}`).then((res) => {
@@ -119,9 +77,4 @@ export const fetchReview = (id) => {
             reject(err);
         })
     })
-}
-
-export const cancelFetch = () => {
-    if (cancel != undefined)
-        cancel();
 }

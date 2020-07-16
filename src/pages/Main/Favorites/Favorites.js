@@ -7,7 +7,6 @@ import { fetchFavorites, removeFavorite, toggleAll, toggleFavorite, removeSelect
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import PanelGrid from '../../../components/PanelGrid';
-import { fetchRestaurantIfNeed } from '../../../actions/main/restaurant/details';
 import StyledCheckBox from "../../../components/StyledCheckBox";
 import Popup from '../../../components/Popup';
 import { Link } from 'react-router-dom';
@@ -28,18 +27,6 @@ const Restaurant = ({id, name, address, thumbnail, selected, index}) => {
                 dispatch(removeFavorite(id));
             }
         }))
-    }
-
-    const handleReservation = (e) => {
-        
-    }
-
-    const handleTakeOut = (e) => {
-        
-    }    
-
-    const handleDetail = (e) => {
-        dispatch(fetchRestaurantIfNeed(id));
     }    
 
     const handleToggle = (e) => {
@@ -53,15 +40,14 @@ const Restaurant = ({id, name, address, thumbnail, selected, index}) => {
                 <Link className={styles.name} to={`${endpoint.restaurantDetail.replace(":id", id)}`}>{name}</Link>
                 <span>{getFullAddress(address)}</span>                
             </div>               
-            <StyledCheckBox checked={selected} onChange={handleToggle}/>
-            {/* <img className={styles.menu} src={menu} id={btnID}/> */}
+            <StyledCheckBox checked={selected} onChange={handleToggle}/>            
             <MenuButton ref={btnRef} className={styles.menu}/>
             <Popup trigger={btnRef} position={{top: "16px", right: "64px"}}>
                 <div className={styles.menu_panel}>
                     <button onClick={handleRemove}>Remove from favorite list</button>
-                    <Link to={`${endpoint.restaurantDetail.replace(":id", id)}`} onClick={handleDetail}>Details</Link>
-                    <Link to={`${endpoint.restaurantReservation}/${id}`} onClick={handleReservation}>Reservation</Link>
-                    <Link to={`${endpoint.takeout}/${id}`} onClick={handleTakeOut}>Take Out</Link>
+                    <Link to={`${endpoint.restaurantDetail.replace(":id", id)}`}>Details</Link>
+                    <Link to={`${endpoint.restaurantReservation}/${id}`}>Reservation</Link>
+                    <Link to={`${endpoint.takeout}/${id}`}>Take Out</Link>
                 </div>
             </Popup>
         </div>
