@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useLocation } from 'react-router';
 import { getFullAddress } from '../../../../utils/getStrings';
-import { IMAGE_URL } from '../../../../config/url';
+import { IMAGE_URL, endpoint } from '../../../../config/url';
 import styles from "./Reservation.module.scss";
 import DatePicker from "../../../../components/DatePicker";
 import TimePicker from "../../../../components/TimePicker";
@@ -15,6 +15,7 @@ import noImage from '../../../../types/noImage';
 import { Form, Formik } from 'formik';
 import { ErrorMessages } from '../../../../types/ErrorMessages';
 import classnames from "classnames";
+import { fetchReservationResult } from '../../../../actions/main/reservationResult';
 
 function ReservationUI(props) {
     const restaurant = useSelector((store) => store.main.restaurant.details);    
@@ -140,9 +141,21 @@ function ReservationUI(props) {
     )
 }
 
-function Reservation() {  
+function Reservation({match}) {  
     const restaurant = useSelector((store) => store.main.restaurant.details);   
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();     
+    const reservation = useSelector((store) => store.main.reservationResult);
+    const param = useParams();    
+    
+    useEffect(() => {
+        if (isEdit()) {
+            dispatch(fetchReservationResult(param.reservationID));
+        }
+    }, []);
+
+    const isEdit = () => {                
+        return match.path == `${endpoint.restaurantReservation}/:id/:reservationID`;
+    }
 
     const handleSubmit = (values) => {                  
         if (restaurant.reservation && restaurant.reservation.fee && restaurant.reservation.fee.value) {
@@ -174,8 +187,15 @@ function Reservation() {
         return errors;
     }
 
+    if (isEdit() && reservation.isPending) return null;    
+
     return (                    
-        <Formik initialValues={{name: "", time: null, member: 0, message: ""}} onSubmit={handleSubmit} validate={handleValidate}>
+        <Formik initialValues={isEdit() ? {
+                name: reservation.reservationName, 
+                time: reservation.time, 
+                member: reservation.member, 
+                message: reservation.message
+            } : {name: "", time: null, member: 0, message: ""}} onSubmit={handleSubmit} validate={handleValidate} enableReinitialize={true}>
             {(props) => <ReservationUI {...props}/>}            
         </Formik>               
     );

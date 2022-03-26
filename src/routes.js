@@ -77,6 +77,11 @@ export default [
                         exact: true
                     },
                     {
+                        path: path.resolve(endpoint.restaurantReservation, ":id", ":reservationID"),
+                        component: asyncReservation,
+                        exact: true
+                    },
+                    {
                         path: path.resolve(endpoint.restaurantReservationResult, ":id"),
                         component: asyncReservationResult,
                         exact: true

@@ -10,8 +10,11 @@ import Popup from '../../../../components/Popup';
 import { Link } from 'react-router-dom';
 import { showDialog } from '../../../../actions/common/dialog';
 import TakeoutDetails from '../../../../components/TakeoutDetails';
+import { DialogMode } from '../../../../types/Variables';
+import NotLogin from '../../../../components/NotLogin';
+import NoResult from '../../../../components/NoResult';
 
-function Takeout({restaurantThumbnail, restaurantAddress, restaurantName, orders, totalprice}) {
+function Takeout(props) {
     const dispatch = useDispatch();
     const btnRef = useRef();
 
@@ -25,9 +28,19 @@ function Takeout({restaurantThumbnail, restaurantAddress, restaurantName, orders
         dispatch(showDialog({
             buttons: true,
             bgimg: false,
-            content: <TakeoutDetails/>,            
+            content: <TakeoutDetails {...props}/>,            
         }))
     }
+
+    const handleCancel = (e) => {
+        dispatch(showDialog({
+            mode: DialogMode.CONFIRM,
+            content: "Are you sure want to cancel your order?",
+            onConfirm: () => console.log("canceled")
+        }))
+    }
+
+    const {restaurantThumbnail, restaurantAddress, restaurantName, orders, totalprice} = props;
 
     return (
         <div className={styles.takeout}>
@@ -43,7 +56,7 @@ function Takeout({restaurantThumbnail, restaurantAddress, restaurantName, orders
                 <div className={styles.menu_panel}>                    
                     <button onClick={handleDetails} data-closebutton={true}>Details</button>
                     <Link to={`${endpoint.home}`}>Edit</Link>
-                    <Link to={`${endpoint.takeout}`}>Cancel Order</Link>
+                    <button onClick={handleCancel} data-closebutton={true}>Cancel Order</button>
                 </div>
             </Popup>      
         </div>
@@ -62,17 +75,33 @@ function Takeouts(props) {
     }, [auth]);    
 
     const renderTakeouts = (takeouts) => {
-        return takeouts.map((takeout) => (
-            <Takeout key={takeout.id} {...takeout}/>
-        ))
+        if (takeouts.length > 0) {            
+            return <div className={styles.takeout_grid}>
+                {takeouts.map((takeout) => (
+                    <Takeout key={takeout.id} {...takeout}/>
+                ))}
+            </div>
+        }
+        else {
+            return <NoResult/>
+        }        
     }
+
+    const renderContentByUser = () => {
+        if (auth.isLogin) {
+            return renderTakeouts(my.takeouts);
+        }
+        else {
+            return <NotLogin/>
+        }
+    }
+
+    if (my.isPending) return null;
 
     return (
         <div className={styles.takeouts}>
-            <span className={styles.main_title}>Takeouts</span>
-            <div className={styles.takeout_grid}>
-                {renderTakeouts(my.takeouts)}
-            </div>            
+            <h2 className={styles.main_title}>Takeouts</h2>
+            {renderContentByUser()}                
         </div>
     );
 }

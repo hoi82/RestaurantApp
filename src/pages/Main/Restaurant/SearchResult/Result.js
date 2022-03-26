@@ -67,7 +67,7 @@ function Result({match}) {
                     restaurants.result.length > 0 ? 
                     <PanelGrid items={restaurants.result} itemRenderer={renderRestaurant} config={{lengthPerPage: 10}}/>
                     :
-                    <NoResult keyword={getKeyword()}/>
+                    <NoResult keyword={getKeyword()}/>                    
                 }
                 
             </div>            

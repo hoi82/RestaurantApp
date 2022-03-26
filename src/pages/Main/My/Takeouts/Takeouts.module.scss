@@ -5,12 +5,10 @@
     @include relative_full;
     padding: 72px;
 
-    .main_title {
-        display: inline-block;
-        width: 100%;
-        font-size: 24px;
+    .main_title {        
+        width: 100%;        
         color: $title-color;
-        font-weight: 600;        
+        font-weight: 600;
 
         &::after {
             position: relative;

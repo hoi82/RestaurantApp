@@ -3,7 +3,7 @@
 
 
 .favorites {
-    @include relative_full;            
+    @include relative_full;                        
     padding: 72px;
 
     .header {
@@ -25,7 +25,7 @@
     }    
 
     .no_result {
-        @include set_size(100%, 560px);
+        @include set_size(100%, 100%);        
         @include column_flex(center, center);
 
         .svg {
@@ -46,8 +46,7 @@
     }     
 }    
 
-.title {
-    font-size: 24px;
+.title {    
     font-weight: 600;
     color: $title-color;
 
