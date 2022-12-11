@@ -53,7 +53,7 @@
     "connected-react-router": "^6.8.0",
     "core-js": "^3.6.4",
     "datejs": "^1.0.0-rc3",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.17.0",
     "formik": "^2.1.4",
     "google-map-react": "^1.1.7",
